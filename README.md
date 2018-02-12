@@ -25,4 +25,15 @@ Otherwise, for `http-server` (Node.js):
 npm i -g http-server
 cd src
 http-server
+# Now open localhost:8080
 ```
+
+## Dependencies
+
+This project depends on [GPU.js](https://github.com/gpujs/gpu.js) and [Bulma](https://bulma.io/). The core of the assignment is based on GPU.js, but restricted to a specific snapshot version of the library (V0).
+
+As this is a submission for a school assignment, all dependencies are copied into this repository directly, instead of typically installing them from NPM.
+
+## License
+
+Copyright, Irvin Lim
