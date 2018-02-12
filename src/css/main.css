@@ -1,0 +1,19 @@
+.canvas-wrapper {
+    min-height: 600px;
+}
+
+.canvas-wrapper {
+    text-align: center;
+}
+
+.fps-tags {
+    justify-content: center;
+}
+
+main {
+    padding: 20px 0;
+}
+
+main .container {
+    padding-bottom: 20px;
+}

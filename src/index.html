@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CS3211 Project 1</title>
+    <link rel="stylesheet" href="css/bulma.min.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+    <section class="hero is-small is-dark is-bold">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">
+                    CS3211 Project 1
+                </h1>
+                <h2 class="subtitle">
+                    Submitted by Irvin Lim (A0139812A)
+                </h2>
+            </div>
+        </div>
+    </section>
+
+    <main>
+        <div class="container fps-wrapper">
+            <div class="fps-tags tags has-addons">
+                <span class="tag is-dark">FPS</span>
+                <span id="fps" class="tag is-success">0</span>
+            </div>
+        </div>
+
+        <div class="container canvas-wrapper">
+            <video hidden id="video" width="800" height="600"></video>
+            <canvas hidden id="videoCanvas" width="800" height="600"></canvas>
+        </div>
+
+        <div class="container control-wrapper">
+            <div class="box">
+                <input class="button is-danger" type="button" value="Stopped" onclick="return toggleStatus(this);" />
+                <input class="button" type="button" value="Using CPU" onclick="return change(this);" />
+                <input class="button" type="button" value="Filtering" onclick="return changeFilter(this);" />
+            </div>
+        </div>
+    </main>
+
+    <script src="js/gpuv0.js?nocache"></script>
+    <script src="js/decls.js?nocache"></script>
+    <script src="ui.js?nocache"></script>
+    <script src="kerneldefsv0.js?nocache"></script>
+    <script src="main.js?nocache"></script>
+
+</body>
+
+</html>
