@@ -30,23 +30,24 @@
         </div>
 
         <div class="container canvas-wrapper">
-            <video hidden id="video" width="800" height="600"></video>
+            <video hidden id="video" width="800" height="600" playsinline autoplay muted></video>
             <canvas hidden id="videoCanvas" width="800" height="600"></canvas>
         </div>
 
         <div class="container control-wrapper">
             <div class="box">
                 <input class="button is-danger" type="button" value="Stopped" onclick="return toggleStatus(this);" />
-                <input class="button" type="button" value="Using CPU" onclick="return change(this);" />
+                <input class="button is-info" type="button" value="Using GPU" onclick="return toggleMode(this);" />
                 <input class="button" type="button" value="Filtering" onclick="return changeFilter(this);" />
             </div>
         </div>
     </main>
 
-    <script src="js/gpuv0.js?nocache"></script>
+    <script src="js/gpu.min.js?nocache"></script>
     <script src="js/decls.js?nocache"></script>
+    <script src="global.js?nocache"></script>
     <script src="ui.js?nocache"></script>
-    <script src="kerneldefsv0.js?nocache"></script>
+    <script src="kernels.js?nocache"></script>
     <script src="main.js?nocache"></script>
 
 </body>

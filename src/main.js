@@ -1,130 +1,58 @@
-var canvas, video, width, height, context;
-var copyVideo = false;
-var canvasReady = false;
-var arr = [];
-var imageData;
-var firsttimevid = true;
-var renderLoopRequestId;
-
-function draw() {
-    if (copyVideo) {
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        imageData = context.getImageData(0, 0, 800, 600);
-        if (firsttimevid === true) {
-            for (var channel = 0; channel < 4; channel++) {
-                arr.push([]);
-                for (var y = 0; y < 600; y++) {
-                    arr[channel].push([]);
-                }
-            }
-        }
-        firsttimevid = false;
-        var pointer = 0;
-        for (var y = 0; y < 600; y++) {
-            for (var x = 0; x < 800; x++) {
-                arr[0][600 - y - 1][x] = imageData.data[pointer++] / 256;
-                arr[1][600 - y - 1][x] = imageData.data[pointer++] / 256;
-                arr[2][600 - y - 1][x] = imageData.data[pointer++] / 256;
-                arr[3][600 - y - 1][x] = imageData.data[pointer++] / 256;
-            }
-        }
-
-        canvasReady = true;
-    }
-    //     console.log(arr);
-    requestAnimationFrame(draw);
-}
-
-navigator.getUserMedia =
-    navigator.getUserMedia ||
-    navigator.webkitGetUserMedia ||
-    navigator.mozGetUserMedia ||
-    navigator.msGetUserMedia;
-
 function initialize() {
-    video = document.getElementById('video');
-    width = video.width;
-    height = video.height;
+    // Initialize video element.
+    const video = document.getElementById('video');
+    video.style.height = height;
+    video.style.width = width;
 
-    canvas = document.getElementById('videoCanvas');
-    console.log(videoCanvas);
-    context = canvas.getContext('2d');
-
-    video.addEventListener(
-        'playing',
-        function() {
-            console.log('Started');
-            copyVideo = true;
-        },
-        true
-    );
+    // Add event handlers to receive video stream from camera.
+    const streamHandler = stream => {
+        video.src = URL.createObjectURL(stream);
+        video.play();
+    };
 
     if (typeof navigator.mediaDevices.getUserMedia === 'undefined') {
-        navigator.getUserMedia({ video: true }, streamHandler, errorHandler);
+        navigator.getUserMedia({ video: true, audio: false }, streamHandler);
     } else {
-        navigator.mediaDevices
-            .getUserMedia({ video: true })
-            .then(streamHandler)
-            .catch(errorHandler);
+        navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(streamHandler);
     }
-}
 
-var myKernelImg = makeImg('gpu');
-var myCodeImg = makeImg('cpu');
-var myKernelFilter1 = makeFilter('gpu');
-var myKernelFilter2 = makeFilter('gpu');
-var myCodeFilter1 = makeFilter('cpu');
-var myCodeFilter2 = makeFilter('cpu');
-var orig;
-var afterload = false;
-var animIndex = 0;
-var canvas = myKernelImg.getCanvas();
-document.querySelector('.canvas-wrapper').appendChild(canvas);
-
-var f = document.querySelector('#fps');
-
-function renderLoop() {
-    f.innerHTML = fps.getFPS();
-    if (canvasReady === true) {
-        if (selection === 0) {
-            orig = myKernelImg(arr);
-            // console.log(orig);
-            afterload = true;
-            var C = orig;
-
-            if (filtering === 0) {
-                // var D = myCodeFilter1(C);
-                // var X = myCodeFilter2(D);
-                var X = myCodeFilter2(C);
-            } else {
-                var X = C;
-            }
-        } else {
-            orig = myKernelImg(arr);
-            // console.log(orig);
-            afterload = true;
-            var C = orig;
-            if (filtering === 0) {
-                // var D = myKernelFilter1(C);
-                // var X = myKernelFilter2(D);
-                var X = myKernelFilter2(C);
-            } else {
-                var X = C;
-            }
-        }
-        var E = toimg(X);
-    } else {
-        console.log('video not ready yet');
-    }
-    // setTimeout(renderLoop, 1);            // Uncomment this line, and comment the next line
-    renderLoopRequestId = requestAnimationFrame(renderLoop); // to see how fast this could run...
-}
-
-function streamHandler(stream) {
-    video.src = URL.createObjectURL(stream);
-    video.play();
-    console.log('In startStream');
-    requestAnimationFrame(draw);
+    // Create a Canvas for both CPU and GPU modes.
+    const cpuCanvas = cpuKernels.renderGraphical.getCanvas();
+    const gpuCanvas = gpuKernels.renderGraphical.getCanvas();
+    document.querySelector('.canvas-wrapper').appendChild(cpuCanvas);
+    document.querySelector('.canvas-wrapper').appendChild(gpuCanvas);
 }
 
 addEventListener('DOMContentLoaded', initialize);
+
+function renderLoop() {
+    // Calculate and display FPS.
+    document.querySelector('#fps').innerHTML = fps.getFPS();
+
+    // Draw the contents of the video on the video canvas.
+    const video = document.getElementById('video');
+    const context = document.getElementById('videoCanvas').getContext('2d');
+    context.drawImage(video, 0, 0, width, height);
+
+    // Extract the image data from the canvas.
+    let data = context.getImageData(0, 0, width, height).data;
+
+    /// MAIN SECTION
+    /// Execute kernel functions to process and render image for this frame.
+
+    // Transform linear image data into 3-D array for proper computation.
+    data = getKernel('transformLinearToXYZ')(data, width, height);
+
+    // Render image in the final canvas.
+    getKernel('renderGraphical')(data);
+
+    // Show only the current canvas and fix the size.
+    const canvas = getKernel('renderGraphical').getCanvas();
+    document.querySelectorAll('.canvas-wrapper canvas').forEach(el => (el.style.display = 'none'));
+    canvas.style.display = 'inline';
+    canvas.width = width;
+    canvas.height = height;
+
+    // Request next frame to render.
+    renderLoopRequestId = requestAnimationFrame(renderLoop);
+}
