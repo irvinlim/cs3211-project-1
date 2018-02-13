@@ -43,6 +43,11 @@ function renderLoop() {
     // Transform linear image data into 3-D array for proper computation.
     data = getKernel('transformLinearToXYZ')(data, width, height);
 
+    // Add embossed filter.
+    if (state.isFilterEnabled) {
+        data = getKernel('embossedFilter')(data, width, height);
+    }
+
     // Render image in the final canvas.
     getKernel('renderGraphical')(data);
 

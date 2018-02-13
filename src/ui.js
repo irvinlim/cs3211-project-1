@@ -28,13 +28,12 @@ function toggleMode(el) {
 
 // Toggles the filter.
 function changeFilter(el) {
-    if (el.value === 'Filtering') {
-        filtering = 1;
-        el.value = 'No Filter';
-    } else {
-        filtering = 0;
-        el.value = 'Filtering';
-    }
+    const labels = ['No Filter', 'Filter On'];
+    const classNames = ['is-warning', 'is-info'];
+
+    // Toggle state and update element.
+    state.isFilterEnabled = !state.isFilterEnabled;
+    toggleElement(el, state.isFilterEnabled, labels, classNames);
 }
 
 function toggleElement(el, state, labels, classNames) {

@@ -23,6 +23,39 @@ const createTransformLinearToXYZ = kernelCreator =>
         .setOutputToTexture(true)
         .setOutput([width, height, 4]);
 
+// Kernel: Embossed filter
+const createEmbossedFilter = kernelCreator =>
+    kernelCreator
+        .createKernel(function(A, width, height) {
+            if (
+                this.thread.y > 0 &&
+                this.thread.y < height - 2 &&
+                this.thread.x < width - 2 &&
+                this.thread.x > 0 &&
+                this.thread.z < 3
+            ) {
+                var c =
+                    A[this.thread.z][this.thread.y - 1][this.thread.x - 1] * -1 +
+                    A[this.thread.z][this.thread.y][this.thread.x - 1] * -2 +
+                    A[this.thread.z][this.thread.y + 1][this.thread.x - 1] * -1 +
+                    A[this.thread.z][this.thread.y - 1][this.thread.x + 1] +
+                    A[this.thread.z][this.thread.y][this.thread.x + 1] * 2 +
+                    A[this.thread.z][this.thread.y + 1][this.thread.x + 1];
+                var d =
+                    A[this.thread.z][this.thread.y - 1][this.thread.x - 1] * -1 +
+                    A[this.thread.z][this.thread.y - 1][this.thread.x] * -2 +
+                    A[this.thread.z][this.thread.y - 1][this.thread.x + 1] * -1 +
+                    A[this.thread.z][this.thread.y + 1][this.thread.x - 1] +
+                    A[this.thread.z][this.thread.y + 1][this.thread.x] * 2 +
+                    A[this.thread.z][this.thread.y + 1][this.thread.x + 1];
+                return c + d + 0.5;
+            } else {
+                return A[this.thread.z][this.thread.y][this.thread.x];
+            }
+        })
+        .setOutputToTexture(true)
+        .setOutput([width, height, 4]);
+
 // Kernel: Renders a 3-D array into a 2-D graphic array via a Canvas.
 const createRenderGraphical = kernelCreator =>
     kernelCreator
@@ -30,7 +63,8 @@ const createRenderGraphical = kernelCreator =>
             this.color(
                 A[0][this.thread.y][this.thread.x],
                 A[1][this.thread.y][this.thread.x],
-                A[2][this.thread.y][this.thread.x]
+                A[2][this.thread.y][this.thread.x],
+                A[3][this.thread.y][this.thread.x]
             );
         })
         .setGraphical(true)
@@ -44,11 +78,13 @@ const createRenderGraphical = kernelCreator =>
 // Necessary because `.mode()` is missing in V1 gpu.js.
 const gpuKernels = {
     transformLinearToXYZ: createTransformLinearToXYZ(gpu),
+    embossedFilter: createEmbossedFilter(gpu),
     renderGraphical: createRenderGraphical(gpu),
 };
 
 const cpuKernels = {
     transformLinearToXYZ: createTransformLinearToXYZ(cpu),
+    embossedFilter: createEmbossedFilter(cpu),
     renderGraphical: createRenderGraphical(gpu), // Cannot render graphical using 'cpu' mode
 };
 
