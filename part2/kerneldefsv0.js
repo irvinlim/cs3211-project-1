@@ -20,8 +20,14 @@
          mode: mode
       };
 
+      // Transform linear array of image data (1 pixel every 4 elements),
+      // as well as inverted vertically.
       var y = gpu.createKernel(function(img) {
-            return img[this.thread.z][this.thread.y][this.thread.x];
+        var x = 4 * this.thread.x;
+        var y = 4 * 800 * (600 - this.thread.y);
+        var z = this.thread.z;
+
+        return img[x + y + z] / 256;
       }, opt);
       return y;
    }

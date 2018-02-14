@@ -104,8 +104,14 @@ function initialize() {
    document.getElementsByTagName('body')[0].appendChild(canvas);
 
    var f = document.querySelector("#fps");
+
    function renderLoop() {
       f.innerHTML = fps.getFPS();
+
+      // Use kernel to process image data
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      arr = context.getImageData(0, 0, 800, 600).data;
+
       if ( canvasReady === true ) {
          if (selection === 0) {
                 orig = myKernelImg(arr);
@@ -146,7 +152,7 @@ function streamHandler(stream) {
   video.src = URL.createObjectURL(stream);
   video.play();
   console.log("In startStream");
-  requestAnimationFrame(draw);
+  canvasReady=true;
 }
 
 
