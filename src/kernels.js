@@ -149,9 +149,9 @@ const createLightTunnelFilter = kernelCreator =>
 
             // Otherwise, get the pixel at the border of the circle,
             // using trigonometry.
-            var angle = atan(midpointY - this.thread.y, midpointX - this.thread.x);
-            var x = midpointX - floor(radius * cos(angle));
-            var y = midpointY - floor(radius * sin(angle));
+            var angle = Math.atan(midpointY - this.thread.y, midpointX - this.thread.x);
+            var x = midpointX - Math.floor(radius * Math.cos(angle));
+            var y = midpointY - Math.floor(radius * Math.sin(angle));
 
             // Return the new pixel.
             return A[this.thread.z][y][x];
