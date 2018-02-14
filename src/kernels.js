@@ -90,7 +90,7 @@ const createGaussianFilter = createStandardKernel(function(A, width, height) {
 });
 
 // Kernel: Edge detection (Sobel) filter
-const createEdgeDetectionFilter = createStandardKernel(function(A, width, height) {
+const createEdgeDetectionFilter = createStandardKernel(function(A, width, height, level) {
     if (
         this.thread.y > 0 &&
         this.thread.y < height - 1 &&
@@ -98,14 +98,27 @@ const createEdgeDetectionFilter = createStandardKernel(function(A, width, height
         this.thread.x > 0 &&
         this.thread.z < 3
     ) {
-        return (
-            A[this.thread.z][this.thread.y - 1][this.thread.x - 1] * -1 +
+        var gx =
+            A[this.thread.z][this.thread.y - 1][this.thread.x - 1] +
+            A[this.thread.z][this.thread.y - 1][this.thread.x + 1] * -1 +
+            A[this.thread.z][this.thread.y][this.thread.x - 1] * 2 +
+            A[this.thread.z][this.thread.y][this.thread.x + 1] * -2 +
+            A[this.thread.z][this.thread.y + 1][this.thread.x - 1] +
+            A[this.thread.z][this.thread.y + 1][this.thread.x + 1] * -1;
+
+        var gy =
+            A[this.thread.z][this.thread.y - 1][this.thread.x - 1] +
+            A[this.thread.z][this.thread.y - 1][this.thread.x] * 2 +
             A[this.thread.z][this.thread.y - 1][this.thread.x + 1] +
-            A[this.thread.z][this.thread.y][this.thread.x - 1] * -2 +
-            A[this.thread.z][this.thread.y][this.thread.x + 1] * 2 +
             A[this.thread.z][this.thread.y + 1][this.thread.x - 1] * -1 +
-            A[this.thread.z][this.thread.y + 1][this.thread.x + 1]
-        );
+            A[this.thread.z][this.thread.y + 1][this.thread.x] * -2 +
+            A[this.thread.z][this.thread.y + 1][this.thread.x + 1] * -1;
+
+        // Return either the min, avg or max depending on the level parameter.
+        if (level <= 0) return Math.min(gx, gy);
+        if (level === 1) return (gx + gy) / 2;
+
+        return Math.max(gx, gy);
     } else {
         return A[this.thread.z][this.thread.y][this.thread.x];
     }
@@ -129,8 +142,7 @@ const createLightTunnelFilter = createStandardKernel(function(A, width, height, 
         return A[this.thread.z][this.thread.y][this.thread.x];
     }
 
-    // Otherwise, get the pixel at the border of the circle,
-    // using trigonometry.
+    // Otherwise, get the pixel at the border of the circle, using trigonometry.
     var angle = Math.atan(midpointY - this.thread.y, midpointX - this.thread.x);
     var x = midpointX - Math.floor(radius * Math.cos(angle));
     var y = midpointY - Math.floor(radius * Math.sin(angle));
