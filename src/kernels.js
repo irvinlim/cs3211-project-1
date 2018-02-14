@@ -101,6 +101,32 @@ const createGaussianFilter = kernelCreator =>
         .setOutputToTexture(true)
         .setOutput([width, height, 4]);
 
+// Kernel: Edge detection (Sobel) filter
+const createEdgeDetectionFilter = kernelCreator =>
+    kernelCreator
+        .createKernel(function(A, width, height) {
+            if (
+                this.thread.y > 0 &&
+                this.thread.y < height - 1 &&
+                this.thread.x < width - 1 &&
+                this.thread.x > 0 &&
+                this.thread.z < 3
+            ) {
+                return (
+                    A[this.thread.z][this.thread.y - 1][this.thread.x - 1] * -1 +
+                    A[this.thread.z][this.thread.y - 1][this.thread.x + 1] +
+                    A[this.thread.z][this.thread.y][this.thread.x - 1] * -2 +
+                    A[this.thread.z][this.thread.y][this.thread.x + 1] * 2 +
+                    A[this.thread.z][this.thread.y + 1][this.thread.x - 1] * -1 +
+                    A[this.thread.z][this.thread.y + 1][this.thread.x + 1]
+                );
+            } else {
+                return A[this.thread.z][this.thread.y][this.thread.x];
+            }
+        })
+        .setOutputToTexture(true)
+        .setOutput([width, height, 4]);
+
 // Kernel: Renders a 3-D array into a 2-D graphic array via a Canvas.
 const createRenderGraphical = kernelCreator =>
     kernelCreator
@@ -125,6 +151,7 @@ const gpuKernels = {
     transformLinearToXYZ: createTransformLinearToXYZ(gpu),
     embossedFilter: createEmbossedFilter(gpu),
     gaussianFilter: createGaussianFilter(gpu),
+    edgeDetectionFilter: createEdgeDetectionFilter(gpu),
     renderGraphical: createRenderGraphical(gpu),
 };
 
@@ -132,6 +159,7 @@ const cpuKernels = {
     transformLinearToXYZ: createTransformLinearToXYZ(cpu),
     embossedFilter: createEmbossedFilter(cpu),
     gaussianFilter: createGaussianFilter(cpu),
+    edgeDetectionFilter: createEdgeDetectionFilter(cpu),
     renderGraphical: createRenderGraphical(gpu), // Cannot render graphical using 'cpu' mode
 };
 

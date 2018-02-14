@@ -46,6 +46,16 @@ function toggleGaussianFilter(el) {
     toggleElement(el, state.isGaussianFilterEnabled, labels, classNames);
 }
 
+// Toggles the edge detection filter.
+function toggleEdgeDetectionFilter(el) {
+    const labels = ['Edge Detection Off', 'Edge Detection On'];
+    const classNames = ['is-warning', 'is-info'];
+
+    // Toggle state and update element.
+    state.isEdgeDetectionFilterEnabled = !state.isEdgeDetectionFilterEnabled;
+    toggleElement(el, state.isEdgeDetectionFilterEnabled, labels, classNames);
+}
+
 function toggleElement(el, state, labels, classNames) {
     const index = state ? 1 : 0;
     el.value = labels[index];

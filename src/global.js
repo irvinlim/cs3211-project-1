@@ -9,6 +9,7 @@ var state = {
     isGpuMode: true,
     isEmbossedFilterEnabled: false,
     isGaussianFilterEnabled: false,
+    isEdgeDetectionFilterEnabled: false,
 };
 
 // Vendor-specific getUserMedia shim.

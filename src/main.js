@@ -53,6 +53,11 @@ function renderLoop() {
         data = getKernel('gaussianFilter')(data, width, height);
     }
 
+    // Add edge detection filter.
+    if (state.isEdgeDetectionFilterEnabled) {
+        data = getKernel('edgeDetectionFilter')(data, width, height);
+    }
+
     // Render image in the final canvas.
     getKernel('renderGraphical')(data);
 
