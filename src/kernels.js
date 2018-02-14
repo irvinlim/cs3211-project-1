@@ -29,8 +29,8 @@ const createEmbossedFilter = kernelCreator =>
         .createKernel(function(A, width, height) {
             if (
                 this.thread.y > 0 &&
-                this.thread.y < height - 2 &&
-                this.thread.x < width - 2 &&
+                this.thread.y < height - 1 &&
+                this.thread.x < width - 1 &&
                 this.thread.x > 0 &&
                 this.thread.z < 3
             ) {
