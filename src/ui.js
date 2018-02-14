@@ -26,14 +26,24 @@ function toggleMode(el) {
     toggleElement(el, state.isGpuMode, labels, classNames);
 }
 
-// Toggles the filter.
-function changeFilter(el) {
-    const labels = ['No Filter', 'Filter On'];
+// Toggles the embossed filter.
+function toggleEmbossedFilter(el) {
+    const labels = ['Embossed Filter Off', 'Embossed Filter On'];
     const classNames = ['is-warning', 'is-info'];
 
     // Toggle state and update element.
-    state.isFilterEnabled = !state.isFilterEnabled;
-    toggleElement(el, state.isFilterEnabled, labels, classNames);
+    state.isEmbossedFilterEnabled = !state.isEmbossedFilterEnabled;
+    toggleElement(el, state.isEmbossedFilterEnabled, labels, classNames);
+}
+
+// Toggles the gaussian filter.
+function toggleGaussianFilter(el) {
+    const labels = ['Gaussian Filter (5x5) Off', 'Gaussian Filter (5x5) On'];
+    const classNames = ['is-warning', 'is-info'];
+
+    // Toggle state and update element.
+    state.isGaussianFilterEnabled = !state.isGaussianFilterEnabled;
+    toggleElement(el, state.isGaussianFilterEnabled, labels, classNames);
 }
 
 function toggleElement(el, state, labels, classNames) {

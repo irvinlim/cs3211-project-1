@@ -44,8 +44,13 @@ function renderLoop() {
     data = getKernel('transformLinearToXYZ')(data, width, height);
 
     // Add embossed filter.
-    if (state.isFilterEnabled) {
+    if (state.isEmbossedFilterEnabled) {
         data = getKernel('embossedFilter')(data, width, height);
+    }
+
+    // Add gaussian filter.
+    if (state.isGaussianFilterEnabled) {
+        data = getKernel('gaussianFilter')(data, width, height);
     }
 
     // Render image in the final canvas.

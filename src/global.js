@@ -7,7 +7,8 @@ var state = {
     renderLoopRequestId: undefined,
     isVideoStarted: false,
     isGpuMode: true,
-    isFilterEnabled: false,
+    isEmbossedFilterEnabled: false,
+    isGaussianFilterEnabled: false,
 };
 
 // Vendor-specific getUserMedia shim.
