@@ -43,6 +43,11 @@ function renderLoop() {
     // Transform linear image data into 3-D array for proper computation.
     data = getKernel('transformLinearToXYZ')(data, width, height);
 
+    // Add light tunnel filter.
+    if (state.isLightTunnelFilterEnabled) {
+        data = getKernel('lightTunnelFilter')(data, width, height, 100);
+    }
+
     // Add embossed filter.
     if (state.isEmbossedFilterEnabled) {
         data = getKernel('embossedFilter')(data, width, height);

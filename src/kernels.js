@@ -127,6 +127,38 @@ const createEdgeDetectionFilter = kernelCreator =>
         .setOutputToTexture(true)
         .setOutput([width, height, 4]);
 
+// Kernel: Light tunnel (Apple Photo Booth effect)
+const createLightTunnelFilter = kernelCreator =>
+    kernelCreator
+        .createKernel(function(A, width, height, radius) {
+            // Calculate if pixel falls within circle.
+            // Don't use floor() because it's unnecessary (division by 2).
+            var midpointX = width / 2 - 0.5 * (width % 2);
+            var midpointY = height / 2 - 0.5 * (height % 2);
+
+            // Calculate Pythagorean distance (squared to avoid costly sqrt).
+            var radiusSquared = radius * radius;
+            var distSquared =
+                (this.thread.x - midpointX) * (this.thread.x - midpointX) +
+                (this.thread.y - midpointY) * (this.thread.y - midpointY);
+
+            // Return actual pixel if it falls within the circle.
+            if (distSquared <= radiusSquared) {
+                return A[this.thread.z][this.thread.y][this.thread.x];
+            }
+
+            // Otherwise, get the pixel at the border of the circle,
+            // using trigonometry.
+            var angle = atan(midpointY - this.thread.y, midpointX - this.thread.x);
+            var x = midpointX - floor(radius * cos(angle));
+            var y = midpointY - floor(radius * sin(angle));
+
+            // Return the new pixel.
+            return A[this.thread.z][y][x];
+        })
+        .setOutputToTexture(true)
+        .setOutput([width, height, 4]);
+
 // Kernel: Renders a 3-D array into a 2-D graphic array via a Canvas.
 const createRenderGraphical = kernelCreator =>
     kernelCreator
@@ -152,6 +184,7 @@ const gpuKernels = {
     embossedFilter: createEmbossedFilter(gpu),
     gaussianFilter: createGaussianFilter(gpu),
     edgeDetectionFilter: createEdgeDetectionFilter(gpu),
+    lightTunnelFilter: createLightTunnelFilter(gpu),
     renderGraphical: createRenderGraphical(gpu),
 };
 
@@ -160,6 +193,7 @@ const cpuKernels = {
     embossedFilter: createEmbossedFilter(cpu),
     gaussianFilter: createGaussianFilter(cpu),
     edgeDetectionFilter: createEdgeDetectionFilter(cpu),
+    lightTunnelFilter: createLightTunnelFilter(cpu),
     renderGraphical: createRenderGraphical(gpu), // Cannot render graphical using 'cpu' mode
 };
 

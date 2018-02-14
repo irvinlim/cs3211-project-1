@@ -56,6 +56,16 @@ function toggleEdgeDetectionFilter(el) {
     toggleElement(el, state.isEdgeDetectionFilterEnabled, labels, classNames);
 }
 
+// Toggles the light tunnel filter.
+function toggleLightTunnelFilter(el) {
+    const labels = ['Light Tunnel Effect Off', 'Light Tunnel Effect On'];
+    const classNames = ['is-warning', 'is-info'];
+
+    // Toggle state and update element.
+    state.isLightTunnelFilterEnabled = !state.isLightTunnelFilterEnabled;
+    toggleElement(el, state.isLightTunnelFilterEnabled, labels, classNames);
+}
+
 function toggleElement(el, state, labels, classNames) {
     const index = state ? 1 : 0;
     el.value = labels[index];

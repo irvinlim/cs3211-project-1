@@ -10,6 +10,7 @@ var state = {
     isEmbossedFilterEnabled: false,
     isGaussianFilterEnabled: false,
     isEdgeDetectionFilterEnabled: false,
+    isLightTunnelFilterEnabled: false,
 };
 
 // Vendor-specific getUserMedia shim.
