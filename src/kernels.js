@@ -15,7 +15,7 @@ const createTransformLinearToXYZ = kernelCreator =>
             // Input image data is an integer between 0 to 255, but should return float between 0 to 1.
 
             var x = 4 * this.thread.x;
-            var y = 4 * width * (height - this.thread.y);
+            var y = 4 * width * (height - this.thread.y - 1);
             var z = this.thread.z;
 
             return imageData[x + y + z] / 256;
