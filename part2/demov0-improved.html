@@ -2,9 +2,7 @@
 <html>
 
 <head>
-
     <title>TEST of simple GPU/CPU system</title>
-
 </head>
 
 <body>
@@ -22,9 +20,7 @@
     <canvas hidden id="videoCanvas" width="800" height="600"></canvas>
 
     <script src="ui.js?nocache"></script>
-    <script src="kerneldefsv0.js?nocache"></script>
-
-
+    <script src="kerneldefsv0-improved.js?nocache"></script>
 
     <script>
 
@@ -91,7 +87,7 @@
 
             stopTimer('draw');
 
-            // requestAnimationFrame(draw);
+            requestAnimationFrame(draw);
         }
 
         navigator.getUserMedia = (
@@ -122,9 +118,7 @@
 
         var myKernelImg = makeImg("gpu");
         var myCodeImg = makeImg("cpu");
-        // var myKernelFilter1 = makeFilter("gpu");
         var myKernelFilter2 = makeFilter("gpu");
-        // var myCodeFilter1   = makeFilter("cpu");
         var myCodeFilter2 = makeFilter("cpu");
         var orig;
         var afterload = false;
@@ -133,12 +127,15 @@
         document.getElementsByTagName('body')[0].appendChild(canvas);
 
         var f = document.querySelector("#fps");
+
         function renderLoop() {
             f.innerHTML = fps.getFPS();
 
             startTimer('renderLoop');
 
-            draw();
+            // Use kernel to process image data
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            arr = context.getImageData(0, 0, 800, 600).data;
 
             if (canvasReady === true) {
                 if (selection === 0) {
@@ -165,18 +162,16 @@
 
             stopTimer('renderLoop');
 
-            requestAnimationFrame(renderLoop);     // to see how fast this could run...
+            requestAnimationFrame(renderLoop);
         }
-
-        window.onload = renderLoop;
 
         function streamHandler(stream) {
             video.src = URL.createObjectURL(stream);
             video.play();
-            requestAnimationFrame(renderLoop);
-            // requestAnimationFrame(draw);
-        }
+            canvasReady = true;
 
+            requestAnimationFrame(renderLoop);
+        }
 
         addEventListener("DOMContentLoaded", initialize);
 
