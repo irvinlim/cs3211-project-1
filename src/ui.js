@@ -1,7 +1,7 @@
 // Toggles the status of the video stream.
 function toggleStatus(el) {
-    const labels = ['Stopped', 'Started'];
-    const classNames = ['is-danger', 'is-success'];
+    const labels = ['Start', 'Pause'];
+    const classNames = ['is-success', 'is-danger'];
 
     // Toggle state and update element.
     state.isVideoStarted = !state.isVideoStarted;
@@ -19,7 +19,7 @@ function toggleStatus(el) {
 // Changes the CPU/GPU state.
 function toggleMode(el) {
     const labels = ['CPU', 'GPU'];
-    const classNames = ['is-warning', 'is-primary'];
+    const classNames = ['is-warning', 'is-info'];
 
     // Toggle state and update element.
     state.isGpuMode = !state.isGpuMode;

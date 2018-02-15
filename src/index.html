@@ -22,6 +22,16 @@
     <main class="container">
         <div class="columns">
             <div class="column is-one-third-tablet is-one-quarter-fullhd">
+                <article class="message is-info">
+                    <div class="message-header">
+                        Instructions
+                    </div>
+                    <div class="message-body">
+                        <p>Click "Start" to start streaming your device's camera.</p>
+                        <p>You can toggle and/or reorder video filters below.</p>
+                    </div>
+                </article>
+
                 <nav class="panel">
                     <p class="panel-heading">Control Panel</p>
 
@@ -31,7 +41,7 @@
                                 <h5 class="title is-6">Status</h5>
                             </div>
                             <div class="column is-one-third">
-                                <input class="button is-fullwidth is-danger" type="button" value="Stopped" onclick="return toggleStatus(this);" />
+                                <input class="button is-fullwidth is-success" type="button" value="Start" onclick="return toggleStatus(this);" />
                             </div>
                         </div>
                     </div>
@@ -41,7 +51,7 @@
                                 <h5 class="title is-6">Operating Mode</h5>
                             </div>
                             <div class="column is-one-third">
-                                <input class="button is-fullwidth is-primary" type="button" value="GPU" onclick="return toggleMode(this);" />
+                                <input class="button is-fullwidth is-info" type="button" value="GPU" onclick="return toggleMode(this);" />
                             </div>
                         </div>
                     </div>
