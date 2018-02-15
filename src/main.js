@@ -47,25 +47,19 @@ function renderLoop() {
     // Transform linear image data into 3-D array for proper computation.
     data = getKernel('transformLinearToXYZ')(data);
 
-    // Add light tunnel filter.
-    if (state.isLightTunnelFilterEnabled) {
-        data = getKernel('lightTunnelFilter')(data, Number(state.lightTunnelFilterRadius));
-    }
+    // Execute each of the filters that are enabled in order, and pass any parameters
+    // to the kernel function in the GPU.
+    const enabledFilters = state.filters.filter(filter => filter.enabled);
 
-    // Add embossed filter.
-    if (state.isEmbossedFilterEnabled) {
-        data = getKernel('embossedFilter')(data);
-    }
+    enabledFilters.forEach(filter => {
+        const params = typeof filter.params === 'undefined' ? [] : filter.params;
+        const paramValues = params.map(param => param.value);
+        const kernelFunction = getKernel(filter.name);
 
-    // Add gaussian filter.
-    if (state.isGaussianFilterEnabled) {
-        data = getKernel('gaussianFilter')(data, Number(state.gaussianFilterSigma));
-    }
-
-    // Add edge detection filter.
-    if (state.isEdgeDetectionFilterEnabled) {
-        data = getKernel('edgeDetectionFilter')(data);
-    }
+        // Call kernel function with arguments.
+        const args = [data].concat(paramValues);
+        data = kernelFunction.apply(null, args);
+    });
 
     // Render image in the final canvas.
     getKernel('renderGraphical')(data);

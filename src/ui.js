@@ -1,3 +1,41 @@
+function initializeUI() {
+    // Add event listeners for filter toggles.
+    document.querySelectorAll('.control-filter-toggle').forEach(el => {
+        el.addEventListener('click', function(e) {
+            const filter = state.filters.filter(filter => filter.name === el.dataset.filterName)[0];
+            filter.enabled = !filter.enabled;
+            toggleElement(el, filter.enabled, ['Off', 'On'], ['', 'is-info']);
+        });
+    });
+
+    // Add event listeners for filter sliders.
+    document.querySelectorAll('.control-filter-slider').forEach(el => {
+        el.addEventListener('mousemove', function(e) {
+            const filter = state.filters.filter(filter => filter.name === el.dataset.filterName)[0];
+            const param = filter.params.filter(param => param.name === el.dataset.paramName)[0];
+            param.value = parseFloat(el.value);
+        });
+    });
+
+    // Initialize sortable.
+    sortable('.sortable', {
+        items: '.panel-block',
+        handle: '.handle img',
+        forcePlaceholderSize: true,
+    });
+
+    // Listen for sort updates.
+    sortable('.sortable')[0].addEventListener('sortupdate', function(e) {
+        const oldIndex = e.detail.oldElementIndex - 1;
+        const newIndex = e.detail.elementIndex - 1;
+
+        // Reorder items in state.filters.
+        state.filters.splice(newIndex, 0, state.filters.splice(oldIndex, 1)[0]);
+    });
+}
+
+addEventListener('DOMContentLoaded', initializeUI);
+
 // Toggles the status of the video stream.
 function toggleStatus(el) {
     const labels = ['Start', 'Pause'];
@@ -26,56 +64,7 @@ function toggleMode(el) {
     toggleElement(el, state.isGpuMode, labels, classNames);
 }
 
-// Toggles the embossed filter.
-function toggleEmbossedFilter(el) {
-    const labels = ['Off', 'On'];
-    const classNames = ['', 'is-info'];
-
-    // Toggle state and update element.
-    state.isEmbossedFilterEnabled = !state.isEmbossedFilterEnabled;
-    toggleElement(el, state.isEmbossedFilterEnabled, labels, classNames);
-}
-
-// Toggles the gaussian filter.
-function toggleGaussianFilter(el) {
-    const labels = ['Off', 'On'];
-    const classNames = ['', 'is-info'];
-
-    // Toggle state and update element.
-    state.isGaussianFilterEnabled = !state.isGaussianFilterEnabled;
-    toggleElement(el, state.isGaussianFilterEnabled, labels, classNames);
-}
-
-// Sets the sigma parameter of the gaussian blur filter.
-function changeGaussianFilterSigma(el) {
-    state.gaussianFilterSigma = el.value;
-}
-
-// Toggles the edge detection filter.
-function toggleEdgeDetectionFilter(el) {
-    const labels = ['Off', 'On'];
-    const classNames = ['', 'is-info'];
-
-    // Toggle state and update element.
-    state.isEdgeDetectionFilterEnabled = !state.isEdgeDetectionFilterEnabled;
-    toggleElement(el, state.isEdgeDetectionFilterEnabled, labels, classNames);
-}
-
-// Toggles the light tunnel filter.
-function toggleLightTunnelFilter(el) {
-    const labels = ['Off', 'On'];
-    const classNames = ['', 'is-info'];
-
-    // Toggle state and update element.
-    state.isLightTunnelFilterEnabled = !state.isLightTunnelFilterEnabled;
-    toggleElement(el, state.isLightTunnelFilterEnabled, labels, classNames);
-}
-
-// Sets the radius parameter of the light tunnel filter.
-function changeLightTunnelFilterRadius(el) {
-    state.lightTunnelFilterRadius = el.value;
-}
-
+// Convenience function to toggle the visual state of a toggle button.
 function toggleElement(el, state, labels, classNames) {
     const index = state ? 1 : 0;
     el.value = labels[index];

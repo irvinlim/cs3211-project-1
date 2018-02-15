@@ -8,12 +8,12 @@ var state = {
     renderLoopRequestId: undefined,
     isVideoStarted: false,
     isGpuMode: true,
-    isEmbossedFilterEnabled: false,
-    isGaussianFilterEnabled: false,
-    gaussianFilterSigma: 2,
-    isEdgeDetectionFilterEnabled: false,
-    isLightTunnelFilterEnabled: false,
-    lightTunnelFilterRadius: 100,
+    filters: [
+        { name: 'gaussianFilter', enabled: false, params: [{ name: 'sigma', value: 2 }] },
+        { name: 'edgeDetectionFilter', enabled: false },
+        { name: 'embossedFilter', enabled: false },
+        { name: 'lightTunnelFilter', enabled: false, params: [{ name: 'radius', value: 100 }] },
+    ],
 };
 
 // Vendor-specific getUserMedia shim.

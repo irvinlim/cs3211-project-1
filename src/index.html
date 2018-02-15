@@ -62,26 +62,11 @@
                     </div>
                 </nav>
 
-                <nav class="panel">
+                <nav class="panel sortable">
                     <p class="panel-heading">Video Filters</p>
 
                     <div class="panel-block">
-                        <span class="panel-icon">
-                            <img src="img/bars.svg" alt="Reorder">
-                        </span>
-                        <div class="control">
-                            <div class="columns is-mobile">
-                                <div class="column col-title">
-                                    <h5 class="title is-6">Embossed Filter</h5>
-                                </div>
-                                <div class="column col-toggle">
-                                    <input class="button" type="button" value="Off" onclick="toggleEmbossedFilter(this);" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel-block">
-                        <span class="panel-icon">
+                        <span class="handle panel-icon">
                             <img src="img/bars.svg" alt="Reorder">
                         </span>
                         <div class="control">
@@ -90,17 +75,18 @@
                                     <h5 class="title is-6">Gaussian Blur (5x5)</h5>
                                 </div>
                                 <div class="column col-toggle">
-                                    <input class="button" type="button" value="Off" onclick="toggleGaussianFilter(this);" />
+                                    <input class="control-filter-toggle button" type="button" value="Off" data-filter-name="gaussianFilter">
                                 </div>
                             </div>
                             <div class="field">
                                 <label for="slider">Sigma</label>
-                                <input class="slider is-fullwidth" step="0.05" min="0.05" max="5" value="2" type="range" onmousemove="changeGaussianFilterSigma(this);">
+                                <input class="control-filter-slider slider is-fullwidth" step="0.05" min="0.05" max="5" value="2" type="range" data-filter-name="gaussianFilter"
+                                    data-param-name="sigma">
                             </div>
                         </div>
                     </div>
                     <div class="panel-block">
-                        <span class="panel-icon">
+                        <span class="handle panel-icon">
                             <img src="img/bars.svg" alt="Reorder">
                         </span>
                         <div class="control">
@@ -109,13 +95,28 @@
                                     <h5 class="title is-6">Edge Detection (Sobel)</h5>
                                 </div>
                                 <div class="column col-toggle">
-                                    <input class="button" type="button" value="Off" onclick="toggleEdgeDetectionFilter(this);" />
+                                    <input class="control-filter-toggle button" type="button" value="Off" data-filter-name="edgeDetectionFilter">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="panel-block">
-                        <span class="panel-icon">
+                        <span class="handle panel-icon">
+                            <img src="img/bars.svg" alt="Reorder">
+                        </span>
+                        <div class="control">
+                            <div class="columns is-mobile">
+                                <div class="column col-title">
+                                    <h5 class="title is-6">Embossed Filter</h5>
+                                </div>
+                                <div class="column col-toggle">
+                                    <input class="control-filter-toggle button" type="button" value="Off" data-filter-name="embossedFilter">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-block">
+                        <span class="handle panel-icon">
                             <img src="img/bars.svg" alt="Reorder">
                         </span>
                         <div class="control">
@@ -124,12 +125,13 @@
                                     <h5 class="title is-6">Light Tunnel Effect</h5>
                                 </div>
                                 <div class="column col-toggle">
-                                    <input class="button" type="button" value="Off" onclick="toggleLightTunnelFilter(this);" />
+                                    <input class="control-filter-toggle button" type="button" value="Off" data-filter-name="lightTunnelFilter">
                                 </div>
                             </div>
                             <div class="field">
                                 <label for="slider">Radius</label>
-                                <input class="slider is-fullwidth" step="1" min="50" max="200" value="100" type="range" onmousemove="changeLightTunnelFilterRadius(this);">
+                                <input class="control-filter-slider slider is-fullwidth" step="1" min="50" max="200" value="100" type="range" data-filter-name="lightTunnelFilter"
+                                    data-param-name="radius">
                             </div>
                         </div>
                     </div>
@@ -152,6 +154,7 @@
         </div>
     </main>
 
+    <script src="js/html.sortable.min.js?nocache"></script>
     <script src="js/bulma-slider.js?nocache"></script>
     <script src="js/gpu.min.js?nocache"></script>
     <script src="js/decls.js?nocache"></script>
