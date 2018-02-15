@@ -120,6 +120,45 @@ const createGaussianFilter = createStandardKernel(
     }
 );
 
+// Kernel: Thresholding filter
+const createThresholdingFilter = createStandardKernel(function(A, threshold, mode) {
+    var brightness =
+        (A[0][this.thread.y][this.thread.x] +
+            A[1][this.thread.y][this.thread.x] +
+            A[0][this.thread.y][this.thread.x]) /
+        3;
+
+    // THRESH_BINARY
+    if (mode === 0) {
+        if (brightness < threshold) return 0;
+        else return 1;
+    }
+
+    // THRESH_BINARY_INV
+    if (mode === 1) {
+        if (brightness < threshold) return 1;
+        else return 0;
+    }
+
+    // THRESH_TRUNC
+    if (mode === 2) {
+        if (brightness < threshold) return A[this.thread.z][this.thread.y][this.thread.x];
+        else return 1;
+    }
+
+    // THRESH_TOZERO
+    if (mode === 3) {
+        if (brightness < threshold) return 0;
+        else return A[this.thread.z][this.thread.y][this.thread.x];
+    }
+
+    // THRESH_TOZERO_INV
+    if (mode === 4) {
+        if (brightness < threshold) return A[this.thread.z][this.thread.y][this.thread.x];
+        else return 0;
+    }
+});
+
 // Kernel: Edge detection (Sobel) filter
 const createEdgeDetectionFilter = createStandardKernel(function(A) {
     if (
@@ -202,6 +241,7 @@ const gpuKernels = {
     transformLinearToXYZ: createTransformLinearToXYZ('gpu'),
     embossedFilter: createEmbossedFilter('gpu'),
     gaussianFilter: createGaussianFilter('gpu'),
+    thresholdingFilter: createThresholdingFilter('gpu'),
     edgeDetectionFilter: createEdgeDetectionFilter('gpu'),
     lightTunnelFilter: createLightTunnelFilter('gpu'),
     renderGraphical: createRenderGraphical('gpu'),
@@ -211,6 +251,7 @@ const cpuKernels = {
     transformLinearToXYZ: createTransformLinearToXYZ('cpu'),
     embossedFilter: createEmbossedFilter('cpu'),
     gaussianFilter: createGaussianFilter('cpu'),
+    thresholdingFilter: createThresholdingFilter('cpu'),
     edgeDetectionFilter: createEdgeDetectionFilter('cpu'),
     lightTunnelFilter: createLightTunnelFilter('cpu'),
     renderGraphical: createRenderGraphical('gpu'), // Cannot render graphical using 'cpu' mode
