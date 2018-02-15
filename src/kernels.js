@@ -98,7 +98,7 @@ const createEdgeDetectionFilter = createStandardKernel(function(A, level) {
         this.thread.x > 0 &&
         this.thread.z < this.constants.channels
     ) {
-        var gx =
+        var Gx =
             A[this.thread.z][this.thread.y - 1][this.thread.x - 1] +
             A[this.thread.z][this.thread.y - 1][this.thread.x + 1] * -1 +
             A[this.thread.z][this.thread.y][this.thread.x - 1] * 2 +
@@ -106,7 +106,7 @@ const createEdgeDetectionFilter = createStandardKernel(function(A, level) {
             A[this.thread.z][this.thread.y + 1][this.thread.x - 1] +
             A[this.thread.z][this.thread.y + 1][this.thread.x + 1] * -1;
 
-        var gy =
+        var Gy =
             A[this.thread.z][this.thread.y - 1][this.thread.x - 1] +
             A[this.thread.z][this.thread.y - 1][this.thread.x] * 2 +
             A[this.thread.z][this.thread.y - 1][this.thread.x + 1] +
@@ -114,11 +114,7 @@ const createEdgeDetectionFilter = createStandardKernel(function(A, level) {
             A[this.thread.z][this.thread.y + 1][this.thread.x] * -2 +
             A[this.thread.z][this.thread.y + 1][this.thread.x + 1] * -1;
 
-        // Return either the min, avg or max depending on the level parameter.
-        if (level <= 0) return Math.min(gx, gy);
-        if (level === 1) return (gx + gy) / 2;
-
-        return Math.max(gx, gy);
+        return Math.sqrt(Gx * Gx + Gy * Gy);
     } else {
         return A[this.thread.z][this.thread.y][this.thread.x];
     }

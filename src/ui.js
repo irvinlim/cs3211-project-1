@@ -56,11 +56,6 @@ function toggleEdgeDetectionFilter(el) {
     toggleElement(el, state.isEdgeDetectionFilterEnabled, labels, classNames);
 }
 
-// Sets the level parameter of the edge detection filter.
-function changeEdgeDetectionFilterLevel(el) {
-    state.edgeDetectionFilterLevel = el.value;
-}
-
 // Toggles the light tunnel filter.
 function toggleLightTunnelFilter(el) {
     const labels = ['Off', 'On'];
