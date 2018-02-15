@@ -90,7 +90,7 @@ const createGaussianFilter = createStandardKernel(function(A) {
 });
 
 // Kernel: Edge detection (Sobel) filter
-const createEdgeDetectionFilter = createStandardKernel(function(A, level) {
+const createEdgeDetectionFilter = createStandardKernel(function(A) {
     if (
         this.thread.y > 0 &&
         this.thread.y < this.constants.height - 1 &&

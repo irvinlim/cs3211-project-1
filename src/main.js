@@ -64,7 +64,7 @@ function renderLoop() {
 
     // Add edge detection filter.
     if (state.isEdgeDetectionFilterEnabled) {
-        data = getKernel('edgeDetectionFilter')(data, state.edgeDetectionFilterLevel);
+        data = getKernel('edgeDetectionFilter')(data);
     }
 
     // Render image in the final canvas.
