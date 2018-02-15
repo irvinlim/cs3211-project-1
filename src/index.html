@@ -23,16 +23,6 @@
     <main class="container">
         <div class="columns">
             <div class="column is-one-third-tablet is-one-quarter-fullhd">
-                <article class="message is-info">
-                    <div class="message-header">
-                        Instructions
-                    </div>
-                    <div class="message-body">
-                        <p>Click "Start" to start streaming your device's camera.</p>
-                        <p>You can toggle and/or reorder video filters below.</p>
-                    </div>
-                </article>
-
                 <nav class="panel">
                     <p class="panel-heading">Control Panel</p>
 
@@ -176,19 +166,26 @@
             </div>
 
             <div class="column">
-                <div class="row fps-wrapper">
-                    <div class="fps-tags tags has-addons">
-                        <span class="tag is-dark">FPS</span>
-                        <span id="fps" class="tag is-success">0</span>
+                <div class="row">
+                    <div class="notification">
+                        <button class="delete" onclick="hideNotification(this);"></button>
+                        <p>Click "Start" to start streaming from your device's camera.</p>
+                        <p>You can toggle image filters on the right, as well as drag to reorder them.</p>
+                    </div>
+
+                    <div class="row fps-wrapper">
+                        <div class="fps-tags tags has-addons">
+                            <span class="tag is-dark">FPS</span>
+                            <span id="fps" class="tag is-success">0</span>
+                        </div>
+                    </div>
+
+                    <div class="row canvas-wrapper">
+                        <video hidden id="video" width="800" height="600" playsinline autoplay muted></video>
+                        <canvas hidden id="videoCanvas" width="800" height="600"></canvas>
                     </div>
                 </div>
-
-                <div class="row canvas-wrapper">
-                    <video hidden id="video" width="800" height="600" playsinline autoplay muted></video>
-                    <canvas hidden id="videoCanvas" width="800" height="600"></canvas>
-                </div>
             </div>
-        </div>
     </main>
 
     <script src="js/html.sortable.min.js?nocache"></script>

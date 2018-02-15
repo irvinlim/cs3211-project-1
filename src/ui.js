@@ -76,6 +76,11 @@ function toggleCameraFlipped(el) {
     toggleElement(el, state.isCameraFlipped, labels, classNames);
 }
 
+function hideNotification(el) {
+    const notification = document.querySelector('.notification');
+    notification.parentNode.removeChild(notification);
+}
+
 // Convenience function to toggle the visual state of a toggle button.
 function toggleElement(el, state, labels, classNames) {
     const index = state ? 1 : 0;
