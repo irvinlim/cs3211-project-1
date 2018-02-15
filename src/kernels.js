@@ -51,64 +51,74 @@ const createEmbossedFilter = createStandardKernel(function(A) {
 });
 
 // Kernel: Gaussian filter (5x5 kernel)
-const createGaussianFilter = createStandardKernel(function(A, sigma) {
-    if (
-        this.thread.y > 1 &&
-        this.thread.y < this.constants.height - 2 &&
-        this.thread.x < this.constants.width - 2 &&
-        this.thread.x > 1 &&
-        this.thread.z < this.constants.channels
-    ) {
-        // Calculate each of the unique 6 Gaussian terms in a 5x5 kernel.
-        var k00 = gaussianFunction(0, 0, sigma);
-        var k01 = gaussianFunction(0, 1, sigma);
-        var k02 = gaussianFunction(0, 2, sigma);
-        var k11 = gaussianFunction(1, 1, sigma);
-        var k12 = gaussianFunction(1, 2, sigma);
-        var k22 = gaussianFunction(2, 2, sigma);
+const createGaussianFilter = createStandardKernel(
+    function(A, sigma) {
+        if (
+            this.thread.y > 1 &&
+            this.thread.y < this.constants.height - 2 &&
+            this.thread.x < this.constants.width - 2 &&
+            this.thread.x > 1 &&
+            this.thread.z < this.constants.channels
+        ) {
+            // Calculate each of the unique 6 Gaussian terms in a 5x5 kernel.
+            var k00 = gaussianFunction(0, 0, sigma);
+            var k01 = gaussianFunction(0, 1, sigma);
+            var k02 = gaussianFunction(0, 2, sigma);
+            var k11 = gaussianFunction(1, 1, sigma);
+            var k12 = gaussianFunction(1, 2, sigma);
+            var k22 = gaussianFunction(2, 2, sigma);
 
-        // Calculate the sum of all terms for a 5x5 kernel.
-        var gaussianSum = k00 + (k01 + k02 + k11 + k22) * 4 + k12 * 8;
+            // Calculate the sum of all terms for a 5x5 kernel.
+            var gaussianSum = k00 + (k01 + k02 + k11 + k22) * 4 + k12 * 8;
 
-        // Calculate the result by convolving with the 5x5 kernel.
-        var g =
-            k00 * A[this.thread.z][this.thread.y][this.thread.x] +
-            k01 *
-                (A[this.thread.z][this.thread.y - 1][this.thread.x] +
-                    A[this.thread.z][this.thread.y][this.thread.x - 1] +
-                    A[this.thread.z][this.thread.y][this.thread.x + 1] +
-                    A[this.thread.z][this.thread.y + 1][this.thread.x]) +
-            k02 *
-                (A[this.thread.z][this.thread.y - 2][this.thread.x] +
-                    A[this.thread.z][this.thread.y][this.thread.x - 2] +
-                    A[this.thread.z][this.thread.y][this.thread.x + 2] +
-                    A[this.thread.z][this.thread.y + 2][this.thread.x]) +
-            k11 *
-                (A[this.thread.z][this.thread.y - 1][this.thread.x - 1] +
-                    A[this.thread.z][this.thread.y - 1][this.thread.x + 1] +
-                    A[this.thread.z][this.thread.y + 1][this.thread.x - 1] +
-                    A[this.thread.z][this.thread.y + 1][this.thread.x + 1]) +
-            k12 *
-                (A[this.thread.z][this.thread.y - 2][this.thread.x - 1] +
-                    A[this.thread.z][this.thread.y - 2][this.thread.x + 1] +
-                    A[this.thread.z][this.thread.y - 1][this.thread.x - 2] +
-                    A[this.thread.z][this.thread.y - 1][this.thread.x + 2] +
-                    A[this.thread.z][this.thread.y + 1][this.thread.x - 2] +
-                    A[this.thread.z][this.thread.y + 1][this.thread.x + 2] +
-                    A[this.thread.z][this.thread.y + 2][this.thread.x - 1] +
-                    A[this.thread.z][this.thread.y + 2][this.thread.x + 1]) +
-            k22 *
-                (A[this.thread.z][this.thread.y - 2][this.thread.x - 2] +
-                    A[this.thread.z][this.thread.y - 2][this.thread.x + 2] +
-                    A[this.thread.z][this.thread.y + 2][this.thread.x - 2] +
-                    A[this.thread.z][this.thread.y + 2][this.thread.x + 2]);
+            // Calculate the result by convolving with the 5x5 kernel.
+            var g =
+                k00 * A[this.thread.z][this.thread.y][this.thread.x] +
+                k01 *
+                    (A[this.thread.z][this.thread.y - 1][this.thread.x] +
+                        A[this.thread.z][this.thread.y][this.thread.x - 1] +
+                        A[this.thread.z][this.thread.y][this.thread.x + 1] +
+                        A[this.thread.z][this.thread.y + 1][this.thread.x]) +
+                k02 *
+                    (A[this.thread.z][this.thread.y - 2][this.thread.x] +
+                        A[this.thread.z][this.thread.y][this.thread.x - 2] +
+                        A[this.thread.z][this.thread.y][this.thread.x + 2] +
+                        A[this.thread.z][this.thread.y + 2][this.thread.x]) +
+                k11 *
+                    (A[this.thread.z][this.thread.y - 1][this.thread.x - 1] +
+                        A[this.thread.z][this.thread.y - 1][this.thread.x + 1] +
+                        A[this.thread.z][this.thread.y + 1][this.thread.x - 1] +
+                        A[this.thread.z][this.thread.y + 1][this.thread.x + 1]) +
+                k12 *
+                    (A[this.thread.z][this.thread.y - 2][this.thread.x - 1] +
+                        A[this.thread.z][this.thread.y - 2][this.thread.x + 1] +
+                        A[this.thread.z][this.thread.y - 1][this.thread.x - 2] +
+                        A[this.thread.z][this.thread.y - 1][this.thread.x + 2] +
+                        A[this.thread.z][this.thread.y + 1][this.thread.x - 2] +
+                        A[this.thread.z][this.thread.y + 1][this.thread.x + 2] +
+                        A[this.thread.z][this.thread.y + 2][this.thread.x - 1] +
+                        A[this.thread.z][this.thread.y + 2][this.thread.x + 1]) +
+                k22 *
+                    (A[this.thread.z][this.thread.y - 2][this.thread.x - 2] +
+                        A[this.thread.z][this.thread.y - 2][this.thread.x + 2] +
+                        A[this.thread.z][this.thread.y + 2][this.thread.x - 2] +
+                        A[this.thread.z][this.thread.y + 2][this.thread.x + 2]);
 
-        // Renormalize the result so that the sum of all terms in the kernel is 1.
-        return g / gaussianSum;
-    } else {
-        return A[this.thread.z][this.thread.y][this.thread.x];
+            // Renormalize the result so that the sum of all terms in the kernel is 1.
+            return g / gaussianSum;
+        } else {
+            return A[this.thread.z][this.thread.y][this.thread.x];
+        }
+    },
+    {
+        gaussianFunction: function(x, y, sigma) {
+            var stdDev = sigma * sigma;
+            var LHS = 1 / (2 * this.constants.PI * stdDev);
+            var RHS = Math.pow(this.constants.E, -1 * (x * x + y * y) / (2 * stdDev));
+            return LHS * RHS;
+        },
     }
-});
+);
 
 // Kernel: Edge detection (Sobel) filter
 const createEdgeDetectionFilter = createStandardKernel(function(A) {
@@ -182,25 +192,6 @@ const createRenderGraphical = mode =>
         .setGraphical(true)
         .setOutput([width, height]);
 
-/// -----------------------------
-/// START CUSTOM KERNEL FUNCTIONS
-/// -----------------------------
-
-const addFunctions = [
-    // Calculates the 2-D gaussian G(x, y).
-    function gaussianFunction(x, y, sigma) {
-        var stdDev = sigma * sigma;
-        var LHS = 1 / (2 * this.constants.PI * stdDev);
-        var RHS = Math.pow(this.constants.E, -1 * (x * x + y * y) / (2 * stdDev));
-        return LHS * RHS;
-    },
-];
-
-addFunctions.forEach(fn => {
-    gpu.addFunction(fn);
-    cpu.addFunction(fn);
-});
-
 /// ----------------------
 /// END KERNEL DEFINITIONS
 /// ----------------------
@@ -232,7 +223,7 @@ function getKernelCreator(mode) {
 
 // Convenience method to create a kernel creator method, using the
 // standard options of output size and pipelining to texture.
-function createStandardKernel(kernelFunc) {
+function createStandardKernel(kernelFunc, customFunctions) {
     return mode =>
         getKernelCreator(mode).createKernel(kernelFunc, {
             constants: {
@@ -245,6 +236,7 @@ function createStandardKernel(kernelFunc) {
             },
             output: [width, height, channels],
             outputToTexture: true,
+            functions: customFunctions,
         });
 }
 
