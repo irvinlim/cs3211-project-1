@@ -10,6 +10,7 @@ var state = {
     isGpuMode: true,
     isEmbossedFilterEnabled: false,
     isGaussianFilterEnabled: false,
+    gaussianFilterSigma: 2,
     isEdgeDetectionFilterEnabled: false,
     isLightTunnelFilterEnabled: false,
     lightTunnelFilterRadius: 100,

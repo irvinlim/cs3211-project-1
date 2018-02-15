@@ -93,6 +93,10 @@
                                     <input class="button" type="button" value="Off" onclick="toggleGaussianFilter(this);" />
                                 </div>
                             </div>
+                            <div class="field">
+                                <label for="slider">Sigma</label>
+                                <input class="slider is-fullwidth" step="0.05" min="0.05" max="5" value="2" type="range" onmousemove="changeGaussianFilterSigma(this);">
+                            </div>
                         </div>
                     </div>
                     <div class="panel-block">

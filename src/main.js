@@ -59,7 +59,7 @@ function renderLoop() {
 
     // Add gaussian filter.
     if (state.isGaussianFilterEnabled) {
-        data = getKernel('gaussianFilter')(data);
+        data = getKernel('gaussianFilter')(data, Number(state.gaussianFilterSigma));
     }
 
     // Add edge detection filter.

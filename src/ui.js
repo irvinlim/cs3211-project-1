@@ -46,6 +46,11 @@ function toggleGaussianFilter(el) {
     toggleElement(el, state.isGaussianFilterEnabled, labels, classNames);
 }
 
+// Sets the sigma parameter of the gaussian blur filter.
+function changeGaussianFilterSigma(el) {
+    state.gaussianFilterSigma = el.value;
+}
+
 // Toggles the edge detection filter.
 function toggleEdgeDetectionFilter(el) {
     const labels = ['Off', 'On'];
