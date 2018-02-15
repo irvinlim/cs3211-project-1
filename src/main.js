@@ -47,7 +47,7 @@ function renderLoop() {
     /// Execute kernel functions to process and render image for this frame.
 
     // Transform linear image data into 3-D array for proper computation.
-    data = getKernel('transformLinearToXYZ')(data);
+    data = getKernel('transformLinearToXYZ')(data, state.isCameraFlipped ? 1 : 0);
 
     // Execute each of the filters that are enabled in order, and pass any parameters
     // to the kernel function in the GPU.

@@ -9,15 +9,20 @@ const cpu = new GPU({ mode: 'cpu' });
 
 // Kernel: Transforms a linear array of image data into (x,y) data in 4 channels,
 // resulting in a 3-D array.
-const createTransformLinearToXYZ = createStandardKernel(function(imageData) {
+const createTransformLinearToXYZ = createStandardKernel(function(imageData, isCameraFlipped) {
+    var x, y, z;
+
     // Image's color channel is every 4 elements (R, G, B, A). Omit every 4th element.
+    z = this.thread.z;
+
     // Input image data is y-inverted so we need to read from bottom up.
+    y = 4 * this.constants.width * (this.constants.height - this.thread.y - 1);
+
+    // Optionally flip the camera if the argument is true.
+    if (isCameraFlipped === 0) x = 4 * this.thread.x;
+    else x = 4 * (this.constants.width - this.thread.x);
+
     // Input image data is an integer between 0 to 255, but should return float between 0 to 1.
-
-    var x = 4 * this.thread.x;
-    var y = 4 * this.constants.width * (this.constants.height - this.thread.y - 1);
-    var z = this.thread.z;
-
     return imageData[x + y + z] / 256;
 });
 

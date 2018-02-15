@@ -9,6 +9,7 @@ const channels = 3;
 var state = {
     renderLoopRequestId: undefined,
     isVideoStarted: false,
+    isCameraFlipped: false,
     isGpuMode: true,
     filters: [
         {

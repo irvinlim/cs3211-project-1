@@ -66,6 +66,16 @@ function toggleMode(el) {
     toggleElement(el, state.isGpuMode, labels, classNames);
 }
 
+// Changes the camera flipped state.
+function toggleCameraFlipped(el) {
+    const labels = ['No', 'Yes'];
+    const classNames = ['', ''];
+
+    // Toggle state and update element.
+    state.isCameraFlipped = !state.isCameraFlipped;
+    toggleElement(el, state.isCameraFlipped, labels, classNames);
+}
+
 // Convenience function to toggle the visual state of a toggle button.
 function toggleElement(el, state, labels, classNames) {
     const index = state ? 1 : 0;
