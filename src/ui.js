@@ -1,3 +1,5 @@
+'use strict';
+
 function initializeUI() {
     // Add event listeners for filter toggles.
     document.querySelectorAll('.control-filter-toggle').forEach(el => {
@@ -49,7 +51,7 @@ function toggleStatus(el) {
     if (state.isVideoStarted) {
         state.renderLoopRequestId = window.requestAnimationFrame(renderLoop);
     } else {
-        window.cancelAnimationFrame(renderLoopRequestId);
+        window.cancelAnimationFrame(state.renderLoopRequestId);
         state.renderLoopRequestId = undefined;
     }
 }

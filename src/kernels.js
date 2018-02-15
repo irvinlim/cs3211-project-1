@@ -1,3 +1,5 @@
+'use strict';
+
 const gpu = new GPU();
 const cpu = new GPU({ mode: 'cpu' });
 

@@ -1,3 +1,5 @@
+'use strict';
+
 // Constants.
 const height = 600;
 const width = 800;

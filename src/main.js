@@ -1,3 +1,5 @@
+'use strict';
+
 function initialize() {
     // Initialize video element.
     const video = document.getElementById('video');
@@ -72,5 +74,5 @@ function renderLoop() {
     canvas.height = height;
 
     // Request next frame to render.
-    renderLoopRequestId = requestAnimationFrame(renderLoop);
+    state.renderLoopRequestId = requestAnimationFrame(renderLoop);
 }
