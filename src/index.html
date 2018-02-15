@@ -4,6 +4,7 @@
 <head>
     <title>CS3211 Project 1: Image Processing with GPU.js</title>
     <link rel="stylesheet" href="css/bulma.min.css">
+    <link rel="stylesheet" href="css/bulma-slider.min.css">
     <link rel="stylesheet" href="css/main.css">
 </head>
 
@@ -36,22 +37,26 @@
                     <p class="panel-heading">Control Panel</p>
 
                     <div class="panel-block">
-                        <div class="control columns is-mobile">
-                            <div class="column col-title">
-                                <h5 class="title is-6">Status</h5>
-                            </div>
-                            <div class="column is-one-third">
-                                <input class="button is-fullwidth is-success" type="button" value="Start" onclick="return toggleStatus(this);" />
+                        <div class="control">
+                            <div class="columns is-mobile">
+                                <div class="column col-title">
+                                    <h5 class="title is-6">Status</h5>
+                                </div>
+                                <div class="column is-one-third">
+                                    <input class="button is-fullwidth is-success" type="button" value="Start" onclick="toggleStatus(this);" />
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="panel-block">
-                        <div class="control columns is-mobile">
-                            <div class="column col-title">
-                                <h5 class="title is-6">Operating Mode</h5>
-                            </div>
-                            <div class="column is-one-third">
-                                <input class="button is-fullwidth is-info" type="button" value="GPU" onclick="return toggleMode(this);" />
+                        <div class="control">
+                            <div class="columns is-mobile">
+                                <div class="column col-title">
+                                    <h5 class="title is-6">Operating Mode</h5>
+                                </div>
+                                <div class="column is-one-third">
+                                    <input class="button is-fullwidth is-info" type="button" value="GPU" onclick="toggleMode(this);" />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -64,25 +69,14 @@
                         <span class="panel-icon">
                             <img src="img/bars.svg" alt="Reorder">
                         </span>
-                        <div class="control columns is-mobile">
-                            <div class="column col-title">
-                                <h5 class="title is-6">Embossed Filter</h5>
-                            </div>
-                            <div class="column col-toggle">
-                                <input class="button" type="button" value="Off" onclick="return toggleEmbossedFilter(this);" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel-block">
-                        <span class="panel-icon">
-                            <img src="img/bars.svg" alt="Reorder">
-                        </span>
-                        <div class="control columns is-mobile">
-                            <div class="column col-title">
-                                <h5 class="title is-6">Gaussian Blur (5x5)</h5>
-                            </div>
-                            <div class="column col-toggle">
-                                <input class="button" type="button" value="Off" onclick="return toggleGaussianFilter(this);" />
+                        <div class="control">
+                            <div class="columns is-mobile">
+                                <div class="column col-title">
+                                    <h5 class="title is-6">Embossed Filter</h5>
+                                </div>
+                                <div class="column col-toggle">
+                                    <input class="button" type="button" value="Off" onclick="toggleEmbossedFilter(this);" />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -90,12 +84,14 @@
                         <span class="panel-icon">
                             <img src="img/bars.svg" alt="Reorder">
                         </span>
-                        <div class="control columns is-mobile">
-                            <div class="column col-title">
-                                <h5 class="title is-6">Edge Detection (Sobel)</h5>
-                            </div>
-                            <div class="column col-toggle">
-                                <input class="button" type="button" value="Off" onclick="return toggleEdgeDetectionFilter(this);" />
+                        <div class="control">
+                            <div class="columns is-mobile">
+                                <div class="column col-title">
+                                    <h5 class="title is-6">Gaussian Blur (5x5)</h5>
+                                </div>
+                                <div class="column col-toggle">
+                                    <input class="button" type="button" value="Off" onclick="toggleGaussianFilter(this);" />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -103,12 +99,37 @@
                         <span class="panel-icon">
                             <img src="img/bars.svg" alt="Reorder">
                         </span>
-                        <div class="control columns is-mobile">
-                            <div class="column col-title">
-                                <h5 class="title is-6">Light Tunnel Effect</h5>
+                        <div class="control">
+                            <div class="columns is-mobile">
+                                <div class="column col-title">
+                                    <h5 class="title is-6">Edge Detection (Sobel)</h5>
+                                </div>
+                                <div class="column col-toggle">
+                                    <input class="button" type="button" value="Off" onclick="toggleEdgeDetectionFilter(this);" />
+                                </div>
                             </div>
-                            <div class="column col-toggle">
-                                <input class="button" type="button" value="Off" onclick="return toggleLightTunnelFilter(this);" />
+                            <div class="field">
+                                <label for="slider">Level</label>
+                                <input class="slider is-fullwidth" step="1" min="0" max="2" value="2" type="range" onmousemove="changeEdgeDetectionFilterLevel(this);">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-block">
+                        <span class="panel-icon">
+                            <img src="img/bars.svg" alt="Reorder">
+                        </span>
+                        <div class="control">
+                            <div class="columns is-mobile">
+                                <div class="column col-title">
+                                    <h5 class="title is-6">Light Tunnel Effect</h5>
+                                </div>
+                                <div class="column col-toggle">
+                                    <input class="button" type="button" value="Off" onclick="toggleLightTunnelFilter(this);" />
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="slider">Radius</label>
+                                <input class="slider is-fullwidth" step="1" min="50" max="200" value="100" type="range" onmousemove="changeLightTunnelFilterRadius(this);">
                             </div>
                         </div>
                     </div>
@@ -131,6 +152,7 @@
         </div>
     </main>
 
+    <script src="js/bulma-slider.js?nocache"></script>
     <script src="js/gpu.min.js?nocache"></script>
     <script src="js/decls.js?nocache"></script>
     <script src="global.js?nocache"></script>

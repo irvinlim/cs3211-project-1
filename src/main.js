@@ -49,7 +49,7 @@ function renderLoop() {
 
     // Add light tunnel filter.
     if (state.isLightTunnelFilterEnabled) {
-        data = getKernel('lightTunnelFilter')(data, 100);
+        data = getKernel('lightTunnelFilter')(data, Number(state.lightTunnelFilterRadius));
     }
 
     // Add embossed filter.
@@ -64,7 +64,7 @@ function renderLoop() {
 
     // Add edge detection filter.
     if (state.isEdgeDetectionFilterEnabled) {
-        data = getKernel('edgeDetectionFilter')(data, 2);
+        data = getKernel('edgeDetectionFilter')(data, state.edgeDetectionFilterLevel);
     }
 
     // Render image in the final canvas.

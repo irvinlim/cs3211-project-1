@@ -11,7 +11,9 @@ var state = {
     isEmbossedFilterEnabled: false,
     isGaussianFilterEnabled: false,
     isEdgeDetectionFilterEnabled: false,
+    edgeDetectionFilterLevel: 2,
     isLightTunnelFilterEnabled: false,
+    lightTunnelFilterRadius: 100,
 };
 
 // Vendor-specific getUserMedia shim.

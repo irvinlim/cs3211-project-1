@@ -56,6 +56,11 @@ function toggleEdgeDetectionFilter(el) {
     toggleElement(el, state.isEdgeDetectionFilterEnabled, labels, classNames);
 }
 
+// Sets the level parameter of the edge detection filter.
+function changeEdgeDetectionFilterLevel(el) {
+    state.edgeDetectionFilterLevel = el.value;
+}
+
 // Toggles the light tunnel filter.
 function toggleLightTunnelFilter(el) {
     const labels = ['Off', 'On'];
@@ -64,6 +69,11 @@ function toggleLightTunnelFilter(el) {
     // Toggle state and update element.
     state.isLightTunnelFilterEnabled = !state.isLightTunnelFilterEnabled;
     toggleElement(el, state.isLightTunnelFilterEnabled, labels, classNames);
+}
+
+// Sets the radius parameter of the light tunnel filter.
+function changeLightTunnelFilterRadius(el) {
+    state.lightTunnelFilterRadius = el.value;
 }
 
 function toggleElement(el, state, labels, classNames) {

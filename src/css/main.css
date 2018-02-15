@@ -18,6 +18,15 @@ main .row {
     padding-bottom: 20px;
 }
 
+.panel .panel-block {
+    align-items: flex-start;
+}
+
+.panel .panel-icon {
+    height: 36px;
+    display: flex;
+}
+
 .panel .column.col-title {
     display: flex;
     align-items: center;
@@ -25,4 +34,16 @@ main .row {
 
 .panel .column.col-toggle {
     flex-grow: 0;
+}
+
+.panel .control .columns:not(:last-child) {
+    margin-bottom: -.25rem;
+}
+
+.panel .control label {
+    font-size: 14px;
+}
+
+.panel .control input[type=range].slider {
+    margin: 0.5rem 0;
 }
