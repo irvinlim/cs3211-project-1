@@ -1,6 +1,7 @@
 // Constants.
 const height = 600;
 const width = 800;
+const channels = 3;
 
 // Global state.
 var state = {

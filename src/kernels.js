@@ -7,26 +7,26 @@ const cpu = new GPU({ mode: 'cpu' });
 
 // Kernel: Transforms a linear array of image data into (x,y) data in 4 channels,
 // resulting in a 3-D array.
-const createTransformLinearToXYZ = createStandardKernel(function(imageData, width, height) {
-    // Image's color channel is every 4 elements (R, G, B, A).
+const createTransformLinearToXYZ = createStandardKernel(function(imageData) {
+    // Image's color channel is every 4 elements (R, G, B, A). Omit every 4th element.
     // Input image data is y-inverted so we need to read from bottom up.
     // Input image data is an integer between 0 to 255, but should return float between 0 to 1.
 
     var x = 4 * this.thread.x;
-    var y = 4 * width * (height - this.thread.y - 1);
+    var y = 4 * this.constants.width * (this.constants.height - this.thread.y - 1);
     var z = this.thread.z;
 
     return imageData[x + y + z] / 256;
 });
 
 // Kernel: Embossed filter
-const createEmbossedFilter = createStandardKernel(function(A, width, height) {
+const createEmbossedFilter = createStandardKernel(function(A) {
     if (
         this.thread.y > 0 &&
-        this.thread.y < height - 1 &&
-        this.thread.x < width - 1 &&
+        this.thread.y < this.constants.height - 1 &&
+        this.thread.x < this.constants.width - 1 &&
         this.thread.x > 0 &&
-        this.thread.z < 3
+        this.thread.z < this.constants.channels
     ) {
         var c =
             A[this.thread.z][this.thread.y - 1][this.thread.x - 1] * -1 +
@@ -49,13 +49,13 @@ const createEmbossedFilter = createStandardKernel(function(A, width, height) {
 });
 
 // Kernel: Gaussian filter (5x5, sigma = 10.0)
-const createGaussianFilter = createStandardKernel(function(A, width, height) {
+const createGaussianFilter = createStandardKernel(function(A) {
     if (
         this.thread.y > 1 &&
-        this.thread.y < height - 2 &&
-        this.thread.x < width - 2 &&
+        this.thread.y < this.constants.height - 2 &&
+        this.thread.x < this.constants.width - 2 &&
         this.thread.x > 1 &&
-        this.thread.z < 3
+        this.thread.z < this.constants.channels
     ) {
         return (
             A[this.thread.z][this.thread.y - 2][this.thread.x - 2] * 0.039206 +
@@ -90,13 +90,13 @@ const createGaussianFilter = createStandardKernel(function(A, width, height) {
 });
 
 // Kernel: Edge detection (Sobel) filter
-const createEdgeDetectionFilter = createStandardKernel(function(A, width, height, level) {
+const createEdgeDetectionFilter = createStandardKernel(function(A, level) {
     if (
         this.thread.y > 0 &&
-        this.thread.y < height - 1 &&
-        this.thread.x < width - 1 &&
+        this.thread.y < this.constants.height - 1 &&
+        this.thread.x < this.constants.width - 1 &&
         this.thread.x > 0 &&
-        this.thread.z < 3
+        this.thread.z < this.constants.channels
     ) {
         var gx =
             A[this.thread.z][this.thread.y - 1][this.thread.x - 1] +
@@ -125,11 +125,11 @@ const createEdgeDetectionFilter = createStandardKernel(function(A, width, height
 });
 
 // Kernel: Light tunnel (Apple Photo Booth effect)
-const createLightTunnelFilter = createStandardKernel(function(A, width, height, radius) {
+const createLightTunnelFilter = createStandardKernel(function(A, radius) {
     // Calculate if pixel falls within circle.
     // Don't use floor() because it's unnecessary (division by 2).
-    var midpointX = width / 2 - 0.5 * (width % 2);
-    var midpointY = height / 2 - 0.5 * (height % 2);
+    var midpointX = this.constants.width / 2 - 0.5 * (this.constants.width % 2);
+    var midpointY = this.constants.height / 2 - 0.5 * (this.constants.height % 2);
 
     // Calculate Pythagorean distance (squared to avoid costly sqrt).
     var radiusSquared = radius * radius;
@@ -159,7 +159,7 @@ const createRenderGraphical = mode =>
                 A[0][this.thread.y][this.thread.x],
                 A[1][this.thread.y][this.thread.x],
                 A[2][this.thread.y][this.thread.x],
-                A[3][this.thread.y][this.thread.x]
+                1
             );
         })
         .setGraphical(true)
@@ -199,8 +199,13 @@ function getKernelCreator(mode) {
 function createStandardKernel(kernelFunc) {
     return mode =>
         getKernelCreator(mode).createKernel(kernelFunc, {
-            constants: { isGpu: mode === 'gpu' ? 1 : 0 },
-            output: [width, height, 4],
+            constants: {
+                isGpu: mode === 'gpu' ? 1 : 0,
+                width,
+                height,
+                channels,
+            },
+            output: [width, height, channels],
             outputToTexture: true,
         });
 }

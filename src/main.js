@@ -41,26 +41,26 @@ function renderLoop() {
     /// Execute kernel functions to process and render image for this frame.
 
     // Transform linear image data into 3-D array for proper computation.
-    data = getKernel('transformLinearToXYZ')(data, width, height);
+    data = getKernel('transformLinearToXYZ')(data);
 
     // Add light tunnel filter.
     if (state.isLightTunnelFilterEnabled) {
-        data = getKernel('lightTunnelFilter')(data, width, height, 100);
+        data = getKernel('lightTunnelFilter')(data, 100);
     }
 
     // Add embossed filter.
     if (state.isEmbossedFilterEnabled) {
-        data = getKernel('embossedFilter')(data, width, height);
+        data = getKernel('embossedFilter')(data);
     }
 
     // Add gaussian filter.
     if (state.isGaussianFilterEnabled) {
-        data = getKernel('gaussianFilter')(data, width, height);
+        data = getKernel('gaussianFilter')(data);
     }
 
     // Add edge detection filter.
     if (state.isEdgeDetectionFilterEnabled) {
-        data = getKernel('edgeDetectionFilter')(data, width, height, 2);
+        data = getKernel('edgeDetectionFilter')(data, 2);
     }
 
     // Render image in the final canvas.
