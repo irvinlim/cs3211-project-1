@@ -9,39 +9,114 @@
 
 <body>
     <section class="hero is-small is-dark is-bold">
-        <div class="hero-body">
-            <div class="container">
-                <h1 class="title">
-                    CS3211 Project 1
-                </h1>
-                <h2 class="subtitle">
-                    Submitted by Irvin Lim (A0139812A)
-                </h2>
-            </div>
+        <div class="hero-body container">
+            <h1 class="title">
+                CS3211 Project 1
+            </h1>
+            <h2 class="subtitle">
+                Submitted by Irvin Lim (A0139812A)
+            </h2>
         </div>
     </section>
 
-    <main>
-        <div class="container fps-wrapper">
-            <div class="fps-tags tags has-addons">
-                <span class="tag is-dark">FPS</span>
-                <span id="fps" class="tag is-success">0</span>
+    <main class="container">
+        <div class="columns">
+            <div class="column is-one-third-tablet is-one-quarter-fullhd">
+                <nav class="panel">
+                    <p class="panel-heading">Control Panel</p>
+
+                    <div class="panel-block">
+                        <div class="control columns is-mobile">
+                            <div class="column col-title">
+                                <h5 class="title is-6">Status</h5>
+                            </div>
+                            <div class="column is-one-third">
+                                <input class="button is-fullwidth is-danger" type="button" value="Stopped" onclick="return toggleStatus(this);" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-block">
+                        <div class="control columns is-mobile">
+                            <div class="column col-title">
+                                <h5 class="title is-6">Operating Mode</h5>
+                            </div>
+                            <div class="column is-one-third">
+                                <input class="button is-fullwidth is-primary" type="button" value="GPU" onclick="return toggleMode(this);" />
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+
+                <nav class="panel">
+                    <p class="panel-heading">Video Filters</p>
+
+                    <div class="panel-block">
+                        <span class="panel-icon">
+                            <img src="img/bars.svg" alt="Reorder">
+                        </span>
+                        <div class="control columns is-mobile">
+                            <div class="column col-title">
+                                <h5 class="title is-6">Embossed Filter</h5>
+                            </div>
+                            <div class="column col-toggle">
+                                <input class="button" type="button" value="Off" onclick="return toggleEmbossedFilter(this);" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-block">
+                        <span class="panel-icon">
+                            <img src="img/bars.svg" alt="Reorder">
+                        </span>
+                        <div class="control columns is-mobile">
+                            <div class="column col-title">
+                                <h5 class="title is-6">Gaussian Blur (5x5)</h5>
+                            </div>
+                            <div class="column col-toggle">
+                                <input class="button" type="button" value="Off" onclick="return toggleGaussianFilter(this);" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-block">
+                        <span class="panel-icon">
+                            <img src="img/bars.svg" alt="Reorder">
+                        </span>
+                        <div class="control columns is-mobile">
+                            <div class="column col-title">
+                                <h5 class="title is-6">Edge Detection (Sobel)</h5>
+                            </div>
+                            <div class="column col-toggle">
+                                <input class="button" type="button" value="Off" onclick="return toggleEdgeDetectionFilter(this);" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-block">
+                        <span class="panel-icon">
+                            <img src="img/bars.svg" alt="Reorder">
+                        </span>
+                        <div class="control columns is-mobile">
+                            <div class="column col-title">
+                                <h5 class="title is-6">Light Tunnel Effect</h5>
+                            </div>
+                            <div class="column col-toggle">
+                                <input class="button" type="button" value="Off" onclick="return toggleLightTunnelFilter(this);" />
+                            </div>
+                        </div>
+                    </div>
+                </nav>
             </div>
-        </div>
 
-        <div class="container canvas-wrapper">
-            <video hidden id="video" width="800" height="600" playsinline autoplay muted></video>
-            <canvas hidden id="videoCanvas" width="800" height="600"></canvas>
-        </div>
+            <div class="column">
+                <div class="row fps-wrapper">
+                    <div class="fps-tags tags has-addons">
+                        <span class="tag is-dark">FPS</span>
+                        <span id="fps" class="tag is-success">0</span>
+                    </div>
+                </div>
 
-        <div class="container control-wrapper">
-            <div class="box">
-                <input class="button is-danger" type="button" value="Stopped" onclick="return toggleStatus(this);" />
-                <input class="button is-info" type="button" value="Using GPU" onclick="return toggleMode(this);" />
-                <input class="button" type="button" value="Embossed Filter Off" onclick="return toggleEmbossedFilter(this);" />
-                <input class="button" type="button" value="Gaussian Filter (5x5) Off" onclick="return toggleGaussianFilter(this);" />
-                <input class="button" type="button" value="Edge Detection Off" onclick="return toggleEdgeDetectionFilter(this);" />
-                <input class="button" type="button" value="Light Tunnel Effect Off" onclick="return toggleLightTunnelFilter(this);" />
+                <div class="row canvas-wrapper">
+                    <video hidden id="video" width="800" height="600" playsinline autoplay muted></video>
+                    <canvas hidden id="videoCanvas" width="800" height="600"></canvas>
+                </div>
             </div>
         </div>
     </main>

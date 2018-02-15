@@ -18,8 +18,8 @@ function toggleStatus(el) {
 
 // Changes the CPU/GPU state.
 function toggleMode(el) {
-    const labels = ['Using CPU', 'Using GPU'];
-    const classNames = ['is-warning', 'is-info'];
+    const labels = ['CPU', 'GPU'];
+    const classNames = ['is-warning', 'is-primary'];
 
     // Toggle state and update element.
     state.isGpuMode = !state.isGpuMode;
@@ -28,8 +28,8 @@ function toggleMode(el) {
 
 // Toggles the embossed filter.
 function toggleEmbossedFilter(el) {
-    const labels = ['Embossed Filter Off', 'Embossed Filter On'];
-    const classNames = ['is-warning', 'is-info'];
+    const labels = ['Off', 'On'];
+    const classNames = ['', 'is-info'];
 
     // Toggle state and update element.
     state.isEmbossedFilterEnabled = !state.isEmbossedFilterEnabled;
@@ -38,8 +38,8 @@ function toggleEmbossedFilter(el) {
 
 // Toggles the gaussian filter.
 function toggleGaussianFilter(el) {
-    const labels = ['Gaussian Filter (5x5) Off', 'Gaussian Filter (5x5) On'];
-    const classNames = ['is-warning', 'is-info'];
+    const labels = ['Off', 'On'];
+    const classNames = ['', 'is-info'];
 
     // Toggle state and update element.
     state.isGaussianFilterEnabled = !state.isGaussianFilterEnabled;
@@ -48,8 +48,8 @@ function toggleGaussianFilter(el) {
 
 // Toggles the edge detection filter.
 function toggleEdgeDetectionFilter(el) {
-    const labels = ['Edge Detection Off', 'Edge Detection On'];
-    const classNames = ['is-warning', 'is-info'];
+    const labels = ['Off', 'On'];
+    const classNames = ['', 'is-info'];
 
     // Toggle state and update element.
     state.isEdgeDetectionFilterEnabled = !state.isEdgeDetectionFilterEnabled;
@@ -58,8 +58,8 @@ function toggleEdgeDetectionFilter(el) {
 
 // Toggles the light tunnel filter.
 function toggleLightTunnelFilter(el) {
-    const labels = ['Light Tunnel Effect Off', 'Light Tunnel Effect On'];
-    const classNames = ['is-warning', 'is-info'];
+    const labels = ['Off', 'On'];
+    const classNames = ['', 'is-info'];
 
     // Toggle state and update element.
     state.isLightTunnelFilterEnabled = !state.isLightTunnelFilterEnabled;
@@ -69,6 +69,6 @@ function toggleLightTunnelFilter(el) {
 function toggleElement(el, state, labels, classNames) {
     const index = state ? 1 : 0;
     el.value = labels[index];
-    el.classList.toggle(classNames[0]);
-    el.classList.toggle(classNames[1]);
+    if (classNames[index].length) el.classList.add(classNames[index]);
+    if (classNames[index ^ 1].length) el.classList.remove(classNames[index ^ 1]);
 }

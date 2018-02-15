@@ -11,9 +11,18 @@
 }
 
 main {
-    padding: 20px 0;
+    padding: 20px;
 }
 
-main .container {
+main .row {
     padding-bottom: 20px;
+}
+
+.panel .column.col-title {
+    display: flex;
+    align-items: center;
+}
+
+.panel .column.col-toggle {
+    flex-grow: 0;
 }

@@ -21,6 +21,10 @@ function initialize() {
     const gpuCanvas = gpuKernels.renderGraphical.getCanvas();
     document.querySelector('.canvas-wrapper').appendChild(cpuCanvas);
     document.querySelector('.canvas-wrapper').appendChild(gpuCanvas);
+    cpuCanvas.width = width;
+    cpuCanvas.height = height;
+    gpuCanvas.width = width;
+    gpuCanvas.height = height;
 }
 
 addEventListener('DOMContentLoaded', initialize);
