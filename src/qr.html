@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CS3211 Project 1: Image Processing with GPU.js</title>
+    <link rel="stylesheet" href="css/bulma.min.css">
+    <link rel="stylesheet" href="css/bulma-slider.min.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+    <section class="hero is-small is-dark is-bold">
+        <div class="hero-body container">
+            <h1 class="title">
+                CS3211 Project 1: Image Processing with GPU.js
+            </h1>
+            <h2 class="subtitle">
+                Submitted by Irvin Lim (A0139812A)
+            </h2>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="tabs nav-wrapper is-centered">
+            <ul>
+                <li>
+                    <a href="filters.html">Filter Playground</a>
+                </li>
+                <li class="is-active">
+                    <a href="qr.html">QR Code Detection</a>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <main class="container">
+        <div class="columns">
+            <div class="column is-one-third-tablet is-one-quarter-fullhd">
+                <nav class="panel">
+                    <p class="panel-heading">Control Panel</p>
+
+                    <div class="panel-block">
+                        <div class="control">
+                            <div class="columns is-mobile">
+                                <div class="column col-title">
+                                    <h5 class="title is-6">Status</h5>
+                                </div>
+                                <div class="column is-one-third">
+                                    <input class="button is-fullwidth is-success" type="button" value="Start" onclick="toggleStatus(this);" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-block">
+                        <div class="control">
+                            <div class="columns is-mobile">
+                                <div class="column col-title">
+                                    <h5 class="title is-6">Operating Mode</h5>
+                                </div>
+                                <div class="column is-one-third">
+                                    <input class="button is-fullwidth is-info" type="button" value="GPU" onclick="toggleMode(this);" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-block">
+                        <div class="control">
+                            <div class="columns is-mobile">
+                                <div class="column col-title">
+                                    <h5 class="title is-6">Camera Flipped</h5>
+                                </div>
+                                <div class="column is-one-third">
+                                    <input class="button is-fullwidth" type="button" value="No" onclick="toggleCameraFlipped(this);" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+
+            <div class="column">
+                <div class="notification">
+                    <button class="delete" onclick="hideNotification(this);"></button>
+                    <p>Click "Start" to start streaming from your device's camera.</p>
+                    <p>Any QR codes that are detected in the image will be highlighted and decoded.</p>
+                </div>
+
+                <div class="row">
+                    <div class="row fps-wrapper">
+                        <div class="fps-tags tags has-addons">
+                            <span class="tag is-dark">FPS</span>
+                            <span id="fps" class="tag is-success">0</span>
+                        </div>
+                    </div>
+
+                    <div class="row canvas-wrapper">
+                        <video hidden id="video" width="800" height="600" playsinline autoplay muted></video>
+                        <canvas hidden id="videoCanvas" width="800" height="600"></canvas>
+                    </div>
+                </div>
+            </div>
+    </main>
+
+    <script src="js/html.sortable.min.js?nocache"></script>
+    <script src="js/bulma-slider.js?nocache"></script>
+    <script src="js/gpu.min.js?nocache"></script>
+    <script src="js/decls.js?nocache"></script>
+    <script src="global.js?nocache"></script>
+    <script src="ui.js?nocache"></script>
+    <script src="kernels.js?nocache"></script>
+    <script src="main-qr.js?nocache"></script>
+
+</body>
+
+</html>
