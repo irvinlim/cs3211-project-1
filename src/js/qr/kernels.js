@@ -85,6 +85,42 @@ const createThresholdingFilter = createStandardKernel(
     }
 );
 
+// Kernel: Edge detection (Sobel) filter
+const createEdgeDetectionFilter = createStandardKernel(
+    function(A, width, height) {
+        if (
+            this.thread.y > 0 &&
+            this.thread.y < height - 1 &&
+            this.thread.x < width - 1 &&
+            this.thread.x > 0
+        ) {
+            var Gx =
+                A[this.thread.y - 1][this.thread.x - 1] +
+                A[this.thread.y - 1][this.thread.x + 1] * -1 +
+                A[this.thread.y][this.thread.x - 1] * 2 +
+                A[this.thread.y][this.thread.x + 1] * -2 +
+                A[this.thread.y + 1][this.thread.x - 1] +
+                A[this.thread.y + 1][this.thread.x + 1] * -1;
+
+            var Gy =
+                A[this.thread.y - 1][this.thread.x - 1] +
+                A[this.thread.y - 1][this.thread.x] * 2 +
+                A[this.thread.y - 1][this.thread.x + 1] +
+                A[this.thread.y + 1][this.thread.x - 1] * -1 +
+                A[this.thread.y + 1][this.thread.x] * -2 +
+                A[this.thread.y + 1][this.thread.x + 1] * -1;
+
+            return Math.sqrt(Gx * Gx + Gy * Gy);
+        } else {
+            return A[this.thread.y][this.thread.x];
+        }
+    },
+    {
+        output: [width, height],
+        outputToTexture: true,
+    }
+);
+
 const createReturnNonTexture = createStandardKernel(
     function(A) {
         return A[this.thread.z][this.thread.y][this.thread.x];

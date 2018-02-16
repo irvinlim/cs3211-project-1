@@ -13,6 +13,7 @@ const KC = {
 const K = {
     TRANSFORM_IMAGE_DATA: 'transformLinearToXYZ',
     THRESHOLD_FILTER: 'thresholdFilter',
+    EDGE_DETECTION_FILTER: 'edgeDetectionFilter',
     RENDER_ORIGINAL: 'renderOriginalImage',
     RENDER_THRESHOLDED: 'renderThresholdedImage',
     RETURN_NON_TEXTURE_FROM_ORIGINAL: 'returnNonTextureFromOriginal',
@@ -29,6 +30,7 @@ function initialize() {
     addKernel(createReturnNonTexture2D, KC.ORIGINAL_IMAGE, K.RETURN_NON_TEXTURE_FROM_ORIGINAL);
     addKernel(createRenderGreyscale, KC.ORIGINAL_IMAGE, K.RENDER_ORIGINAL, true);
     addKernel(createThresholdingFilter, KC.THRESHOLDED_IMAGE, K.THRESHOLD_FILTER);
+    addKernel(createEdgeDetectionFilter, KC.THRESHOLDED_IMAGE, K.EDGE_DETECTION_FILTER);
     addKernel(createRenderGreyscale, KC.THRESHOLDED_IMAGE, K.RENDER_THRESHOLDED, true);
 
     // Create canvases for CPU and GPU for each of the renderGraphical kernels.
@@ -54,13 +56,15 @@ function renderLoop() {
     );
 
     // Threshold the original image.
-    let thresholdedImage;
-    thresholdedImage = getKernel(K.RETURN_NON_TEXTURE_FROM_ORIGINAL)(originalImage);
-    thresholdedImage = getKernel(K.THRESHOLD_FILTER)(thresholdedImage, 0.5, 0);
+    const originalImageCopy = getKernel(K.RETURN_NON_TEXTURE_FROM_ORIGINAL)(originalImage);
+    const thresholdedImage = getKernel(K.THRESHOLD_FILTER)(originalImageCopy, 0.5, 0);
+
+    // Edge detection.
+    const edgedDetectedImage = getKernel(K.EDGE_DETECTION_FILTER)(thresholdedImage, width, height);
 
     // Render each of the images at each stage.
     getKernel(K.RENDER_ORIGINAL, true)(originalImage);
-    getKernel(K.RENDER_THRESHOLDED, true)(thresholdedImage);
+    getKernel(K.RENDER_THRESHOLDED, true)(edgedDetectedImage);
 
     // Fix canvas sizes.
     setCanvasSize(K.RENDER_ORIGINAL, '.canvas-wrapper.original');
