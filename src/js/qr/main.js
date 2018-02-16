@@ -35,7 +35,7 @@ function initialize() {
     addKernel(createEdgeDetectionFilter, KC.RIGHT_IMAGE, K.EDGE_DETECTION_FILTER);
     addKernel(createMarkerDetection, KC.RIGHT_IMAGE, K.MARKER_DETECTION);
     addKernel(createPlotMarkers, KC.RIGHT_IMAGE, K.PLOT_MARKERS);
-    addKernel(createRenderGreyscale, KC.RIGHT_IMAGE, K.RENDER_RIGHT, true);
+    addKernel(createRenderColor, KC.RIGHT_IMAGE, K.RENDER_RIGHT, true);
 
     // Create canvases for CPU and GPU for each of the renderGraphical kernels.
     createCanvas(K.RENDER_LEFT, '.canvas-wrapper.original');

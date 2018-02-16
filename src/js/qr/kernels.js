@@ -124,6 +124,9 @@ const createEdgeDetectionFilter = createStandardKernel(
 // Kernel: Try and detect QR code markers.
 // Output: 1-D array corresponding to each row of the image.
 //         If the value is > 0, then it specifies the location of a possible marker in the row.
+//
+// This approximation algorithm (without knowledge of higher order CV algorithms) is adapted from
+// the sample C++ code at http://aishack.in/tutorials/scanning-qr-codes-2/.
 const createMarkerDetection = createStandardKernel(
     function(A) {
         // Keep track of the current state:
@@ -228,13 +231,17 @@ const createPlotMarkers = createStandardKernel(
 
         // Plot a white dot on the centre of the marker (for now).
         if (location > 0 && this.thread.x >= location - 2 && this.thread.x <= location + 2) {
-            return 1;
+            if (this.thread.z === 0) {
+                return 1;
+            } else {
+                return 0;
+            }
         } else {
             return A[this.thread.y][this.thread.x];
         }
     },
     {
-        output: [width, height],
+        output: [width, height, channels],
         outputToTexture: true,
     }
 );
