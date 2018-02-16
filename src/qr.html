@@ -93,10 +93,13 @@
                         </div>
                     </div>
 
-                    <div class="row canvas-wrapper">
-                        <video hidden id="video" width="800" height="600" playsinline autoplay muted></video>
-                        <canvas hidden id="videoCanvas" width="800" height="600"></canvas>
+                    <div class="columns">
+                        <div class="column canvas-wrapper original"></div>
+                        <div class="column canvas-wrapper thresholded"></div>
                     </div>
+
+                    <video hidden id="video" width="800" height="600" playsinline autoplay muted></video>
+                    <canvas hidden id="videoCanvas" width="800" height="600"></canvas>
                 </div>
             </div>
     </main>
@@ -105,11 +108,11 @@
     <script src="js/vendor/bulma-slider.js?nocache"></script>
     <script src="js/vendor/gpu.min.js?nocache"></script>
     <script src="js/vendor/decls.js?nocache"></script>
-    <script src="js/main-qr.js?nocache"></script>
-    <script src="js/camera.js?nocache"></script>
-    <script src="js/state.js?nocache"></script>
-    <script src="js/ui.js?nocache"></script>
-    <script src="js/kernels.js?nocache"></script>
+    <script src="js/common/camera.js?nocache"></script>
+    <script src="js/common/state.js?nocache"></script>
+    <script src="js/common/ui.js?nocache"></script>
+    <script src="js/qr/main.js?nocache"></script>
+    <script src="js/qr/kernels.js?nocache"></script>
 
 </body>
 

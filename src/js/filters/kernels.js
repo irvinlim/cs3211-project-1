@@ -130,7 +130,7 @@ const createThresholdingFilter = createStandardKernel(function(A, threshold, mod
     var brightness =
         (A[0][this.thread.y][this.thread.x] +
             A[1][this.thread.y][this.thread.x] +
-            A[0][this.thread.y][this.thread.x]) /
+            A[2][this.thread.y][this.thread.x]) /
         3;
 
     // THRESH_BINARY

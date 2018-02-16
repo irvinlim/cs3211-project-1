@@ -24,14 +24,10 @@ function initialize() {
     }
 
     // Create a Canvas for both CPU and GPU modes.
-    const cpuCanvas = cpuKernels.renderGraphical.getCanvas();
-    const gpuCanvas = gpuKernels.renderGraphical.getCanvas();
-    document.querySelector('.canvas-wrapper').appendChild(cpuCanvas);
-    document.querySelector('.canvas-wrapper').appendChild(gpuCanvas);
-    cpuCanvas.width = width;
-    cpuCanvas.height = height;
-    gpuCanvas.width = width;
-    gpuCanvas.height = height;
+    const canvas = gpuKernels.renderGraphical.getCanvas();
+    document.querySelector('.canvas-wrapper').appendChild(canvas);
+    canvas.width = width;
+    canvas.height = height;
 }
 
 addEventListener('DOMContentLoaded', initialize);
@@ -71,10 +67,8 @@ function renderLoop() {
     // Render image in the final canvas.
     getKernel('renderGraphical')(data);
 
-    // Show only the current canvas and fix the size.
+    // Fix the canvas size.
     const canvas = getKernel('renderGraphical').getCanvas();
-    document.querySelectorAll('.canvas-wrapper canvas').forEach(el => (el.style.display = 'none'));
-    canvas.style.display = 'inline';
     canvas.width = width;
     canvas.height = height;
 
