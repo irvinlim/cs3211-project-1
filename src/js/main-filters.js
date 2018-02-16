@@ -1,5 +1,10 @@
 'use strict';
 
+// Constants.
+const height = 600;
+const width = 800;
+const channels = 3;
+
 function initialize() {
     // Initialize video element.
     const video = document.getElementById('video');

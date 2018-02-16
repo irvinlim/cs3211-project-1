@@ -27,12 +27,14 @@ function initializeUI() {
     });
 
     // Listen for sort updates.
-    sortable('.sortable')[0].addEventListener('sortupdate', function(e) {
-        const oldIndex = e.detail.oldElementIndex - 1;
-        const newIndex = e.detail.elementIndex - 1;
+    sortable('.sortable').forEach(el => {
+        el.addEventListener('sortupdate', function(e) {
+            const oldIndex = e.detail.oldElementIndex - 1;
+            const newIndex = e.detail.elementIndex - 1;
 
-        // Reorder items in state.filters.
-        state.filters.splice(newIndex, 0, state.filters.splice(oldIndex, 1)[0]);
+            // Reorder items in state.filters.
+            state.filters.splice(newIndex, 0, state.filters.splice(oldIndex, 1)[0]);
+        });
     });
 }
 

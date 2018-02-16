@@ -1,10 +1,5 @@
 'use strict';
 
-// Constants.
-const height = 600;
-const width = 800;
-const channels = 3;
-
 // Global state.
 var state = {
     renderLoopRequestId: undefined,
@@ -37,10 +32,3 @@ var state = {
         },
     ],
 };
-
-// Vendor-specific getUserMedia shim.
-navigator.getUserMedia =
-    navigator.getUserMedia ||
-    navigator.webkitGetUserMedia ||
-    navigator.mozGetUserMedia ||
-    navigator.msGetUserMedia;
