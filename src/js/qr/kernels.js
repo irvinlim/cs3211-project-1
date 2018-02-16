@@ -121,6 +121,124 @@ const createEdgeDetectionFilter = createStandardKernel(
     }
 );
 
+// Kernel: Try and detect QR code markers.
+// Output: 1-D array corresponding to each row of the image.
+//         If the value is > 0, then it specifies the location of a possible marker in the row.
+const createMarkerDetection = createStandardKernel(
+    function(A) {
+        // Keep track of the current state:
+        // QR code marker has this: B > W > B > W > B (1:1:3:1:1 ratio).
+        var currState = 0;
+
+        // Keep track of pixels counted within each state.
+        // Cannot instantiate dynamic array so we have to do it like this.
+        var px0 = 0;
+        var px1 = 0;
+        var px2 = 0;
+        var px3 = 0;
+        var px4 = 0;
+
+        var foundMarker = 0;
+
+        // Iterate through all pixels in the current row.
+        for (var i = 0; i < this.constants.width; i++) {
+            if (A[this.thread.x][i] === 0) {
+                // Black pixel
+
+                // Was at white, so we advance the state.
+                if (currState === 1 || currState === 3) currState++;
+
+                // Increment the pixel count via poor man's array.
+                if (currState === 2) px2++;
+                if (currState === 4) px4++;
+            } else {
+                // White pixel
+
+                // Handle the case where we have reached the end of the sequence.
+                if (currState === 4) {
+                    // If the ratio is not right, we translate the sequence leftwards by 2 slots,
+                    // and continue iterating.
+                    if (checkRatio(px0, px1, px2, px3, px4) === 0) {
+                        currState = 3;
+                        px0 = px2;
+                        px1 = px3;
+                        px2 = px4;
+                        px3 = 1;
+                        px4 = 0;
+                    } else {
+                        // Otherwise, we have found a possible marker.
+                        // Return the center x-coordinate of the marker.
+                        var totalWidth = px0 + px1 + px2 + px3 + px4;
+                        foundMarker = Math.floor(i - totalWidth / 2);
+                        break;
+                    }
+                } else {
+                    // Was at black (and not at end), so we advance the state.
+                    if (currState === 0 || currState === 2) currState++;
+
+                    // Increment the pixel count via poor man's array.
+                    if (currState === 1) px1++;
+                    if (currState === 3) px3++;
+                }
+            }
+        }
+
+        return foundMarker;
+    },
+    {
+        output: [height],
+        // outputToTexture: true,
+        functions: {
+            // Checks the ratio of a QR code sequence if it follows the 1:1:3:1:1 ratio,
+            // subject to variance of +/- 50%.
+            checkRatio: function(px0, px1, px2, px3, px4) {
+                var totalWidth = px0 + px1 + px2 + px3 + px4;
+                var cellSize = Math.ceil(totalWidth / 7);
+                var allowedVariance = Math.floor(cellSize / 2);
+
+                // Calculate differences from expected.
+                var d0 = Math.abs(cellSize - px0);
+                var d1 = Math.abs(cellSize - px1);
+                var d2 = Math.abs(3 * cellSize - px2);
+                var d3 = Math.abs(cellSize - px3);
+                var d4 = Math.abs(cellSize - px4);
+
+                if (
+                    d0 < allowedVariance &&
+                    d1 < allowedVariance &&
+                    d2 < 3 * allowedVariance &&
+                    d3 < allowedVariance &&
+                    d4 < allowedVariance
+                ) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            },
+        },
+    }
+);
+
+// Kernel: Plot possible QR code markers on an image.
+// Inputs: A - 2-D image data.
+//         markerLocations - 1-D array of length `height`.
+const createPlotMarkers = createStandardKernel(
+    function(A, markerLocations) {
+        var location = markerLocations[this.thread.y];
+
+        // Plot a white dot on the centre of the marker (for now).
+        if (location > 0 && this.thread.x >= location - 2 && this.thread.x <= location + 2) {
+            return 1;
+        } else {
+            return A[this.thread.y][this.thread.x];
+        }
+    },
+    {
+        output: [width, height],
+        outputToTexture: true,
+    }
+);
+
 const createReturnNonTexture = createStandardKernel(
     function(A) {
         return A[this.thread.z][this.thread.y][this.thread.x];
@@ -172,6 +290,8 @@ function createStandardKernel(kernelFunc, options) {
     return (mode, kernelCreator) => {
         const constants = {
             isGpuMode: mode === 'gpu' ? 1 : 0,
+            width,
+            height,
             PI: Math.PI,
             E: Math.E,
         };

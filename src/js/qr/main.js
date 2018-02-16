@@ -6,17 +6,19 @@ const width = 400;
 const channels = 3;
 
 const KC = {
-    ORIGINAL_IMAGE: 'originalImage',
-    THRESHOLDED_IMAGE: 'thresholdedImage',
+    LEFT_IMAGE: 'leftImage',
+    RIGHT_IMAGE: 'rightImage',
 };
 
 const K = {
     TRANSFORM_IMAGE_DATA: 'transformLinearToXYZ',
     THRESHOLD_FILTER: 'thresholdFilter',
     EDGE_DETECTION_FILTER: 'edgeDetectionFilter',
-    RENDER_ORIGINAL: 'renderOriginalImage',
-    RENDER_THRESHOLDED: 'renderThresholdedImage',
-    RETURN_NON_TEXTURE_FROM_ORIGINAL: 'returnNonTextureFromOriginal',
+    MARKER_DETECTION: 'markerDetection',
+    PLOT_MARKERS: 'plotMarkers',
+    RENDER_LEFT: 'renderLeftImage',
+    RENDER_RIGHT: 'renderRightImage',
+    CONVERT_TO_ARRAY: 'convertToArray',
 };
 
 function initialize() {
@@ -24,18 +26,20 @@ function initialize() {
     initializeVideo();
 
     // Initialize kernel creators and add kernels.
-    initKernelCreator(KC.ORIGINAL_IMAGE);
-    initKernelCreator(KC.THRESHOLDED_IMAGE);
-    addKernel(createTransformLinearToXYZ, KC.ORIGINAL_IMAGE, K.TRANSFORM_IMAGE_DATA);
-    addKernel(createReturnNonTexture2D, KC.ORIGINAL_IMAGE, K.RETURN_NON_TEXTURE_FROM_ORIGINAL);
-    addKernel(createRenderGreyscale, KC.ORIGINAL_IMAGE, K.RENDER_ORIGINAL, true);
-    addKernel(createThresholdingFilter, KC.THRESHOLDED_IMAGE, K.THRESHOLD_FILTER);
-    addKernel(createEdgeDetectionFilter, KC.THRESHOLDED_IMAGE, K.EDGE_DETECTION_FILTER);
-    addKernel(createRenderGreyscale, KC.THRESHOLDED_IMAGE, K.RENDER_THRESHOLDED, true);
+    initKernelCreator(KC.LEFT_IMAGE);
+    initKernelCreator(KC.RIGHT_IMAGE);
+    addKernel(createTransformLinearToXYZ, KC.LEFT_IMAGE, K.TRANSFORM_IMAGE_DATA);
+    addKernel(createReturnNonTexture2D, KC.LEFT_IMAGE, K.CONVERT_TO_ARRAY);
+    addKernel(createThresholdingFilter, KC.LEFT_IMAGE, K.THRESHOLD_FILTER);
+    addKernel(createRenderGreyscale, KC.LEFT_IMAGE, K.RENDER_LEFT, true);
+    addKernel(createEdgeDetectionFilter, KC.RIGHT_IMAGE, K.EDGE_DETECTION_FILTER);
+    addKernel(createMarkerDetection, KC.RIGHT_IMAGE, K.MARKER_DETECTION);
+    addKernel(createPlotMarkers, KC.RIGHT_IMAGE, K.PLOT_MARKERS);
+    addKernel(createRenderGreyscale, KC.RIGHT_IMAGE, K.RENDER_RIGHT, true);
 
     // Create canvases for CPU and GPU for each of the renderGraphical kernels.
-    createCanvas(K.RENDER_ORIGINAL, '.canvas-wrapper.original');
-    createCanvas(K.RENDER_THRESHOLDED, '.canvas-wrapper.thresholded');
+    createCanvas(K.RENDER_LEFT, '.canvas-wrapper.original');
+    createCanvas(K.RENDER_RIGHT, '.canvas-wrapper.thresholded');
 }
 
 addEventListener('DOMContentLoaded', initialize);
@@ -56,19 +60,28 @@ function renderLoop() {
     );
 
     // Threshold the original image.
-    const originalImageCopy = getKernel(K.RETURN_NON_TEXTURE_FROM_ORIGINAL)(originalImage);
-    const thresholdedImage = getKernel(K.THRESHOLD_FILTER)(originalImageCopy, 0.5, 0);
+    const thresholdedImage = getKernel(K.THRESHOLD_FILTER)(originalImage, 0.5, 0);
 
     // Edge detection.
-    const edgedDetectedImage = getKernel(K.EDGE_DETECTION_FILTER)(thresholdedImage, width, height);
+    // const edgedDetectedImage = getKernel(K.EDGE_DETECTION_FILTER)(thresholdedImage, width, height);
+
+    // Copy the left image so that we can render it later.
+    // Note that this is the expensive step as we have to transfer data from GPU back to CPU and back again.
+    const leftImageCopy = getKernel(K.CONVERT_TO_ARRAY)(thresholdedImage);
+
+    // Identify markers.
+    const markerLocations = getKernel(K.MARKER_DETECTION)(leftImageCopy);
+
+    // Plot markers on the image.
+    const markersPlotted = getKernel(K.PLOT_MARKERS)(leftImageCopy, markerLocations);
 
     // Render each of the images at each stage.
-    getKernel(K.RENDER_ORIGINAL, true)(originalImage);
-    getKernel(K.RENDER_THRESHOLDED, true)(edgedDetectedImage);
+    getKernel(K.RENDER_LEFT, true)(thresholdedImage);
+    getKernel(K.RENDER_RIGHT, true)(markersPlotted);
 
     // Fix canvas sizes.
-    setCanvasSize(K.RENDER_ORIGINAL, '.canvas-wrapper.original');
-    setCanvasSize(K.RENDER_THRESHOLDED, '.canvas-wrapper.thresholded');
+    setCanvasSize(K.RENDER_LEFT, '.canvas-wrapper.original');
+    setCanvasSize(K.RENDER_RIGHT, '.canvas-wrapper.thresholded');
 
     // Request next frame to render.
     state.renderLoopRequestId = requestAnimationFrame(renderLoop);
