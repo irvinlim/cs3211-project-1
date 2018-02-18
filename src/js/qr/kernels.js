@@ -85,6 +85,29 @@ const createThresholdingFilter = createStandardKernel(
     }
 );
 
+// Kernel: Median filter (window size = 3)
+const createMedianFilter = createStandardKernel(
+    function(A, width, height) {
+        var left, mid, right;
+
+        if (this.thread.x <= 0) left = A[this.thread.y][this.thread.x];
+        else left = A[this.thread.y][this.thread.x - 1];
+
+        mid = A[this.thread.y][this.thread.x];
+
+        if (this.thread.x >= width - 1) right = A[this.thread.y][this.thread.x];
+        else right = A[this.thread.y][this.thread.x + 1];
+
+        if (left >= mid && left >= right) return left;
+        else if (mid >= left && mid >= right) return mid;
+        else return right;
+    },
+    {
+        output: [width, height],
+        outputToTexture: true,
+    }
+);
+
 // Kernel: Edge detection (Sobel) filter
 const createEdgeDetectionFilter = createStandardKernel(
     function(A, width, height) {
