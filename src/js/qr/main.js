@@ -18,6 +18,7 @@ const K = {
     MARKER_DETECTION_ROW_WISE: 'markerDetectionRowWise',
     MARKER_DETECTION_COL_WISE: 'markerDetectionColWise',
     MARKER_DETECTION_COMBINED: 'markerDetectionCombined',
+    MARKER_DETECTION_TOP: 'markerDetectionTop',
     PLOT_MARKERS: 'plotMarkers',
     RENDER_LEFT: 'renderLeftImage',
     RENDER_LEFT_COLOR: 'renderLeftImageColor',
@@ -41,6 +42,7 @@ function initialize() {
     addKernel(createMarkerDetectionRowWise, KC.LEFT_IMAGE, K.MARKER_DETECTION_ROW_WISE);
     addKernel(createMarkerDetectionColWise, KC.LEFT_IMAGE, K.MARKER_DETECTION_COL_WISE);
     addKernel(createMarkerDetectionCombined, KC.LEFT_IMAGE, K.MARKER_DETECTION_COMBINED);
+    addKernel(createMarkerDetectionTop, KC.LEFT_IMAGE, K.MARKER_DETECTION_TOP);
     addKernel(createPlotMarkers, KC.LEFT_IMAGE, K.PLOT_MARKERS);
     addKernel(createRenderColor, KC.LEFT_IMAGE, K.RENDER_LEFT_COLOR, true);
     addKernel(createRenderColor, KC.RIGHT_IMAGE, K.RENDER_RIGHT, true);
@@ -80,6 +82,8 @@ function renderLoop() {
     const rowWise = getKernel(K.MARKER_DETECTION_ROW_WISE)(medianFilteredImage);
     const colWise = getKernel(K.MARKER_DETECTION_COL_WISE)(medianFilteredImage);
     const markerLocationsCombined = getKernel(K.MARKER_DETECTION_COMBINED)(rowWise, colWise);
+    const topMarkerLocations = getKernel(K.MARKER_DETECTION_TOP)(rowWise, colWise);
+    console.log(topMarkerLocations);
 
     // Plot markers on the image.
     const markersPlotted = getKernel(K.PLOT_MARKERS)(thresholdedImage, markerLocationsCombined);

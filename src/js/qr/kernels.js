@@ -306,15 +306,41 @@ const createMarkerDetectionCombined = createStandardKernel(
         var col = cols[this.thread.x];
         var row = rows[this.thread.y];
 
-        if (row > 0 && col > 0 && this.thread.x === row && this.thread.y === col) {
-            return 1;
-        } else {
-            return 0;
-        }
+        if (row > 0 && col > 0 && this.thread.x === row && this.thread.y === col) return 1;
+        else return 0;
     },
     {
         output: [width, height],
         outputToTexture: true,
+    }
+);
+
+// Kernel: Find the first three markers.
+const createMarkerDetectionTop = createStandardKernel(
+    function(rows, cols) {
+        var foundMarkers = 0;
+        var errorMargin = 10;
+
+        // Search rows.
+        for (var i = 0; i < this.constants.height; i++) {
+            var row = rows[i];
+            var col = cols[row];
+
+            if (row > 0 && col > 0 && col === i) {
+                // Hack to encode 2 numbers into 1. Still works in 32-bits because the size of the canvas is small.
+                if (foundMarkers === this.thread.x) return row + col / 1000;
+                else foundMarkers++;
+            }
+        }
+
+        // Search columns.
+        for (var j = 0; j < this.constants.width; j++) {
+            var col = cols[j];
+        }
+    },
+    {
+        output: [3],
+        outputToTexture: false,
     }
 );
 
