@@ -219,6 +219,8 @@ const createMarkerDetectionRowWise = createStandardKernel(
 );
 
 // Kernel: Try and detect QR code markers. This time column wise.
+// Make use of previously computed possible marker x-positions for each row
+// and coalesce with those found using this method.
 const createMarkerDetectionColWise = createStandardKernel(
     function(A) {
         // Keep track of the current state:
@@ -262,10 +264,21 @@ const createMarkerDetectionColWise = createStandardKernel(
                         px4 = 0;
                     } else {
                         // Otherwise, we have found a possible marker.
-                        // Return the center x-coordinate of the marker.
+                        // Return the center y-coordinate of the marker.
                         var totalWidth = px0 + px1 + px2 + px3 + px4;
-                        foundMarker = Math.floor(i - totalWidth / 2);
+                        var centerY = Math.floor(i - totalWidth / 2);
+
+                        // We say that we have found a marker if the previously computed
+                        // x-position is off from the x-position of this newly found center
+                        // by less than a specific error margin.
+                        // if (
+                        //     centerY >= 0 &&
+                        //     markerRows[centerY] > 0 &&
+                        //     Math.abs(i - markerRows[centerY]) <= errorMargin
+                        // ) {
+                        foundMarker = centerY;
                         break;
+                        // }
                     }
                 } else {
                     // Was at black (and not at end), so we advance the state.
@@ -287,22 +300,73 @@ const createMarkerDetectionColWise = createStandardKernel(
     }
 );
 
-// Kernel: Plot possible QR code markers on an image.
-// Inputs: A - 2-D image data.
-//         markerCols - 1-D array of length `height`.
-//         markerRows - 1-D array of length `width`.
-const createPlotMarkers = createStandardKernel(
-    function(A, rows, cols) {
+// Kernel: Combine column- and row-wise computations.
+const createMarkerDetectionCombined = createStandardKernel(
+    function(rows, cols) {
         var col = cols[this.thread.x];
         var row = rows[this.thread.y];
 
-        // Plot a red dot on the centre of the marker (for now).
-        if (
-            col > 0 &&
-            row > 0 &&
-            ((this.thread.x > row - 3 && this.thread.x < row + 3) ||
-                (this.thread.y > col - 3 && this.thread.y < col + 3))
-        ) {
+        if (row > 0 && col > 0 && this.thread.x === row && this.thread.y === col) {
+            return 1;
+        } else {
+            return 0;
+        }
+    },
+    {
+        output: [width, height],
+        outputToTexture: true,
+    }
+);
+
+// Kernel: Plot possible QR code markers on an image.
+// Inputs: A - 2-D image data.
+//         markerLocations - Boolean matrix of center of marker locations.
+const createPlotMarkers = createStandardKernel(
+    function(A, markerLocations) {
+        var squareSize = 40;
+        var radius = Math.floor(squareSize / 2);
+        var isBorder = 0;
+
+        for (var i = 0; i < squareSize; i++) {
+            if (this.thread.y - radius >= 0) {
+                // Handle left border.
+                if (this.thread.x + radius < this.constants.width) {
+                    if (markerLocations[this.thread.y - radius + i][this.thread.x + radius] === 1) {
+                        isBorder = 1;
+                        break;
+                    }
+                }
+
+                // Handle right border.
+                if (this.thread.x - radius >= 0) {
+                    if (markerLocations[this.thread.y - radius + i][this.thread.x - radius] === 1) {
+                        isBorder = 1;
+                        break;
+                    }
+                }
+            }
+
+            if (this.thread.x - radius >= 0) {
+                // Handle top border.
+                if (this.thread.y - radius >= 0) {
+                    if (markerLocations[this.thread.y - radius][this.thread.x - radius + i] === 1) {
+                        isBorder = 1;
+                        break;
+                    }
+                }
+
+                // Handle bottom border.
+                if (this.thread.y + radius < this.constants.height) {
+                    if (markerLocations[this.thread.y + radius][this.thread.x - radius + i] === 1) {
+                        isBorder = 1;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Draw borders.
+        if (isBorder === 1) {
             if (this.thread.z === 0) return 1;
             else return 0;
         } else {

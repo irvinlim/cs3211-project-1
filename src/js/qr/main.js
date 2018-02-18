@@ -17,6 +17,7 @@ const K = {
     EDGE_DETECTION_FILTER: 'edgeDetectionFilter',
     MARKER_DETECTION_ROW_WISE: 'markerDetectionRowWise',
     MARKER_DETECTION_COL_WISE: 'markerDetectionColWise',
+    MARKER_DETECTION_COMBINED: 'markerDetectionCombined',
     PLOT_MARKERS: 'plotMarkers',
     RENDER_LEFT: 'renderLeftImage',
     RENDER_LEFT_COLOR: 'renderLeftImageColor',
@@ -39,6 +40,7 @@ function initialize() {
     addKernel(createRenderGreyscale, KC.LEFT_IMAGE, K.RENDER_LEFT, true);
     addKernel(createMarkerDetectionRowWise, KC.LEFT_IMAGE, K.MARKER_DETECTION_ROW_WISE);
     addKernel(createMarkerDetectionColWise, KC.LEFT_IMAGE, K.MARKER_DETECTION_COL_WISE);
+    addKernel(createMarkerDetectionCombined, KC.LEFT_IMAGE, K.MARKER_DETECTION_COMBINED);
     addKernel(createPlotMarkers, KC.LEFT_IMAGE, K.PLOT_MARKERS);
     addKernel(createRenderColor, KC.LEFT_IMAGE, K.RENDER_LEFT_COLOR, true);
     addKernel(createRenderColor, KC.RIGHT_IMAGE, K.RENDER_RIGHT, true);
@@ -75,15 +77,12 @@ function renderLoop() {
     // const edgedDetectedImage = getKernel(K.EDGE_DETECTION_FILTER)(thresholdedImage, width, height);
 
     // Identify markers.
-    const markerLocationsRowWise = getKernel(K.MARKER_DETECTION_ROW_WISE)(medianFilteredImage);
-    const markerLocationsColWise = getKernel(K.MARKER_DETECTION_COL_WISE)(medianFilteredImage);
+    const rowWise = getKernel(K.MARKER_DETECTION_ROW_WISE)(medianFilteredImage);
+    const colWise = getKernel(K.MARKER_DETECTION_COL_WISE)(medianFilteredImage);
+    const markerLocationsCombined = getKernel(K.MARKER_DETECTION_COMBINED)(rowWise, colWise);
 
     // Plot markers on the image.
-    const markersPlotted = getKernel(K.PLOT_MARKERS)(
-        thresholdedImage,
-        markerLocationsRowWise,
-        markerLocationsColWise
-    );
+    const markersPlotted = getKernel(K.PLOT_MARKERS)(originalImage, markerLocationsCombined);
 
     // Copy the left image so that we can render it later.
     // Note that this is the expensive step as we have to transfer data from GPU back to CPU and back again.
