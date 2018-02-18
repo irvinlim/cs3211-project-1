@@ -32,3 +32,11 @@ var state = {
         },
     ],
 };
+
+function getFilterByName(name) {
+    return state.filters.filter(filter => filter.name === name)[0];
+}
+
+function getParamValueByName(filter, name) {
+    return filter.params.filter(param => param.name === name)[0].value;
+}

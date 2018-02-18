@@ -70,7 +70,9 @@ function renderLoop() {
     );
 
     // Threshold the original image.
-    const thresholdedImage = getKernel(K.THRESHOLD_FILTER)(originalImage, 0.5, 0);
+    const thresholdFilterState = getFilterByName('thresholdingFilter');
+    const thresholdLevel = getParamValueByName(thresholdFilterState, 'threshold');
+    const thresholdedImage = getKernel(K.THRESHOLD_FILTER)(originalImage, thresholdLevel, 0);
 
     // Apply median filter to remove artifacts after thresholding.
     const medianFilteredImage = getKernel(K.MEDIAN_FILTER)(thresholdedImage, width, height);
