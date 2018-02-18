@@ -108,42 +108,6 @@ const createMedianFilter = createStandardKernel(
     }
 );
 
-// Kernel: Edge detection (Sobel) filter
-const createEdgeDetectionFilter = createStandardKernel(
-    function(A, width, height) {
-        if (
-            this.thread.y > 0 &&
-            this.thread.y < height - 1 &&
-            this.thread.x < width - 1 &&
-            this.thread.x > 0
-        ) {
-            var Gx =
-                A[this.thread.y - 1][this.thread.x - 1] +
-                A[this.thread.y - 1][this.thread.x + 1] * -1 +
-                A[this.thread.y][this.thread.x - 1] * 2 +
-                A[this.thread.y][this.thread.x + 1] * -2 +
-                A[this.thread.y + 1][this.thread.x - 1] +
-                A[this.thread.y + 1][this.thread.x + 1] * -1;
-
-            var Gy =
-                A[this.thread.y - 1][this.thread.x - 1] +
-                A[this.thread.y - 1][this.thread.x] * 2 +
-                A[this.thread.y - 1][this.thread.x + 1] +
-                A[this.thread.y + 1][this.thread.x - 1] * -1 +
-                A[this.thread.y + 1][this.thread.x] * -2 +
-                A[this.thread.y + 1][this.thread.x + 1] * -1;
-
-            return Math.sqrt(Gx * Gx + Gy * Gy);
-        } else {
-            return A[this.thread.y][this.thread.x];
-        }
-    },
-    {
-        output: [width, height],
-        outputToTexture: true,
-    }
-);
-
 // Kernel: Try and detect QR code markers.
 // Output: 1-D array corresponding to each row of the image.
 //         If the value is > 0, then it specifies the location of a possible marker in the row.
@@ -266,19 +230,8 @@ const createMarkerDetectionColWise = createStandardKernel(
                         // Otherwise, we have found a possible marker.
                         // Return the center y-coordinate of the marker.
                         var totalWidth = px0 + px1 + px2 + px3 + px4;
-                        var centerY = Math.floor(i - totalWidth / 2);
-
-                        // We say that we have found a marker if the previously computed
-                        // x-position is off from the x-position of this newly found center
-                        // by less than a specific error margin.
-                        // if (
-                        //     centerY >= 0 &&
-                        //     markerRows[centerY] > 0 &&
-                        //     Math.abs(i - markerRows[centerY]) <= errorMargin
-                        // ) {
-                        foundMarker = centerY;
+                        foundMarker = Math.floor(i - totalWidth / 2);
                         break;
-                        // }
                     }
                 } else {
                     // Was at black (and not at end), so we advance the state.

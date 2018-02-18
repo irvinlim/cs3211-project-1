@@ -14,7 +14,6 @@ const K = {
     TRANSFORM_IMAGE_DATA: 'transformLinearToXYZ',
     THRESHOLD_FILTER: 'thresholdFilter',
     MEDIAN_FILTER: 'medianFilter',
-    EDGE_DETECTION_FILTER: 'edgeDetectionFilter',
     MARKER_DETECTION_ROW_WISE: 'markerDetectionRowWise',
     MARKER_DETECTION_COL_WISE: 'markerDetectionColWise',
     MARKER_DETECTION_COMBINED: 'markerDetectionCombined',
@@ -37,7 +36,6 @@ function initialize() {
     addKernel(createReturnNonTexture2D, KC.LEFT_IMAGE, K.CONVERT_TO_ARRAY);
     addKernel(createThresholdingFilter, KC.LEFT_IMAGE, K.THRESHOLD_FILTER);
     addKernel(createMedianFilter, KC.LEFT_IMAGE, K.MEDIAN_FILTER);
-    addKernel(createEdgeDetectionFilter, KC.LEFT_IMAGE, K.EDGE_DETECTION_FILTER);
     addKernel(createRenderGreyscale, KC.LEFT_IMAGE, K.RENDER_LEFT, true);
     addKernel(createMarkerDetectionRowWise, KC.LEFT_IMAGE, K.MARKER_DETECTION_ROW_WISE);
     addKernel(createMarkerDetectionColWise, KC.LEFT_IMAGE, K.MARKER_DETECTION_COL_WISE);
@@ -76,9 +74,6 @@ function renderLoop() {
 
     // Apply median filter to remove artifacts after thresholding.
     const medianFilteredImage = getKernel(K.MEDIAN_FILTER)(thresholdedImage, width, height);
-
-    // Edge detection.
-    // const edgedDetectedImage = getKernel(K.EDGE_DETECTION_FILTER)(thresholdedImage, width, height);
 
     // Identify markers.
     const rowWise = getKernel(K.MARKER_DETECTION_ROW_WISE)(medianFilteredImage);
