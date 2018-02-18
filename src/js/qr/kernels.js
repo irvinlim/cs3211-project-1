@@ -323,11 +323,10 @@ const createMarkerDetectionCombined = createStandardKernel(
 //         markerLocations - Boolean matrix of center of marker locations.
 const createPlotMarkers = createStandardKernel(
     function(A, markerLocations) {
-        var squareSize = 10;
-        var radius = Math.floor(squareSize / 2);
+        var radius = Math.floor(this.constants.squareSize / 2);
         var isBorder = 0;
 
-        for (var i = 0; i < squareSize; i++) {
+        for (var i = 0; i < this.constants.squareSize; i++) {
             if (this.thread.y - radius >= 0) {
                 // Handle left border.
                 if (this.thread.x + radius < this.constants.width) {
@@ -463,6 +462,7 @@ function createStandardKernel(kernelFunc, options) {
             isGpuMode: mode === 'gpu' ? 1 : 0,
             width,
             height,
+            squareSize: 10,
             PI: Math.PI,
             E: Math.E,
         };
