@@ -14,7 +14,8 @@ const K = {
     TRANSFORM_IMAGE_DATA: 'transformLinearToXYZ',
     THRESHOLD_FILTER: 'thresholdFilter',
     EDGE_DETECTION_FILTER: 'edgeDetectionFilter',
-    MARKER_DETECTION: 'markerDetection',
+    MARKER_DETECTION_ROW_WISE: 'markerDetectionRowWise',
+    MARKER_DETECTION_COL_WISE: 'markerDetectionColWise',
     PLOT_MARKERS: 'plotMarkers',
     RENDER_LEFT: 'renderLeftImage',
     RENDER_RIGHT: 'renderRightImage',
@@ -31,9 +32,10 @@ function initialize() {
     addKernel(createTransformLinearToXYZ, KC.LEFT_IMAGE, K.TRANSFORM_IMAGE_DATA);
     addKernel(createReturnNonTexture2D, KC.LEFT_IMAGE, K.CONVERT_TO_ARRAY);
     addKernel(createThresholdingFilter, KC.LEFT_IMAGE, K.THRESHOLD_FILTER);
+    addKernel(createEdgeDetectionFilter, KC.LEFT_IMAGE, K.EDGE_DETECTION_FILTER);
     addKernel(createRenderGreyscale, KC.LEFT_IMAGE, K.RENDER_LEFT, true);
-    addKernel(createEdgeDetectionFilter, KC.RIGHT_IMAGE, K.EDGE_DETECTION_FILTER);
-    addKernel(createMarkerDetection, KC.RIGHT_IMAGE, K.MARKER_DETECTION);
+    addKernel(createMarkerDetectionRowWise, KC.RIGHT_IMAGE, K.MARKER_DETECTION_ROW_WISE);
+    addKernel(createMarkerDetectionColWise, KC.RIGHT_IMAGE, K.MARKER_DETECTION_COL_WISE);
     addKernel(createPlotMarkers, KC.RIGHT_IMAGE, K.PLOT_MARKERS);
     addKernel(createRenderColor, KC.RIGHT_IMAGE, K.RENDER_RIGHT, true);
 
@@ -70,10 +72,15 @@ function renderLoop() {
     const leftImageCopy = getKernel(K.CONVERT_TO_ARRAY)(thresholdedImage);
 
     // Identify markers.
-    const markerLocations = getKernel(K.MARKER_DETECTION)(leftImageCopy);
+    const markerLocationsRowWise = getKernel(K.MARKER_DETECTION_ROW_WISE)(leftImageCopy);
+    const markerLocationsColWise = getKernel(K.MARKER_DETECTION_COL_WISE)(leftImageCopy);
 
     // Plot markers on the image.
-    const markersPlotted = getKernel(K.PLOT_MARKERS)(leftImageCopy, markerLocations);
+    const markersPlotted = getKernel(K.PLOT_MARKERS)(
+        leftImageCopy,
+        markerLocationsRowWise,
+        markerLocationsColWise
+    );
 
     // Render each of the images at each stage.
     getKernel(K.RENDER_LEFT, true)(thresholdedImage);
