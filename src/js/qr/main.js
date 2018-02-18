@@ -82,7 +82,7 @@ function renderLoop() {
     const markerLocationsCombined = getKernel(K.MARKER_DETECTION_COMBINED)(rowWise, colWise);
 
     // Plot markers on the image.
-    const markersPlotted = getKernel(K.PLOT_MARKERS)(originalImage, markerLocationsCombined);
+    const markersPlotted = getKernel(K.PLOT_MARKERS)(thresholdedImage, markerLocationsCombined);
 
     // Copy the left image so that we can render it later.
     // Note that this is the expensive step as we have to transfer data from GPU back to CPU and back again.

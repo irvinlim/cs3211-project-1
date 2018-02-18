@@ -323,7 +323,7 @@ const createMarkerDetectionCombined = createStandardKernel(
 //         markerLocations - Boolean matrix of center of marker locations.
 const createPlotMarkers = createStandardKernel(
     function(A, markerLocations) {
-        var squareSize = 40;
+        var squareSize = 10;
         var radius = Math.floor(squareSize / 2);
         var isBorder = 0;
 
