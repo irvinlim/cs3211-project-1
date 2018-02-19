@@ -160,6 +160,11 @@ const createMarkerDetectionRowWise = createStandardKernel(
                         // Return the center x-coordinate of the marker.
                         var totalWidth = px0 + px1 + px2 + px3 + px4;
                         foundMarker = Math.floor(i - totalWidth / 2);
+
+                        // Also encode the estimated size of one cell in the return value for later computation.
+                        var estimatedCellSize = totalWidth / 7;
+                        foundMarker += estimatedCellSize / 1000;
+
                         break;
                     }
                 } else {
@@ -231,6 +236,11 @@ const createMarkerDetectionColWise = createStandardKernel(
                         // Return the center y-coordinate of the marker.
                         var totalWidth = px0 + px1 + px2 + px3 + px4;
                         foundMarker = Math.floor(i - totalWidth / 2);
+
+                        // Also encode the estimated size of one cell in the return value for later computation.
+                        var estimatedCellSize = totalWidth / 7;
+                        foundMarker += estimatedCellSize / 1000;
+
                         break;
                     }
                 } else {
@@ -256,8 +266,8 @@ const createMarkerDetectionColWise = createStandardKernel(
 // Kernel: Combine column- and row-wise computations.
 const createMarkerDetectionCombined = createStandardKernel(
     function(rows, cols) {
-        var col = cols[this.thread.x];
-        var row = rows[this.thread.y];
+        var col = Math.floor(cols[this.thread.x]);
+        var row = Math.floor(rows[this.thread.y]);
 
         if (row > 0 && col > 0 && this.thread.x === row && this.thread.y === col) return 1;
         else return 0;
@@ -276,10 +286,10 @@ const createMarkerDetectionTop = createStandardKernel(
         // Search each row.
         for (var i = 0; i < this.constants.height; i++) {
             // Get the x-coordinate of the marker found in the row.
-            var row = rows[i];
+            var row = Math.floor(rows[i]);
 
             // Get the y-coordinate of the marker that was found at the column corresponding to the row.
-            var col = cols[row];
+            var col = Math.floor(cols[row]);
 
             // Check if the two y-coordinates tally.
             if (row > 0 && col > 0 && col === i) {
@@ -297,11 +307,7 @@ const createMarkerDetectionTop = createStandardKernel(
 
 // Kernel: Homography transformation to get a frontal image of the QR code in a square.
 const createHomographyTransformQrCode = createStandardKernel(
-    function(A, markers) {
-        // Center point of the image.
-        var cx = this.constants.width / 2;
-        var cy = this.constants.height / 2;
-
+    function(A, rows, markers) {
         // Decode the marker positions.
         var m1x = Math.floor(markers[0]);
         var m1y = Math.floor((markers[0] % 1) * 1000 + 0.5);
@@ -309,6 +315,14 @@ const createHomographyTransformQrCode = createStandardKernel(
         var m2y = Math.floor((markers[1] % 1) * 1000 + 0.5);
         var m3x = Math.floor(markers[2]);
         var m3y = Math.floor((markers[2] % 1) * 1000 + 0.5);
+
+        // Decode the estimated cell sizes (stored in floating point).
+        var m1s = (rows[m1y] % 1) * 1000;
+        var m2s = (rows[m2y] % 1) * 1000;
+        var m3s = (rows[m3y] % 1) * 1000;
+
+        // Count the average cell size.
+        var cellSize = (m1s + m2s + m3s) / 3;
 
         // Calculate distances.
         var m1m3 = euclideanDistance(m1x, m1y, m3x, m3y);
@@ -339,6 +353,28 @@ const createHomographyTransformQrCode = createStandardKernel(
         // Estimate the position of the 4th point.
         var m4x = m3x + (m2x - m1x);
         var m4y = m2y + (m3y - m1y);
+
+        // Displace all points by 3.5x cell size, away from the center of the QR code.
+        var mcx = (m2x + m3x) / 2;
+        var mcy = (m2y + m3y) / 2;
+
+        var displace = 3.5 * cellSize;
+        if (m1x < mcx) m1x -= displace;
+        else m1x += displace;
+        if (m2x < mcx) m2x -= displace;
+        else m2x += displace;
+        if (m3x < mcx) m3x -= displace;
+        else m3x += displace;
+        if (m4x < mcx) m4x -= displace;
+        else m4x += displace;
+        if (m1y < mcy) m1y -= displace;
+        else m1y += displace;
+        if (m2y < mcy) m2y -= displace;
+        else m2y += displace;
+        if (m3y < mcy) m3y -= displace;
+        else m3y += displace;
+        if (m4y < mcy) m4y -= displace;
+        else m4y += displace;
 
         if (this.thread.y === 0) {
             if (this.thread.x === 0) return m1x;

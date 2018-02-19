@@ -100,6 +100,7 @@ function renderLoop() {
     // Perform perspective transform on the image based on the markers found.
     const transformedQrCode = getKernel(K.QR_PERSPECTIVE_TRANSFORM)(
         medianFilteredImage,
+        rowWise,
         topMarkerLocations
     );
     console.log(transformedQrCode);
