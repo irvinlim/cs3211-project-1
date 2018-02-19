@@ -109,13 +109,13 @@ const createMedianFilter = createStandardKernel(
 );
 
 // Kernel: Try and detect QR code markers.
-// Output: 1-D array corresponding to each row of the image.
+// Output: 1-D array corresponding to each row/column of the image.
 //         If the value is > 0, then it specifies the location of a possible marker in the row.
 //
 // This approximation algorithm (without knowledge of higher order CV algorithms) is adapted from
 // the sample C++ code at http://aishack.in/tutorials/scanning-qr-codes-2/.
-const createMarkerDetectionRowWise = createStandardKernel(
-    function(A) {
+const createMarkerDetection = createStandardKernel(
+    function(A, columnWise) {
         // Keep track of the current state:
         // QR code marker has this: B > W > B > W > B (1:1:3:1:1 ratio).
         var currState = 0;
@@ -130,9 +130,19 @@ const createMarkerDetectionRowWise = createStandardKernel(
 
         var foundMarker = 0;
 
+        // Iterate either row-wise or column wise.
+        var bounds = this.constants.width;
+        if (columnWise === 1) bounds = this.constants.height;
+
         // Iterate through all pixels in the current row.
-        for (var i = 0; i < this.constants.width; i++) {
-            if (A[this.thread.x][i] === 0) {
+        for (var i = 0; i < bounds; i++) {
+            var pixel;
+
+            // If iterating column-wise, then we get the pixel at the i-th row.
+            if (columnWise === 0) pixel = A[this.thread.x][i];
+            else if (columnWise === 1) pixel = A[i][this.thread.x];
+
+            if (pixel === 0) {
                 // Black pixel
 
                 // Was at white, so we advance the state.
@@ -184,82 +194,7 @@ const createMarkerDetectionRowWise = createStandardKernel(
         output: [height],
         outputToTexture: true,
         functions: { checkQrMarkerRatio },
-    }
-);
-
-// Kernel: Try and detect QR code markers. This time column wise.
-// Make use of previously computed possible marker x-positions for each row
-// and coalesce with those found using this method.
-const createMarkerDetectionColWise = createStandardKernel(
-    function(A) {
-        // Keep track of the current state:
-        // QR code marker has this: B > W > B > W > B (1:1:3:1:1 ratio).
-        var currState = 0;
-
-        // Keep track of pixels counted within each state.
-        // Cannot instantiate dynamic array so we have to do it like this.
-        var px0 = 0;
-        var px1 = 0;
-        var px2 = 0;
-        var px3 = 0;
-        var px4 = 0;
-
-        var foundMarker = 0;
-
-        // Iterate through all pixels in the current row.
-        for (var i = 0; i < this.constants.height; i++) {
-            if (A[i][this.thread.x] === 0) {
-                // Black pixel
-
-                // Was at white, so we advance the state.
-                if (currState === 1 || currState === 3) currState++;
-
-                // Increment the pixel count via poor man's array.
-                if (currState === 2) px2++;
-                if (currState === 4) px4++;
-            } else {
-                // White pixel
-
-                // Handle the case where we have reached the end of the sequence.
-                if (currState === 4) {
-                    // If the ratio is not right, we translate the sequence leftwards by 2 slots,
-                    // and continue iterating.
-                    if (checkQrMarkerRatio(px0, px1, px2, px3, px4) === 0) {
-                        currState = 3;
-                        px0 = px2;
-                        px1 = px3;
-                        px2 = px4;
-                        px3 = 1;
-                        px4 = 0;
-                    } else {
-                        // Otherwise, we have found a possible marker.
-                        // Return the center y-coordinate of the marker.
-                        var totalWidth = px0 + px1 + px2 + px3 + px4;
-                        foundMarker = Math.floor(i - totalWidth / 2);
-
-                        // Also encode the estimated size of one cell in the return value for later computation.
-                        var estimatedCellSize = totalWidth / 7;
-                        foundMarker += estimatedCellSize / 1000;
-
-                        break;
-                    }
-                } else {
-                    // Was at black (and not at end), so we advance the state.
-                    if (currState === 0 || currState === 2) currState++;
-
-                    // Increment the pixel count via poor man's array.
-                    if (currState === 1) px1++;
-                    if (currState === 3) px3++;
-                }
-            }
-        }
-
-        return foundMarker;
-    },
-    {
-        output: [width],
-        outputToTexture: true,
-        functions: { checkQrMarkerRatio },
+        loopMaxIterations: Math.max(width, height),
     }
 );
 

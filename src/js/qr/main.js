@@ -50,8 +50,8 @@ function initialize() {
     addKernel(createReturnNonTexture2D, KC.LEFT_IMAGE, K.CONVERT_TO_ARRAY);
     addKernel(createThresholdingFilter, KC.LEFT_IMAGE, K.THRESHOLD_FILTER);
     addKernel(createMedianFilter, KC.LEFT_IMAGE, K.MEDIAN_FILTER);
-    addKernel(createMarkerDetectionRowWise, KC.LEFT_IMAGE, K.MARKER_DETECTION_ROW_WISE);
-    addKernel(createMarkerDetectionColWise, KC.LEFT_IMAGE, K.MARKER_DETECTION_COL_WISE);
+    addKernel(createMarkerDetection, KC.LEFT_IMAGE, K.MARKER_DETECTION_ROW_WISE);
+    addKernel(createMarkerDetection, KC.LEFT_IMAGE, K.MARKER_DETECTION_COL_WISE);
     addKernel(createMarkerDetectionCombined, KC.LEFT_IMAGE, K.MARKER_DETECTION_COMBINED);
     addKernel(createMarkerDetectionTop, KC.LEFT_IMAGE, K.MARKER_DETECTION_TOP);
     addKernel(createCalculateCorners, KC.LEFT_IMAGE, K.QR_CALCULATE_CORNERS);
@@ -93,8 +93,8 @@ function renderLoop() {
     const medianFilteredImage = getKernel(K.MEDIAN_FILTER)(thresholdedImage, width, height);
 
     // Identify markers.
-    const rowWise = getKernel(K.MARKER_DETECTION_ROW_WISE)(medianFilteredImage);
-    const colWise = getKernel(K.MARKER_DETECTION_COL_WISE)(medianFilteredImage);
+    const rowWise = getKernel(K.MARKER_DETECTION_ROW_WISE)(medianFilteredImage, 0);
+    const colWise = getKernel(K.MARKER_DETECTION_COL_WISE)(medianFilteredImage, 1);
     const markerLocationsCombined = getKernel(K.MARKER_DETECTION_COMBINED)(rowWise, colWise);
     const topMarkers = getKernel(K.MARKER_DETECTION_TOP)(rowWise, colWise);
 
