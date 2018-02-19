@@ -415,8 +415,8 @@ const createPerspectiveWarp = createStandardKernel(
         var moduleSize = Math.floor(this.constants.qrCodeLength / dimension);
 
         // Calculate the number of pixels that is to be sampled within the source image, along both x and y axes.
-        var sampleX = Math.floor((corners[1][0] - corners[0][0]) / dimension);
-        var sampleY = Math.floor((corners[2][1] - corners[0][1]) / dimension);
+        var sampleX = Math.floor(Math.abs(corners[1][0] - corners[0][0]) / dimension);
+        var sampleY = Math.floor(Math.abs(corners[2][1] - corners[0][1]) / dimension);
 
         // Partition the pixels into `dimension` partitions.
         var px = Math.floor(this.thread.x / moduleSize) / dimension;
