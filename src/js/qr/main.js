@@ -3,7 +3,18 @@
 // Constants.
 const height = 300;
 const width = 400;
+const qrCodeLength = 200;
+const qrCodeDimension = 29;
 const channels = 3;
+
+// Set default threshold level for this page.
+getFilterByName('thresholdingFilter').params.filter(
+    param => param.name === 'threshold'
+)[0].value = 0.4;
+
+document.querySelector(
+    'input[data-filter-name=thresholdingFilter][data-param-name=threshold]'
+).value = 0.4;
 
 const KC = {
     LEFT_IMAGE: 'leftImage',
@@ -18,7 +29,9 @@ const K = {
     MARKER_DETECTION_COL_WISE: 'markerDetectionColWise',
     MARKER_DETECTION_COMBINED: 'markerDetectionCombined',
     MARKER_DETECTION_TOP: 'markerDetectionTop',
+    QR_PERSPECTIVE_TRANSFORM: 'perspectiveTransform',
     PLOT_MARKERS: 'plotMarkers',
+    PLOT_POINTS: 'plotPoints',
     RENDER_LEFT: 'renderLeftImage',
     RENDER_LEFT_COLOR: 'renderLeftImageColor',
     RENDER_RIGHT: 'renderRightImage',
@@ -41,7 +54,9 @@ function initialize() {
     addKernel(createMarkerDetectionColWise, KC.LEFT_IMAGE, K.MARKER_DETECTION_COL_WISE);
     addKernel(createMarkerDetectionCombined, KC.LEFT_IMAGE, K.MARKER_DETECTION_COMBINED);
     addKernel(createMarkerDetectionTop, KC.LEFT_IMAGE, K.MARKER_DETECTION_TOP);
+    addKernel(createHomographyTransformQrCode, KC.LEFT_IMAGE, K.QR_PERSPECTIVE_TRANSFORM);
     addKernel(createPlotMarkers, KC.LEFT_IMAGE, K.PLOT_MARKERS);
+    addKernel(createPlotPoints, KC.LEFT_IMAGE, K.PLOT_POINTS);
     addKernel(createRenderColor, KC.LEFT_IMAGE, K.RENDER_LEFT_COLOR, true);
     addKernel(createRenderColor, KC.RIGHT_IMAGE, K.RENDER_RIGHT, true);
 
@@ -80,17 +95,30 @@ function renderLoop() {
     const colWise = getKernel(K.MARKER_DETECTION_COL_WISE)(medianFilteredImage);
     const markerLocationsCombined = getKernel(K.MARKER_DETECTION_COMBINED)(rowWise, colWise);
     const topMarkerLocations = getKernel(K.MARKER_DETECTION_TOP)(rowWise, colWise);
-    console.log(topMarkerLocations);
+    // console.log(topMarkerLocations);
+
+    // Perform perspective transform on the image based on the markers found.
+    const transformedQrCode = getKernel(K.QR_PERSPECTIVE_TRANSFORM)(
+        medianFilteredImage,
+        topMarkerLocations
+    );
+    console.log(transformedQrCode);
 
     // Plot markers on the image.
     const markersPlotted = getKernel(K.PLOT_MARKERS)(thresholdedImage, markerLocationsCombined);
+    const pointsPlotted = getKernel(K.PLOT_POINTS)(markersPlotted, transformedQrCode, [
+        [1, 0, 0],
+        [0, 1, 0],
+        [0, 1, 1],
+        [1, 0, 1],
+    ]);
 
     // Copy the left image so that we can render it later.
     // Note that this is the expensive step as we have to transfer data from GPU back to CPU and back again.
     // const rightImage = getKernel(K.CONVERT_TO_ARRAY)(markersPlotted);
 
     // Render each of the images at each stage.
-    getKernel(K.RENDER_LEFT_COLOR, true)(markersPlotted);
+    getKernel(K.RENDER_LEFT_COLOR, true)(pointsPlotted);
     // getKernel(K.RENDER_RIGHT, true)(markersPlotted);
 
     // Fix canvas sizes.

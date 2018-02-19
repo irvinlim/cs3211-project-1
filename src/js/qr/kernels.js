@@ -23,7 +23,7 @@ const createTransformLinearToXYZ = createStandardKernel(
         var x, y;
 
         // Input image data is y-inverted so we need to read from bottom up.
-        y = 4 * width * (height - this.thread.y - 1);
+        y = 4 * width * this.thread.y;
 
         // Optionally flip the camera if the argument is true.
         if (isCameraFlipped === 0) x = 4 * this.thread.x;
@@ -272,7 +272,6 @@ const createMarkerDetectionCombined = createStandardKernel(
 const createMarkerDetectionTop = createStandardKernel(
     function(rows, cols) {
         var foundMarkers = 0;
-        var errorMargin = 10;
 
         // Search each row.
         for (var i = 0; i < this.constants.height; i++) {
@@ -292,7 +291,97 @@ const createMarkerDetectionTop = createStandardKernel(
     },
     {
         output: [3],
+        outputToTexture: true,
+    }
+);
+
+// Kernel: Homography transformation to get a frontal image of the QR code in a square.
+const createHomographyTransformQrCode = createStandardKernel(
+    function(A, markers) {
+        // Center point of the image.
+        var cx = this.constants.width / 2;
+        var cy = this.constants.height / 2;
+
+        // Decode the marker positions.
+        var m1x = Math.floor(markers[0]);
+        var m1y = Math.floor((markers[0] % 1) * 1000 + 0.5);
+        var m2x = Math.floor(markers[1]);
+        var m2y = Math.floor((markers[1] % 1) * 1000 + 0.5);
+        var m3x = Math.floor(markers[2]);
+        var m3y = Math.floor((markers[2] % 1) * 1000 + 0.5);
+
+        // Calculate distances.
+        var m1m3 = euclideanDistance(m1x, m1y, m3x, m3y);
+        var m1m2 = euclideanDistance(m1x, m1y, m2x, m2y);
+        var m2m3 = euclideanDistance(m2x, m2y, m3x, m3y);
+
+        // Swap markers according to the expected distance between points.
+        // m1m2, m1m3 should be smaller than m2m3.
+        var temp;
+        if (m1m2 > m2m3 && m1m2 > m1m3) {
+            // Swap m1 and m3.
+            temp = m1x;
+            m1x = m3x;
+            m3x = temp;
+            temp = m1y;
+            m1y = m3y;
+            m3y = temp;
+        } else if (m1m3 > m1m2 && m1m3 > m2m3) {
+            // Swap m1 and m2.
+            temp = m1x;
+            m1x = m2x;
+            m2x = temp;
+            temp = m1y;
+            m1y = m2y;
+            m2y = temp;
+        }
+
+        // Estimate the position of the 4th point.
+        var m4x = m3x + (m2x - m1x);
+        var m4y = m2y + (m3y - m1y);
+
+        if (this.thread.y === 0) {
+            if (this.thread.x === 0) return m1x;
+            else return m1y;
+        } else if (this.thread.y === 1) {
+            if (this.thread.x === 0) return m2x;
+            else return m2y;
+        } else if (this.thread.y === 2) {
+            if (this.thread.x === 0) return m3x;
+            else return m3y;
+        } else {
+            if (this.thread.x === 0) return m4x;
+            else return m4y;
+        }
+    },
+    {
+        output: [2, 4],
         outputToTexture: false,
+        functions: { euclideanDistance },
+    }
+);
+
+const createPlotPoints = createStandardKernel(
+    function(A, points, pointColors) {
+        var radius = 2;
+
+        var x = this.thread.x;
+        var y = this.thread.y;
+
+        for (var i = 0; i < 4; i++) {
+            var px = points[i][0];
+            var py = points[i][1];
+
+            if (x > px - radius && x < px + radius && y > py - radius && y < py + radius) {
+                return pointColors[i][this.thread.z];
+            }
+        }
+
+        return A[this.thread.z][this.thread.y][x];
+    },
+    {
+        output: [width, height, channels],
+        outputToTexture: true,
     }
 );
 
@@ -374,9 +463,9 @@ const createReturnNonTexture2D = createStandardKernel(
 // Input:  3-D array (3 channels)
 const createRenderColor = createStandardKernel(
     function(A) {
-        var r = A[0][this.thread.y][this.thread.x];
-        var g = A[1][this.thread.y][this.thread.x];
-        var b = A[2][this.thread.y][this.thread.x];
+        var r = A[0][this.constants.height - 1 - this.thread.y][this.thread.x];
+        var g = A[1][this.constants.height - 1 - this.thread.y][this.thread.x];
+        var b = A[2][this.constants.height - 1 - this.thread.y][this.thread.x];
 
         this.color(r, g, b, 1);
     },
@@ -390,7 +479,7 @@ const createRenderColor = createStandardKernel(
 // Input:  2-D array (1 channel)
 const createRenderGreyscale = createStandardKernel(
     function(A) {
-        var value = A[this.thread.y][this.thread.x];
+        var value = A[this.constants.height - 1 - this.thread.y][this.thread.x];
         this.color(value, value, value, 1);
     },
     {
@@ -408,7 +497,13 @@ const createRenderGreyscale = createStandardKernel(
 function checkQrMarkerRatio(px0, px1, px2, px3, px4) {
     var totalWidth = px0 + px1 + px2 + px3 + px4;
     var cellSize = Math.ceil(totalWidth / 7);
-    var allowedVariance = Math.floor(cellSize / 2);
+    var allowedVariance = Math.floor(2 * cellSize / 3);
+    var minWidth = 14;
+
+    // Reject if total width is less than minimum width.
+    if (totalWidth < minWidth) {
+        return 0;
+    }
 
     // Calculate differences from expected.
     var d0 = Math.abs(cellSize - px0);
@@ -430,6 +525,14 @@ function checkQrMarkerRatio(px0, px1, px2, px3, px4) {
     }
 }
 
+// Calculates the simple Euclidean distance between two points.
+// Uses Pythagoras' theorem.
+function euclideanDistance(x1, y1, x2, y2) {
+    var dx = Math.abs(x2 - x1);
+    var dy = Math.abs(y2 - y1);
+    return Math.sqrt(dx * dx + dy * dy);
+}
+
 /// ----------------------
 /// END KERNEL DEFINITIONS
 /// ----------------------
@@ -440,6 +543,8 @@ function createStandardKernel(kernelFunc, options) {
             isGpuMode: mode === 'gpu' ? 1 : 0,
             width,
             height,
+            qrCodeLength,
+            qrCodeDimension,
             squareSize: 10,
             PI: Math.PI,
             E: Math.E,
