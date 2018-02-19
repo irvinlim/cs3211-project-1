@@ -399,8 +399,53 @@ const createCalculateCorners = createStandardKernel(
     },
     {
         output: [2, 4],
-        outputToTexture: true,
+        outputToTexture: false,
         functions: { euclideanDistance },
+    }
+);
+
+// Kernel: Perform perspective warp on the image to return the QR code in a square.
+// Actually, this is more of an affine transformation which works because all edges are parallel.
+const createPerspectiveWarp = createStandardKernel(
+    function(A, corners, dimension) {
+        // Don't display anything if we don't have enough corners.
+        for (var i = 0; i < 4; i++) if (corners[i][0] <= 0 || corners[i][1] <= 0) return 1;
+
+        // Calculate the size of each module that is to be rendered.
+        var moduleSize = Math.floor(this.constants.qrCodeLength / dimension);
+
+        // Calculate the number of pixels that is to be sampled within the source image, along both x and y axes.
+        var sampleX = Math.floor((corners[1][0] - corners[0][0]) / dimension);
+        var sampleY = Math.floor((corners[2][1] - corners[0][1]) / dimension);
+
+        // Partition the pixels into `dimension` partitions.
+        var px = Math.floor(this.thread.x / moduleSize) / dimension;
+        var py = Math.floor(this.thread.y / moduleSize) / dimension;
+
+        // Get the coordinates of the origin of the partition.
+        var x =
+            corners[0][0] +
+            (corners[1][0] - corners[0][0]) * px +
+            (corners[2][0] - corners[0][0]) * py;
+        var y =
+            corners[0][1] +
+            (corners[2][1] - corners[0][1]) * py +
+            (corners[3][1] - corners[2][1]) * px;
+
+        // Take the average of all colors within the pixels in the partition.
+        var sum = 0;
+        for (var i = 0; i < sampleY; i++) {
+            for (var j = 0; j < sampleX; j++) {
+                sum += A[y + i][x + j];
+            }
+        }
+
+        return Math.floor(sum / (sampleX * sampleY) + 0.5);
+    },
+    {
+        output: [qrCodeLength, qrCodeLength],
+        outputToTexture: true,
+        loopMaxIterations: 1000,
     }
 );
 
@@ -534,6 +579,19 @@ const createRenderGreyscale = createStandardKernel(
     },
     {
         output: [width, height],
+        graphical: true,
+    }
+);
+
+// Kernel: Render images in greyscale.
+// Input:  2-D array (1 channel)
+const createRenderQrCode = createStandardKernel(
+    function(A) {
+        var value = A[this.constants.qrCodeLength - 1 - this.thread.y][this.thread.x];
+        this.color(value, value, value, 1);
+    },
+    {
+        output: [qrCodeLength, qrCodeLength],
         graphical: true,
     }
 );

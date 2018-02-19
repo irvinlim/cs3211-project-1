@@ -1,9 +1,9 @@
 'use strict';
 
 // Constants.
-const height = 300;
-const width = 400;
-const qrCodeLength = 200;
+const height = 450;
+const width = 600;
+const qrCodeLength = 203;
 const qrCodeDimension = 29;
 const channels = 3;
 
@@ -30,11 +30,12 @@ const K = {
     MARKER_DETECTION_COMBINED: 'markerDetectionCombined',
     MARKER_DETECTION_TOP: 'markerDetectionTop',
     QR_CALCULATE_CORNERS: 'calculateCorners',
+    QR_PERSPECTIVE_WARP: 'perspectiveWarp',
     PLOT_MARKERS: 'plotMarkers',
     PLOT_POINTS: 'plotPoints',
     RENDER_LEFT: 'renderLeftImage',
     RENDER_LEFT_COLOR: 'renderLeftImageColor',
-    RENDER_RIGHT: 'renderRightImage',
+    RENDER_QR_CODE: 'renderQrCode',
     CONVERT_TO_ARRAY: 'convertToArray',
 };
 
@@ -49,20 +50,21 @@ function initialize() {
     addKernel(createReturnNonTexture2D, KC.LEFT_IMAGE, K.CONVERT_TO_ARRAY);
     addKernel(createThresholdingFilter, KC.LEFT_IMAGE, K.THRESHOLD_FILTER);
     addKernel(createMedianFilter, KC.LEFT_IMAGE, K.MEDIAN_FILTER);
-    addKernel(createRenderGreyscale, KC.LEFT_IMAGE, K.RENDER_LEFT, true);
     addKernel(createMarkerDetectionRowWise, KC.LEFT_IMAGE, K.MARKER_DETECTION_ROW_WISE);
     addKernel(createMarkerDetectionColWise, KC.LEFT_IMAGE, K.MARKER_DETECTION_COL_WISE);
     addKernel(createMarkerDetectionCombined, KC.LEFT_IMAGE, K.MARKER_DETECTION_COMBINED);
     addKernel(createMarkerDetectionTop, KC.LEFT_IMAGE, K.MARKER_DETECTION_TOP);
     addKernel(createCalculateCorners, KC.LEFT_IMAGE, K.QR_CALCULATE_CORNERS);
+    addKernel(createPerspectiveWarp, KC.RIGHT_IMAGE, K.QR_PERSPECTIVE_WARP);
     addKernel(createPlotMarkers, KC.LEFT_IMAGE, K.PLOT_MARKERS);
     addKernel(createPlotPoints, KC.LEFT_IMAGE, K.PLOT_POINTS);
+    addKernel(createRenderGreyscale, KC.LEFT_IMAGE, K.RENDER_LEFT, true);
     addKernel(createRenderColor, KC.LEFT_IMAGE, K.RENDER_LEFT_COLOR, true);
-    addKernel(createRenderColor, KC.RIGHT_IMAGE, K.RENDER_RIGHT, true);
+    addKernel(createRenderQrCode, KC.RIGHT_IMAGE, K.RENDER_QR_CODE, true);
 
     // Create canvases for CPU and GPU for each of the renderGraphical kernels.
-    createCanvas(K.RENDER_LEFT, '.canvas-wrapper.original');
-    createCanvas(K.RENDER_RIGHT, '.canvas-wrapper.thresholded');
+    createCanvas(K.RENDER_LEFT, '.canvas-wrapper.original', width, height);
+    createCanvas(K.RENDER_QR_CODE, '.canvas-wrapper.thresholded', qrCodeLength, qrCodeLength);
 }
 
 addEventListener('DOMContentLoaded', initialize);
@@ -99,7 +101,16 @@ function renderLoop() {
     // Calculate the corners of the QR code.
     const calculatedCorners = getKernel(K.QR_CALCULATE_CORNERS)(rowWise, colWise, topMarkers);
 
+    // Copy the left image so that we can render it later.
+    // Note that this is the expensive step as we have to transfer data from GPU back to CPU and back again.
+    const medianFilteredImageCopy = getKernel(K.CONVERT_TO_ARRAY)(medianFilteredImage);
+
     // Perform perspective transform on the image based on the markers found.
+    const warpedQrCode = getKernel(K.QR_PERSPECTIVE_WARP)(
+        medianFilteredImageCopy,
+        calculatedCorners,
+        qrCodeDimension
+    );
 
     // Plot markers on the image.
     const markersPlotted = getKernel(K.PLOT_MARKERS)(thresholdedImage, markerLocationsCombined);
@@ -110,30 +121,26 @@ function renderLoop() {
         [1, 0, 1],
     ]);
 
-    // Copy the left image so that we can render it later.
-    // Note that this is the expensive step as we have to transfer data from GPU back to CPU and back again.
-    // const rightImage = getKernel(K.CONVERT_TO_ARRAY)(markersPlotted);
-
     // Render each of the images at each stage.
     getKernel(K.RENDER_LEFT_COLOR, true)(pointsPlotted);
-    // getKernel(K.RENDER_RIGHT, true)(markersPlotted);
+    getKernel(K.RENDER_QR_CODE, true)(warpedQrCode);
 
     // Fix canvas sizes.
-    setCanvasSize(K.RENDER_LEFT, '.canvas-wrapper.original');
-    setCanvasSize(K.RENDER_RIGHT, '.canvas-wrapper.thresholded');
+    setCanvasSize(K.RENDER_LEFT, width, height);
+    setCanvasSize(K.RENDER_QR_CODE, qrCodeLength, qrCodeLength);
 
     // Request next frame to render.
     state.renderLoopRequestId = requestAnimationFrame(renderLoop);
 }
 
-function createCanvas(kernelName, containerSelector) {
+function createCanvas(kernelName, containerSelector, width, height) {
     const canvas = kernels.gpu[kernelName].getCanvas();
     document.querySelector(containerSelector).appendChild(canvas);
     canvas.width = width;
     canvas.height = height;
 }
 
-function setCanvasSize(kernelName) {
+function setCanvasSize(kernelName, width, height) {
     const canvas = getKernel(kernelName, true).getCanvas();
     canvas.width = width;
     canvas.height = height;
