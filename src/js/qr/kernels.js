@@ -298,6 +298,8 @@ const createMarkerDetectionTop = createStandardKernel(
                 else foundMarkers++;
             }
         }
+
+        return 0;
     },
     {
         output: [3],
@@ -305,9 +307,9 @@ const createMarkerDetectionTop = createStandardKernel(
     }
 );
 
-// Kernel: Homography transformation to get a frontal image of the QR code in a square.
-const createHomographyTransformQrCode = createStandardKernel(
-    function(A, rows, markers) {
+// Kernel: Calculate the corners of the QR code square.
+const createCalculateCorners = createStandardKernel(
+    function(rows, cols, markers) {
         // Decode the marker positions.
         var m1x = Math.floor(markers[0]);
         var m1y = Math.floor((markers[0] % 1) * 1000 + 0.5);
@@ -315,6 +317,11 @@ const createHomographyTransformQrCode = createStandardKernel(
         var m2y = Math.floor((markers[1] % 1) * 1000 + 0.5);
         var m3x = Math.floor(markers[2]);
         var m3y = Math.floor((markers[2] % 1) * 1000 + 0.5);
+
+        // Just return 0 if we don't have enough markers.
+        if (m1x === 0 || m1y === 0 || m2x === 0 || m2y === 0 || m3x === 0 || m3y === 0) {
+            return 0;
+        }
 
         // Decode the estimated cell sizes (stored in floating point).
         var m1s = (rows[m1y] % 1) * 1000;
@@ -392,7 +399,7 @@ const createHomographyTransformQrCode = createStandardKernel(
     },
     {
         output: [2, 4],
-        outputToTexture: false,
+        outputToTexture: true,
         functions: { euclideanDistance },
     }
 );
@@ -408,7 +415,14 @@ const createPlotPoints = createStandardKernel(
             var px = points[i][0];
             var py = points[i][1];
 
-            if (x > px - radius && x < px + radius && y > py - radius && y < py + radius) {
+            if (
+                px > 0 &&
+                py > 0 &&
+                x > px - radius &&
+                x < px + radius &&
+                y > py - radius &&
+                y < py + radius
+            ) {
                 return pointColors[i][this.thread.z];
             }
         }

@@ -29,7 +29,7 @@ const K = {
     MARKER_DETECTION_COL_WISE: 'markerDetectionColWise',
     MARKER_DETECTION_COMBINED: 'markerDetectionCombined',
     MARKER_DETECTION_TOP: 'markerDetectionTop',
-    QR_PERSPECTIVE_TRANSFORM: 'perspectiveTransform',
+    QR_CALCULATE_CORNERS: 'calculateCorners',
     PLOT_MARKERS: 'plotMarkers',
     PLOT_POINTS: 'plotPoints',
     RENDER_LEFT: 'renderLeftImage',
@@ -54,7 +54,7 @@ function initialize() {
     addKernel(createMarkerDetectionColWise, KC.LEFT_IMAGE, K.MARKER_DETECTION_COL_WISE);
     addKernel(createMarkerDetectionCombined, KC.LEFT_IMAGE, K.MARKER_DETECTION_COMBINED);
     addKernel(createMarkerDetectionTop, KC.LEFT_IMAGE, K.MARKER_DETECTION_TOP);
-    addKernel(createHomographyTransformQrCode, KC.LEFT_IMAGE, K.QR_PERSPECTIVE_TRANSFORM);
+    addKernel(createCalculateCorners, KC.LEFT_IMAGE, K.QR_CALCULATE_CORNERS);
     addKernel(createPlotMarkers, KC.LEFT_IMAGE, K.PLOT_MARKERS);
     addKernel(createPlotPoints, KC.LEFT_IMAGE, K.PLOT_POINTS);
     addKernel(createRenderColor, KC.LEFT_IMAGE, K.RENDER_LEFT_COLOR, true);
@@ -94,20 +94,16 @@ function renderLoop() {
     const rowWise = getKernel(K.MARKER_DETECTION_ROW_WISE)(medianFilteredImage);
     const colWise = getKernel(K.MARKER_DETECTION_COL_WISE)(medianFilteredImage);
     const markerLocationsCombined = getKernel(K.MARKER_DETECTION_COMBINED)(rowWise, colWise);
-    const topMarkerLocations = getKernel(K.MARKER_DETECTION_TOP)(rowWise, colWise);
-    // console.log(topMarkerLocations);
+    const topMarkers = getKernel(K.MARKER_DETECTION_TOP)(rowWise, colWise);
+
+    // Calculate the corners of the QR code.
+    const calculatedCorners = getKernel(K.QR_CALCULATE_CORNERS)(rowWise, colWise, topMarkers);
 
     // Perform perspective transform on the image based on the markers found.
-    const transformedQrCode = getKernel(K.QR_PERSPECTIVE_TRANSFORM)(
-        medianFilteredImage,
-        rowWise,
-        topMarkerLocations
-    );
-    console.log(transformedQrCode);
 
     // Plot markers on the image.
     const markersPlotted = getKernel(K.PLOT_MARKERS)(thresholdedImage, markerLocationsCombined);
-    const pointsPlotted = getKernel(K.PLOT_POINTS)(markersPlotted, transformedQrCode, [
+    const pointsPlotted = getKernel(K.PLOT_POINTS)(markersPlotted, calculatedCorners, [
         [1, 0, 0],
         [0, 1, 0],
         [0, 1, 1],
