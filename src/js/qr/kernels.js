@@ -274,21 +274,20 @@ const createMarkerDetectionTop = createStandardKernel(
         var foundMarkers = 0;
         var errorMargin = 10;
 
-        // Search rows.
+        // Search each row.
         for (var i = 0; i < this.constants.height; i++) {
+            // Get the x-coordinate of the marker found in the row.
             var row = rows[i];
+
+            // Get the y-coordinate of the marker that was found at the column corresponding to the row.
             var col = cols[row];
 
+            // Check if the two y-coordinates tally.
             if (row > 0 && col > 0 && col === i) {
                 // Hack to encode 2 numbers into 1. Still works in 32-bits because the size of the canvas is small.
                 if (foundMarkers === this.thread.x) return row + col / 1000;
                 else foundMarkers++;
             }
-        }
-
-        // Search columns.
-        for (var j = 0; j < this.constants.width; j++) {
-            var col = cols[j];
         }
     },
     {
