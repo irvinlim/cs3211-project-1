@@ -52,8 +52,8 @@ function initialize() {
     addKernel(createReturnNonTexture2D, KC.LEFT_IMAGE, K.CONVERT_TO_ARRAY);
     addKernel(createThresholdingFilter, KC.LEFT_IMAGE, K.THRESHOLD_FILTER);
     addKernel(createMedianFilter, KC.LEFT_IMAGE, K.MEDIAN_FILTER);
-    addKernel(createMarkerDetection, KC.LEFT_IMAGE, K.MARKER_DETECTION_ROW_WISE);
-    addKernel(createMarkerDetection, KC.LEFT_IMAGE, K.MARKER_DETECTION_COL_WISE);
+    addKernel(createMarkerDetectionRowWise, KC.LEFT_IMAGE, K.MARKER_DETECTION_ROW_WISE);
+    addKernel(createMarkerDetectionColWise, KC.LEFT_IMAGE, K.MARKER_DETECTION_COL_WISE);
     addKernel(createMarkerDetectionCombined, KC.LEFT_IMAGE, K.MARKER_DETECTION_COMBINED);
     addKernel(createMarkerDetectionTop, KC.LEFT_IMAGE, K.MARKER_DETECTION_TOP);
     addKernel(createCalculateCorners, KC.LEFT_IMAGE, K.QR_CALCULATE_CORNERS);
