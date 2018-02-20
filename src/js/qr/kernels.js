@@ -173,7 +173,9 @@ function markerDetectionKernel(A, columnWise) {
                     // Otherwise, we have found a possible marker.
                     // Return the center x-coordinate of the marker.
                     var totalWidth = px0 + px1 + px2 + px3 + px4;
-                    foundMarker = Math.floor(i - totalWidth / 2);
+
+                    if (this.thread.y === 0) foundMarker = Math.floor(j - totalWidth / 2);
+                    else if (this.thread.y === 1) foundMarker = Math.floor(j + totalWidth / 2);
 
                     // Also encode the estimated size of one cell in the return value for later computation.
                     var estimatedCellSize = totalWidth / 7;
