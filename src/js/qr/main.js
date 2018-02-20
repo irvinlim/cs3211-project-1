@@ -10,12 +10,13 @@ const channels = 3;
 const plotPointColors = [[1, 0, 0], [0, 1, 0], [0, 1, 1], [1, 0, 1]];
 
 // Set default threshold level for this page.
+const defaultThresholdLevel = 0.5;
+
 const thresholdFilter = getFilterByName('thresholdingFilter');
 const thresholdParam = thresholdFilter.params.filter(p => p.name === 'threshold')[0];
-thresholdParam.value = 0.4;
-
+thresholdParam.value = defaultThresholdLevel;
 const thresholdInput = 'input[data-filter-name=thresholdingFilter][data-param-name=threshold]';
-document.querySelector(thresholdInput).value = 0.4;
+document.querySelector(thresholdInput).value = defaultThresholdLevel;
 
 const KC = {
     LEFT_IMAGE: 'leftImage',

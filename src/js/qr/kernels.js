@@ -296,11 +296,13 @@ const createCalculateCorners = createStandardKernel(
         var m4x = m3x + (m2x - m1x);
         var m4y = m2y + (m3y - m1y);
 
-        // Displace all points by 3.5x cell size, away from the center of the QR code.
+        // Calculate the center point of the QR code, which is the middle of the m2m3 line segment.
         var mcx = (m2x + m3x) / 2;
         var mcy = (m2y + m3y) / 2;
 
+        // Displace all points by 3.5x cell size, away from the center of the QR code.
         var displace = 3.5 * cellSize;
+
         if (m1x < mcx) m1x -= displace;
         else m1x += displace;
         if (m2x < mcx) m2x -= displace;
