@@ -19,15 +19,15 @@ const kernels = {
 //         Values are from 0 to 255.
 // Output: 2-D array (2 channels).
 const createTransformLinearToXYZ = createStandardKernel(
-    function(imageData, width, height, isCameraFlipped) {
+    function(imageData, isCameraFlipped) {
         var x, y;
 
         // Input image data is y-inverted so we need to read from bottom up.
-        y = 4 * width * this.thread.y;
+        y = 4 * this.constants.width * this.thread.y;
 
         // Optionally flip the camera if the argument is true.
         if (isCameraFlipped === 0) x = 4 * this.thread.x;
-        else x = 4 * (width - this.thread.x);
+        else x = 4 * (this.constants.width - this.thread.x);
 
         // Convert RGB to greyscale using luminance formula.
         var r = imageData[x + y];
@@ -87,7 +87,7 @@ const createThresholdingFilter = createStandardKernel(
 
 // Kernel: Median filter (window size = 3)
 const createMedianFilter = createStandardKernel(
-    function(A, width, height) {
+    function(A) {
         var left, mid, right;
 
         if (this.thread.x <= 0) left = A[this.thread.y][this.thread.x];
@@ -95,7 +95,7 @@ const createMedianFilter = createStandardKernel(
 
         mid = A[this.thread.y][this.thread.x];
 
-        if (this.thread.x >= width - 1) right = A[this.thread.y][this.thread.x];
+        if (this.thread.x >= this.constants.width - 1) right = A[this.thread.y][this.thread.x];
         else right = A[this.thread.y][this.thread.x + 1];
 
         if (left >= mid && left >= right) return left;
@@ -121,11 +121,11 @@ function markerDetectionKernel(A, columnWise) {
 
     // Keep track of pixels counted within each state.
     // Cannot instantiate dynamic array so we have to do it like this.
-    var px0 = 0;
-    var px1 = 0;
-    var px2 = 0;
-    var px3 = 0;
-    var px4 = 0;
+    var px0 = 0,
+        px1 = 0,
+        px2 = 0,
+        px3 = 0,
+        px4 = 0;
 
     var foundMarker = 0;
 
@@ -235,13 +235,19 @@ const createMarkerDetectionTop = createStandardKernel(
         var foundMarkers = 0;
 
         // Search each row.
-        for (var k = 0; k < 2; k++) {
-            for (var i = 0; i < this.constants.height; i++) {
+        for (var i = 0; i < this.constants.height; i++) {
+            // Search each row for markers found from both left and right.
+            for (var k = 0; k < 2; k++) {
                 // Get the x-coordinate of the marker found in the row.
                 var row = Math.floor(rows[k][i]);
 
                 // Get the y-coordinate of the marker that was found at the column corresponding to the row.
                 var col = Math.floor(cols[k][row]);
+
+                // Don't duplicate if it was found in the other direction.
+                if (k === 1 && Math.floor(rows[0][i]) === row && Math.floor(cols[0][row]) === col) {
+                    continue;
+                }
 
                 // Check if the two y-coordinates tally.
                 if (row > 0 && col > 0 && col === i) {
@@ -257,6 +263,7 @@ const createMarkerDetectionTop = createStandardKernel(
     {
         output: [3],
         outputToTexture: true,
+        loopMaxIterations: height * 2,
     }
 );
 
@@ -425,11 +432,12 @@ const createPlotPoints = createStandardKernel(
             }
         }
 
-        return A[this.thread.z][this.thread.y][x];
+        return A[this.thread.y][x];
     },
     {
         output: [width, height, channels],
         outputToTexture: true,
+        loopMaxIterations: 4,
     }
 );
 

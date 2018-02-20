@@ -79,12 +79,8 @@ function renderLoop() {
     const imageData = fetchVideoImageData();
 
     // Transform linear image data into 3-D array for proper computation.
-    const originalImage = getKernel(K.TRANSFORM_IMAGE_DATA)(
-        imageData,
-        width,
-        height,
-        state.isCameraFlipped ? 1 : 0
-    );
+    const cameraFlipped = state.isCameraFlipped ? 1 : 0;
+    const originalImage = getKernel(K.TRANSFORM_IMAGE_DATA)(imageData, cameraFlipped);
 
     // Threshold the original image.
     const thresholdFilterState = getFilterByName('thresholdingFilter');
@@ -92,16 +88,21 @@ function renderLoop() {
     const thresholdedImage = getKernel(K.THRESHOLD_FILTER)(originalImage, thresholdLevel, 0);
 
     // Apply median filter to remove artifacts after thresholding.
-    const medianFilteredImage = getKernel(K.MEDIAN_FILTER)(thresholdedImage, width, height);
+    const medianFilteredImage = getKernel(K.MEDIAN_FILTER)(thresholdedImage);
 
     // Identify markers.
     const rowWise = getKernel(K.MARKER_DETECTION_ROW_WISE)(medianFilteredImage, 0);
     const colWise = getKernel(K.MARKER_DETECTION_COL_WISE)(medianFilteredImage, 1);
-    const markerLocationsCombined = getKernel(K.MARKER_DETECTION_COMBINED)(rowWise, colWise);
     const topMarkers = getKernel(K.MARKER_DETECTION_TOP)(rowWise, colWise);
 
     // Calculate the corners of the QR code.
     const corners = getKernel(K.QR_CALCULATE_CORNERS)(rowWise, colWise, topMarkers);
+
+    // Plot the corners of the QR code on the image.
+    const pointsPlotted = getKernel(K.PLOT_POINTS)(medianFilteredImage, corners, plotPointColors);
+
+    // const markerLocationsCombined = getKernel(K.MARKER_DETECTION_COMBINED)(rowWise, colWise);
+    // const markersPlotted = getKernel(K.PLOT_MARKERS)(thresholdedImage, markerLocationsCombined);
 
     // Copy the left image so that we can render it later.
     // Note that this is the expensive step as we have to transfer data from GPU back to CPU and back again.
@@ -109,10 +110,6 @@ function renderLoop() {
 
     // Perform perspective transform on the image based on the markers found.
     const warpedQrCode = getKernel(K.QR_PERSPECTIVE_WARP)(leftImageCopy, corners, qrCodeDimension);
-
-    // Plot markers on the image.
-    const markersPlotted = getKernel(K.PLOT_MARKERS)(thresholdedImage, markerLocationsCombined);
-    const pointsPlotted = getKernel(K.PLOT_POINTS)(markersPlotted, corners, plotPointColors);
 
     // Render each of the images at each stage.
     getKernel(K.RENDER_LEFT_COLOR, true)(pointsPlotted);
