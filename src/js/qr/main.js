@@ -107,15 +107,18 @@ function renderLoop() {
     // const markerLocationsCombined = getKernel(K.MARKER_DETECTION_COMBINED)(rowWise, colWise);
     // const markersPlotted = getKernel(K.PLOT_MARKERS)(thresholdedImage, markerLocationsCombined);
 
-    // // Copy the left image so that we can render it later.
-    // // Note that this is the expensive step as we have to transfer data from GPU back to CPU and back again.
-    // const leftImageCopy = getKernel(K.CONVERT_TO_ARRAY)(filteredImage);
+    // Render the QR code in the 2nd canvas if enabled.
+    if (state.isOutputQrCodeEnabled) {
+        // Copy the left image so that we can render it later.
+        // Note that this is the expensive step as we have to transfer data from GPU back to CPU and back again.
+        const leftImageCopy = getKernel(K.CONVERT_TO_ARRAY)(filteredImage);
 
-    // // Perform perspective transform on the image based on the markers found.
-    // const warpedQrCode = getKernel(K.QR_PERSPECTIVE_WARP)(leftImageCopy, corners, qrCodeDimension);
+        // Perform perspective transform on the image based on the markers found.
+        const warpedQrCode = getKernel(K.QR_PERSPECTIVE_WARP)(leftImageCopy, corners, qrCodeDimension);
 
-    // // Render the extracted QR code.
-    // getKernel(K.RENDER_QR_CODE, true)(warpedQrCode);
+        // Render the extracted QR code.
+        getKernel(K.RENDER_QR_CODE, true)(warpedQrCode);
+    }
 
     // Fix canvas sizes.
     setCanvasSize(K.RENDER_LEFT, width, height);

@@ -6,6 +6,7 @@ var state = {
     isVideoStarted: false,
     isCameraFlipped: false,
     isGpuMode: true,
+    isOutputQrCodeEnabled: false,
     filters: [
         {
             name: 'gaussianFilter',

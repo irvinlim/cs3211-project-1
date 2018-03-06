@@ -78,6 +78,16 @@ function toggleCameraFlipped(el) {
     toggleElement(el, state.isCameraFlipped, labels, classNames);
 }
 
+// Changes whether QR code output is enabled.
+function toggleOutputQrCode(el) {
+    const labels = ['No', 'Yes'];
+    const classNames = ['', ''];
+
+    // Toggle state and update element.
+    state.isOutputQrCodeEnabled = !state.isOutputQrCodeEnabled;
+    toggleElement(el, state.isOutputQrCodeEnabled, labels, classNames);
+}
+
 function hideNotification(el) {
     const notification = document.querySelector('.notification');
     notification.parentNode.removeChild(notification);
