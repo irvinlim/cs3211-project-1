@@ -402,8 +402,8 @@ const createPerspectiveWarp = createStandardKernel(
         var py = Math.floor(this.thread.y / moduleSize) / dimension;
 
         // Get the coordinates of the origin of the partition.
-        var x = corners[0][0] + (corners[1][0] - corners[0][0]) * px + (corners[2][0] - corners[0][0]) * py;
-        var y = corners[0][1] + (corners[2][1] - corners[0][1]) * py + (corners[3][1] - corners[2][1]) * px;
+        var x = Math.floor(corners[0][0] + (corners[1][0] - corners[0][0]) * px + (corners[2][0] - corners[0][0]) * py);
+        var y = Math.floor(corners[0][1] + (corners[2][1] - corners[0][1]) * py + (corners[3][1] - corners[2][1]) * px);
 
         // Take the average of all colors within the pixels in the partition.
         var sum = 0;
