@@ -207,7 +207,26 @@ const createLightTunnelFilter = createStandardKernel(function(A, radius) {
         return A[this.thread.z][this.thread.y][this.thread.x];
     } else {
         // Otherwise, get the pixel at the border of the circle, using trigonometry.
-        var angle = Math.atan(midpointY - this.thread.y, midpointX - this.thread.x);
+        var opp = midpointY - this.thread.y;
+        var adj = midpointX - this.thread.x;
+        var angle;
+
+        if (adj > 0) {
+            angle = Math.atan(opp / adj);
+        } else if (adj < 0) {
+            if (opp >= 0) {
+                angle = Math.atan(opp / adj) + this.constants.PI;
+            } else {
+                angle = Math.atan(opp / adj) - this.constants.PI;
+            }
+        } else {
+            if (opp > 0) {
+                angle = this.constants.PI / 2;
+            } else {
+                angle = this.constants.PI / -2;
+            }
+        }
+
         var x = midpointX - Math.floor(radius * Math.cos(angle));
         var y = midpointY - Math.floor(radius * Math.sin(angle));
 
