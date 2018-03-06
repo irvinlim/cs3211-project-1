@@ -127,11 +127,7 @@ const createGaussianFilter = createStandardKernel(
 
 // Kernel: Thresholding filter
 const createThresholdingFilter = createStandardKernel(function(A, threshold, mode) {
-    var brightness =
-        (A[0][this.thread.y][this.thread.x] +
-            A[1][this.thread.y][this.thread.x] +
-            A[2][this.thread.y][this.thread.x]) /
-        3;
+    var brightness = (A[0][this.thread.y][this.thread.x] + A[1][this.thread.y][this.thread.x] + A[2][this.thread.y][this.thread.x]) / 3;
 
     // THRESH_BINARY
     if (mode === 0) {
@@ -204,34 +200,27 @@ const createLightTunnelFilter = createStandardKernel(function(A, radius) {
 
     // Calculate Pythagorean distance (squared to avoid costly sqrt).
     var radiusSquared = radius * radius;
-    var distSquared =
-        (this.thread.x - midpointX) * (this.thread.x - midpointX) +
-        (this.thread.y - midpointY) * (this.thread.y - midpointY);
+    var distSquared = (this.thread.x - midpointX) * (this.thread.x - midpointX) + (this.thread.y - midpointY) * (this.thread.y - midpointY);
 
     // Return actual pixel if it falls within the circle.
     if (distSquared <= radiusSquared) {
         return A[this.thread.z][this.thread.y][this.thread.x];
+    } else {
+        // Otherwise, get the pixel at the border of the circle, using trigonometry.
+        var angle = Math.atan(midpointY - this.thread.y, midpointX - this.thread.x);
+        var x = midpointX - Math.floor(radius * Math.cos(angle));
+        var y = midpointY - Math.floor(radius * Math.sin(angle));
+
+        // Return the new pixel.
+        return A[this.thread.z][y][x];
     }
-
-    // Otherwise, get the pixel at the border of the circle, using trigonometry.
-    var angle = Math.atan(midpointY - this.thread.y, midpointX - this.thread.x);
-    var x = midpointX - Math.floor(radius * Math.cos(angle));
-    var y = midpointY - Math.floor(radius * Math.sin(angle));
-
-    // Return the new pixel.
-    return A[this.thread.z][y][x];
 });
 
 // Kernel: Renders a 3-D array into a 2-D graphic array via a Canvas.
 const createRenderGraphical = mode =>
     getKernelCreator(mode)
         .createKernel(function(A) {
-            this.color(
-                A[0][this.thread.y][this.thread.x],
-                A[1][this.thread.y][this.thread.x],
-                A[2][this.thread.y][this.thread.x],
-                1
-            );
+            this.color(A[0][this.thread.y][this.thread.x], A[1][this.thread.y][this.thread.x], A[2][this.thread.y][this.thread.x], 1);
         })
         .setGraphical(true)
         .setOutput([width, height]);
