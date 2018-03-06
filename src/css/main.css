@@ -22,6 +22,11 @@ main {
     align-items: flex-start;
 }
 
+.panel-block.sortable-dragging {
+    background-color: white;
+    border-top: 1px solid #dbdbdb;
+}
+
 .panel .panel-icon {
     height: 36px;
     display: flex;
