@@ -108,7 +108,10 @@
                 <div class="notification">
                     <button class="delete" onclick="hideNotification(this);"></button>
                     <p>Click "Start" to start streaming from your device's camera.</p>
-                    <p>Any QR codes that are detected in the image will be highlighted and decoded.</p>
+                    <p>Any QR codes that are detected in the image will be highlighted with a red bounding box.</p>
+                    <br>
+                    <p>If "Output QR Code" is enabled, the program will attempt to extract the pixels from a 29x29 QR code.
+                        Note that the performance significantly decreases due to the extra canvas that has to be rendered.</p>
                 </div>
 
                 <div class="row">
@@ -120,8 +123,8 @@
                     </div>
 
                     <div class="columns">
-                        <div class="column canvas-wrapper original"></div>
-                        <div class="column canvas-wrapper thresholded"></div>
+                        <div class="column canvas-wrapper left"></div>
+                        <div class="column canvas-wrapper right"></div>
                     </div>
 
                     <video hidden id="video" width="800" height="600" playsinline autoplay muted></video>

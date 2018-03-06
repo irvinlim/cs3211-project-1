@@ -7,16 +7,9 @@ const qrCodeLength = 203;
 const qrCodeDimension = 29;
 const channels = 3;
 
+// Set the colors of the corners of the QR code
+// bounding box that should be plotted.
 const plotPointColors = [[1, 0, 0], [0, 1, 0], [0, 1, 1], [1, 0, 1]];
-
-// Set default threshold level for this page.
-const defaultThresholdLevel = 0.5;
-
-const thresholdFilter = getFilterByName('thresholdingFilter');
-const thresholdParam = thresholdFilter.params.filter(p => p.name === 'threshold')[0];
-thresholdParam.value = defaultThresholdLevel;
-const thresholdInput = 'input[data-filter-name=thresholdingFilter][data-param-name=threshold]';
-document.querySelector(thresholdInput).value = defaultThresholdLevel;
 
 const KC = {
     LEFT_IMAGE: 'leftImage',
@@ -37,7 +30,7 @@ const K = {
     OUTLINE_QR_CODE: 'plotPoints',
     RENDER_LEFT: 'renderLeftImage',
     RENDER_LEFT_COLOR: 'renderLeftImageColor',
-    RENDER_QR_CODE: 'renderQrCode',
+    RENDER_RIGHT: 'renderQrCode',
     CONVERT_TO_ARRAY: 'convertToArray',
 };
 
@@ -62,11 +55,11 @@ function initialize() {
     addKernel(createOutlineQrCode, KC.LEFT_IMAGE, K.OUTLINE_QR_CODE);
     addKernel(createRenderGreyscale, KC.LEFT_IMAGE, K.RENDER_LEFT, true);
     addKernel(createRenderColor, KC.LEFT_IMAGE, K.RENDER_LEFT_COLOR, true);
-    addKernel(createRenderQrCode, KC.RIGHT_IMAGE, K.RENDER_QR_CODE, true);
+    addKernel(createRenderQrCode, KC.RIGHT_IMAGE, K.RENDER_RIGHT, true);
 
     // Create canvases for CPU and GPU for each of the renderGraphical kernels.
-    createCanvas(K.RENDER_LEFT, '.canvas-wrapper.original', width, height);
-    createCanvas(K.RENDER_QR_CODE, '.canvas-wrapper.thresholded', qrCodeLength, qrCodeLength);
+    createCanvas(K.RENDER_LEFT, '.canvas-wrapper.left', width, height);
+    createCanvas(K.RENDER_RIGHT, '.canvas-wrapper.right', qrCodeLength, qrCodeLength);
 }
 
 addEventListener('DOMContentLoaded', initialize);
@@ -117,12 +110,12 @@ function renderLoop() {
         const warpedQrCode = getKernel(K.QR_PERSPECTIVE_WARP)(leftImageCopy, corners, qrCodeDimension);
 
         // Render the extracted QR code.
-        getKernel(K.RENDER_QR_CODE, true)(warpedQrCode);
+        getKernel(K.RENDER_RIGHT, true)(warpedQrCode);
     }
 
     // Fix canvas sizes.
     setCanvasSize(K.RENDER_LEFT, width, height);
-    setCanvasSize(K.RENDER_QR_CODE, qrCodeLength, qrCodeLength);
+    setCanvasSize(K.RENDER_RIGHT, qrCodeLength, qrCodeLength);
 
     // Request next frame to render.
     state.renderLoopRequestId = requestAnimationFrame(renderLoop);
