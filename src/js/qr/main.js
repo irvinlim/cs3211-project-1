@@ -92,19 +92,11 @@ function renderLoop() {
 
     // Identify markers.
     const rowWise = getKernel(K.MARKER_DETECTION_ROW_WISE)(filteredImage, 0);
-    console.log('rowWise');
-    console.log(rowWise);
     const colWise = getKernel(K.MARKER_DETECTION_COL_WISE)(filteredImage, 1);
-    console.log('colWise');
-    console.log(colWise);
     const topMarkers = getKernel(K.MARKER_DETECTION_TOP)(rowWise, colWise);
-    console.log('topMarkers');
-    console.log(topMarkers);
 
     // Calculate the corners of the QR code.
     const corners = getKernel(K.QR_CALCULATE_CORNERS)(rowWise, colWise, topMarkers);
-    console.log('corners');
-    console.log(corners);
 
     // Outline the QR code on the original image.
     const outlinedQrCode = getKernel(K.OUTLINE_QR_CODE)(filteredImage, corners, plotPointColors);

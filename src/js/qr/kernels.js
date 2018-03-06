@@ -207,14 +207,14 @@ function markerDetectionKernel(A, columnWise) {
 
 const createMarkerDetectionRowWise = createStandardKernel(markerDetectionKernel, {
     output: [height, 2, 2],
-    outputToTexture: false,
+    outputToTexture: true,
     functions: { checkQrMarkerRatio },
     loopMaxIterations: height,
 });
 
 const createMarkerDetectionColWise = createStandardKernel(markerDetectionKernel, {
     output: [width, 2, 2],
-    outputToTexture: false,
+    outputToTexture: true,
     functions: { checkQrMarkerRatio },
     loopMaxIterations: width,
 });
@@ -276,7 +276,7 @@ const createMarkerDetectionTop = createStandardKernel(
     },
     {
         output: [2, 3],
-        outputToTexture: false,
+        outputToTexture: true,
         loopMaxIterations: height * 2,
     }
 );
@@ -397,7 +397,7 @@ const createCalculateCorners = createStandardKernel(
     },
     {
         output: [2, 4],
-        outputToTexture: false,
+        outputToTexture: true,
         functions: { euclideanDistance, displacementMoreThan },
     }
 );
