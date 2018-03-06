@@ -22,11 +22,9 @@ const K = {
     MEDIAN_FILTER: 'medianFilter',
     MARKER_DETECTION_ROW_WISE: 'markerDetectionRowWise',
     MARKER_DETECTION_COL_WISE: 'markerDetectionColWise',
-    MARKER_DETECTION_COMBINED: 'markerDetectionCombined',
     MARKER_DETECTION_TOP: 'markerDetectionTop',
     QR_CALCULATE_CORNERS: 'calculateCorners',
     QR_PERSPECTIVE_WARP: 'perspectiveWarp',
-    PLOT_MARKERS: 'plotMarkers',
     OUTLINE_QR_CODE: 'plotPoints',
     RENDER_LEFT: 'renderLeftImage',
     RENDER_LEFT_COLOR: 'renderLeftImageColor',
@@ -47,11 +45,9 @@ function initialize() {
     addKernel(createMedianFilter, KC.LEFT_IMAGE, K.MEDIAN_FILTER);
     addKernel(createMarkerDetectionRowWise, KC.LEFT_IMAGE, K.MARKER_DETECTION_ROW_WISE);
     addKernel(createMarkerDetectionColWise, KC.LEFT_IMAGE, K.MARKER_DETECTION_COL_WISE);
-    addKernel(createMarkerDetectionCombined, KC.LEFT_IMAGE, K.MARKER_DETECTION_COMBINED);
     addKernel(createMarkerDetectionTop, KC.LEFT_IMAGE, K.MARKER_DETECTION_TOP);
     addKernel(createCalculateCorners, KC.LEFT_IMAGE, K.QR_CALCULATE_CORNERS);
     addKernel(createPerspectiveWarp, KC.RIGHT_IMAGE, K.QR_PERSPECTIVE_WARP);
-    addKernel(createPlotMarkers, KC.LEFT_IMAGE, K.PLOT_MARKERS);
     addKernel(createOutlineQrCode, KC.LEFT_IMAGE, K.OUTLINE_QR_CODE);
     addKernel(createRenderGreyscale, KC.LEFT_IMAGE, K.RENDER_LEFT, true);
     addKernel(createRenderColor, KC.LEFT_IMAGE, K.RENDER_LEFT_COLOR, true);
@@ -96,9 +92,6 @@ function renderLoop() {
 
     // Render the outlined QR code.
     getKernel(K.RENDER_LEFT_COLOR, true)(outlinedQrCode);
-
-    // const markerLocationsCombined = getKernel(K.MARKER_DETECTION_COMBINED)(rowWise, colWise);
-    // const markersPlotted = getKernel(K.PLOT_MARKERS)(thresholdedImage, markerLocationsCombined);
 
     // Render the QR code in the 2nd canvas if enabled.
     if (state.isOutputQrCodeEnabled) {

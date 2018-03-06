@@ -219,25 +219,6 @@ const createMarkerDetectionColWise = createStandardKernel(markerDetectionKernel,
     loopMaxIterations: width,
 });
 
-// Kernel: Combine column- and row-wise computations.
-// NOT IN USE
-const createMarkerDetectionCombined = createStandardKernel(
-    function(rows, cols) {
-        for (var k = 0; k < 2; k++) {
-            var col = Math.floor(cols[k][this.thread.x]);
-            var row = Math.floor(rows[k][this.thread.y]);
-
-            if (row > 0 && col > 0 && this.thread.x === row && this.thread.y === col) return 1;
-        }
-
-        return 0;
-    },
-    {
-        output: [width, height],
-        outputToTexture: true,
-    }
-);
-
 // Kernel: Find the first three markers.
 const createMarkerDetectionTop = createStandardKernel(
     function(rows, cols) {
@@ -498,66 +479,6 @@ const createOutlineQrCode = createStandardKernel(
         outputToTexture: true,
         loopMaxIterations: 4,
         functions: { isOnLineSegment },
-    }
-);
-
-// Kernel: Plot possible QR code markers on an image.
-// Inputs: A - 2-D image data.
-//         markerLocations - Boolean matrix of center of marker locations.
-const createPlotMarkers = createStandardKernel(
-    function(A, markerLocations) {
-        var radius = Math.floor(this.constants.squareSize / 2);
-        var isBorder = 0;
-
-        for (var i = 0; i < this.constants.squareSize; i++) {
-            if (this.thread.y - radius >= 0) {
-                // Handle left border.
-                if (this.thread.x + radius < this.constants.width) {
-                    if (markerLocations[this.thread.y - radius + i][this.thread.x + radius] === 1) {
-                        isBorder = 1;
-                        break;
-                    }
-                }
-
-                // Handle right border.
-                if (this.thread.x - radius >= 0) {
-                    if (markerLocations[this.thread.y - radius + i][this.thread.x - radius] === 1) {
-                        isBorder = 1;
-                        break;
-                    }
-                }
-            }
-
-            if (this.thread.x - radius >= 0) {
-                // Handle top border.
-                if (this.thread.y - radius >= 0) {
-                    if (markerLocations[this.thread.y - radius][this.thread.x - radius + i] === 1) {
-                        isBorder = 1;
-                        break;
-                    }
-                }
-
-                // Handle bottom border.
-                if (this.thread.y + radius < this.constants.height) {
-                    if (markerLocations[this.thread.y + radius][this.thread.x - radius + i] === 1) {
-                        isBorder = 1;
-                        break;
-                    }
-                }
-            }
-        }
-
-        // Draw borders.
-        if (isBorder === 1) {
-            if (this.thread.z === 0) return 1;
-            else return 0;
-        } else {
-            return A[this.thread.y][this.thread.x];
-        }
-    },
-    {
-        output: [width, height, channels],
-        outputToTexture: true,
     }
 );
 
