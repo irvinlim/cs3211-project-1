@@ -224,6 +224,7 @@ const createMarkerDetectionTop = createStandardKernel(
     function(rows, cols) {
         // The y-thread is for finding the y-th marker.
         var foundMarkers = 0;
+        var returnValue = 0;
 
         // Search each row.
         for (var i = 0; i < this.constants.height; i++) {
@@ -243,17 +244,16 @@ const createMarkerDetectionTop = createStandardKernel(
                 // Check if the two y-coordinates tally.
                 if (row > 0 && col > 0 && col === i) {
                     // Stop if we have found the y-th marker.
-                    if (foundMarkers === this.thread.y) {
-                        if (this.thread.x === 0) return row;
-                        else return col;
-                    } else {
-                        foundMarkers++;
+                    if (foundMarkers++ === this.thread.y) {
+                        if (this.thread.x === 0) returnValue = row;
+                        else returnValue = col;
+                        break;
                     }
                 }
             }
         }
 
-        return 0;
+        return returnValue;
     },
     {
         output: [2, 3],
