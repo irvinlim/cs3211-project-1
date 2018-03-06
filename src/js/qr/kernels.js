@@ -174,12 +174,20 @@ function markerDetectionKernel(A, columnWise) {
                     // Return the center x-coordinate of the marker.
                     var totalWidth = px0 + px1 + px2 + px3 + px4;
 
-                    if (this.thread.y === 0) foundMarker = Math.floor(j - totalWidth / 2);
-                    else if (this.thread.y === 1) foundMarker = Math.floor(j + totalWidth / 2);
-
-                    // Also encode the estimated size of one cell in the return value for later computation.
+                    // Estimated size of one cell for later computation.
                     var estimatedCellSize = totalWidth / 7;
-                    foundMarker += estimatedCellSize / 1000;
+
+                    // The 1st y-thread stores the actual x-coordinate.
+                    if (this.thread.y === 0) {
+                        // The z-thread is for determining if we are finding markers from the start
+                        // or from the end, since this procedure terminates on the first marker
+                        // found. We return the position of the centre of the found marker.
+                        if (this.thread.z === 0) foundMarker = Math.floor(j - totalWidth / 2);
+                        else if (this.thread.z === 1) foundMarker = Math.floor(j + totalWidth / 2);
+                    } else {
+                        // The 2nd y-thread stores the cell size.
+                        foundMarker = estimatedCellSize;
+                    }
 
                     break;
                 }
@@ -198,20 +206,21 @@ function markerDetectionKernel(A, columnWise) {
 }
 
 const createMarkerDetectionRowWise = createStandardKernel(markerDetectionKernel, {
-    output: [height, 2],
-    outputToTexture: true,
+    output: [height, 2, 2],
+    outputToTexture: false,
     functions: { checkQrMarkerRatio },
     loopMaxIterations: height,
 });
 
 const createMarkerDetectionColWise = createStandardKernel(markerDetectionKernel, {
-    output: [width, 2],
-    outputToTexture: true,
+    output: [width, 2, 2],
+    outputToTexture: false,
     functions: { checkQrMarkerRatio },
     loopMaxIterations: width,
 });
 
 // Kernel: Combine column- and row-wise computations.
+// NOT IN USE
 const createMarkerDetectionCombined = createStandardKernel(
     function(rows, cols) {
         for (var k = 0; k < 2; k++) {
@@ -232,6 +241,7 @@ const createMarkerDetectionCombined = createStandardKernel(
 // Kernel: Find the first three markers.
 const createMarkerDetectionTop = createStandardKernel(
     function(rows, cols) {
+        // The y-thread is for finding the y-th marker.
         var foundMarkers = 0;
 
         // Search each row.
@@ -239,21 +249,25 @@ const createMarkerDetectionTop = createStandardKernel(
             // Search each row for markers found from both left and right.
             for (var k = 0; k < 2; k++) {
                 // Get the x-coordinate of the marker found in the row.
-                var row = Math.floor(rows[k][i]);
+                var row = rows[k][0][i];
 
                 // Get the y-coordinate of the marker that was found at the column corresponding to the row.
-                var col = Math.floor(cols[k][row]);
+                var col = cols[k][0][row];
 
                 // Don't duplicate if it was found in the other direction.
-                if (k === 1 && Math.floor(rows[0][i]) === row && Math.floor(cols[0][row]) === col) {
+                if (k === 1 && rows[0][0][i] === row && cols[0][0][row] === col) {
                     continue;
                 }
 
                 // Check if the two y-coordinates tally.
                 if (row > 0 && col > 0 && col === i) {
-                    // Hack to encode 2 numbers into 1. Still works in 32-bits because the size of the canvas is small.
-                    if (foundMarkers === this.thread.x) return row + col / 1000;
-                    else foundMarkers++;
+                    // Stop if we have found the y-th marker.
+                    if (foundMarkers === this.thread.y) {
+                        if (this.thread.x === 0) return row;
+                        else return col;
+                    } else {
+                        foundMarkers++;
+                    }
                 }
             }
         }
@@ -261,8 +275,8 @@ const createMarkerDetectionTop = createStandardKernel(
         return 0;
     },
     {
-        output: [3],
-        outputToTexture: true,
+        output: [2, 3],
+        outputToTexture: false,
         loopMaxIterations: height * 2,
     }
 );
@@ -271,101 +285,126 @@ const createMarkerDetectionTop = createStandardKernel(
 const createCalculateCorners = createStandardKernel(
     function(rows, cols, markers) {
         // Decode the marker positions.
-        var m1x = Math.floor(markers[0]);
-        var m1y = Math.floor((markers[0] % 1) * 1000 + 0.5);
-        var m2x = Math.floor(markers[1]);
-        var m2y = Math.floor((markers[1] % 1) * 1000 + 0.5);
-        var m3x = Math.floor(markers[2]);
-        var m3y = Math.floor((markers[2] % 1) * 1000 + 0.5);
+        var m1x = markers[0][0];
+        var m1y = markers[0][1];
+        var m2x = markers[1][0];
+        var m2y = markers[1][1];
+        var m3x = markers[2][0];
+        var m3y = markers[2][1];
+
+        var returnValue = -1;
 
         // Just return 0 if we don't have enough markers.
-        if (m1x === 0 || m1y === 0 || m2x === 0 || m2y === 0 || m3x === 0 || m3y === 0) return 0;
-
-        // Decode the estimated cell sizes (stored in floating point).
-        var m1s = (rows[0][m1y] % 1) * 1000;
-        var m2s = (rows[0][m2y] % 1) * 1000;
-        var m3s = (rows[0][m3y] % 1) * 1000;
-
-        // Count the average cell size.
-        var cellSize = (m1s + m2s + m3s) / 3;
-
-        // Calculate distances.
-        var m1m3 = euclideanDistance(m1x, m1y, m3x, m3y);
-        var m1m2 = euclideanDistance(m1x, m1y, m2x, m2y);
-        var m2m3 = euclideanDistance(m2x, m2y, m3x, m3y);
-
-        // Swap markers according to the expected distance between points.
-        // m1m2, m1m3 should be smaller than m2m3.
-        var temp;
-        if (m1m2 > m2m3 && m1m2 > m1m3) {
-            // Swap m1 and m3.
-            temp = m1x;
-            m1x = m3x;
-            m3x = temp;
-            temp = m1y;
-            m1y = m3y;
-            m3y = temp;
-        } else if (m1m3 > m1m2 && m1m3 > m2m3) {
-            // Swap m1 and m2.
-            temp = m1x;
-            m1x = m2x;
-            m2x = temp;
-            temp = m1y;
-            m1y = m2y;
-            m2y = temp;
-        }
-
-        // Estimate the position of the 4th point.
-        var m4x = m3x + (m2x - m1x);
-        var m4y = m2y + (m3y - m1y);
-
-        // Calculate the center point of the QR code, which is the middle of the m2m3 line segment.
-        var mcx = (m2x + m3x) / 2;
-        var mcy = (m2y + m3y) / 2;
-
-        // Displace all points by 3.5x cell size, away from the center of the QR code.
-        var displace = 3.5 * cellSize;
-
-        if (m1x < mcx) m1x -= displace;
-        else m1x += displace;
-        if (m2x < mcx) m2x -= displace;
-        else m2x += displace;
-        if (m3x < mcx) m3x -= displace;
-        else m3x += displace;
-        if (m4x < mcx) m4x -= displace;
-        else m4x += displace;
-        if (m1y < mcy) m1y -= displace;
-        else m1y += displace;
-        if (m2y < mcy) m2y -= displace;
-        else m2y += displace;
-        if (m3y < mcy) m3y -= displace;
-        else m3y += displace;
-        if (m4y < mcy) m4y -= displace;
-        else m4y += displace;
-
-        if (this.thread.y === 0) {
-            if (this.thread.x === 0) return m1x;
-            else return m1y;
-        } else if (this.thread.y === 1) {
-            if (this.thread.x === 0) return m2x;
-            else return m2y;
-        } else if (this.thread.y === 2) {
-            if (this.thread.x === 0) return m3x;
-            else return m3y;
+        if (m1x <= 0 || m1y <= 0 || m2x <= 0 || m2y <= 0 || m3x <= 0 || m3y <= 0) {
+            returnValue = 0;
         } else {
-            if (this.thread.x === 0) return m4x;
-            else return m4y;
+            // Decode the estimated cell sizes (stored in floating point).
+            var m1s = rows[0][1][m1y];
+            var m2s = rows[0][1][m2y];
+            var m3s = rows[0][1][m3y];
+
+            // Count the average cell size.
+            var cellSize = (m1s + m2s + m3s) / 3;
+
+            // Calculate distances.
+            var m1m3 = euclideanDistance(m1x, m1y, m3x, m3y);
+            var m1m2 = euclideanDistance(m1x, m1y, m2x, m2y);
+            var m2m3 = euclideanDistance(m2x, m2y, m3x, m3y);
+
+            // Swap markers according to the expected distance between points.
+            // m1m2, m1m3 should be smaller than m2m3.
+            var temp;
+            if (m1m2 > m2m3 && m1m2 > m1m3) {
+                // Swap m1 and m3.
+                temp = m1x;
+                m1x = m3x;
+                m3x = temp;
+                temp = m1y;
+                m1y = m3y;
+                m3y = temp;
+            } else if (m1m3 > m1m2 && m1m3 > m2m3) {
+                // Swap m1 and m2.
+                temp = m1x;
+                m1x = m2x;
+                m2x = temp;
+                temp = m1y;
+                m1y = m2y;
+                m2y = temp;
+            }
+
+            // Estimate the position of the 4th point.
+            var m4x = m3x + (m2x - m1x);
+            var m4y = m2y + (m3y - m1y);
+
+            // Calculate the center point of the QR code, which is the middle of the m2m3 line segment.
+            var mcx = (m2x + m3x) / 2;
+            var mcy = (m2y + m3y) / 2;
+
+            // Displace all points by 3.5x cell size, away from the center of the QR code.
+            var displace = 3.5 * cellSize;
+
+            if (m1x < mcx) m1x -= displace;
+            else m1x += displace;
+            if (m2x < mcx) m2x -= displace;
+            else m2x += displace;
+            if (m3x < mcx) m3x -= displace;
+            else m3x += displace;
+            if (m4x < mcx) m4x -= displace;
+            else m4x += displace;
+            if (m1y < mcy) m1y -= displace;
+            else m1y += displace;
+            if (m2y < mcy) m2y -= displace;
+            else m2y += displace;
+            if (m3y < mcy) m3y -= displace;
+            else m3y += displace;
+            if (m4y < mcy) m4y -= displace;
+            else m4y += displace;
+
+            // Don't send any corners if any of them are out of range.
+            if (m1x < 0 || m1y < 0 || m2x < 0 || m2y < 0 || m3x < 0 || m3y < 0 || m4x < 0 || m4y < 0) {
+                returnValue = 0;
+            } else {
+                if (
+                    displacementMoreThan(m1x, m1y, m2x, m2y, 5) === 0 ||
+                    displacementMoreThan(m1x, m1y, m3x, m3y, 5) === 0 ||
+                    displacementMoreThan(m1x, m1y, m4x, m4y, 5) === 0 ||
+                    displacementMoreThan(m2x, m2y, m3x, m3y, 5) === 0 ||
+                    displacementMoreThan(m2x, m2y, m4x, m4y, 5) === 0 ||
+                    displacementMoreThan(m3x, m3y, m4x, m4y, 5) === 0
+                ) {
+                    // Don't send any corners if any two of them are very close to each other.
+                    returnValue = 0;
+                }
+            }
+
+            // Return the points.
+            if (returnValue === 0) {
+                return 0;
+            } else if (this.thread.y === 0) {
+                if (this.thread.x === 0) return m1x;
+                else return m1y;
+            } else if (this.thread.y === 1) {
+                if (this.thread.x === 0) return m2x;
+                else return m2y;
+            } else if (this.thread.y === 2) {
+                if (this.thread.x === 0) return m3x;
+                else return m3y;
+            } else {
+                if (this.thread.x === 0) return m4x;
+                else return m4y;
+            }
         }
     },
     {
         output: [2, 4],
         outputToTexture: false,
-        functions: { euclideanDistance },
+        functions: { euclideanDistance, displacementMoreThan },
     }
 );
 
 // Kernel: Perform perspective warp on the image to return the QR code in a square.
 // Actually, this is more of an affine transformation which works because all edges are parallel.
+// TODO: Fix the decoding part
 const createPerspectiveWarp = createStandardKernel(
     function(A, corners, dimension) {
         // Don't display anything if we don't have enough corners.
@@ -383,14 +422,8 @@ const createPerspectiveWarp = createStandardKernel(
         var py = Math.floor(this.thread.y / moduleSize) / dimension;
 
         // Get the coordinates of the origin of the partition.
-        var x =
-            corners[0][0] +
-            (corners[1][0] - corners[0][0]) * px +
-            (corners[2][0] - corners[0][0]) * py;
-        var y =
-            corners[0][1] +
-            (corners[2][1] - corners[0][1]) * py +
-            (corners[3][1] - corners[2][1]) * px;
+        var x = corners[0][0] + (corners[1][0] - corners[0][0]) * px + (corners[2][0] - corners[0][0]) * py;
+        var y = corners[0][1] + (corners[2][1] - corners[0][1]) * py + (corners[3][1] - corners[2][1]) * px;
 
         // Take the average of all colors within the pixels in the partition.
         var sum = 0;
@@ -409,35 +442,63 @@ const createPerspectiveWarp = createStandardKernel(
     }
 );
 
-const createPlotPoints = createStandardKernel(
+// Kernel: Draw bounding box and corners around detected QR code.
+const createOutlineQrCode = createStandardKernel(
     function(A, points, pointColors) {
-        var radius = 2;
+        // Radius of the point to draw at the corners of the bounding box.
+        var r = 4;
+
+        // Line thickness.
+        var lt = 150;
 
         var x = this.thread.x;
         var y = this.thread.y;
+        var z = this.thread.z;
 
+        var returnValue = A[y][x];
+
+        // Draw corners.
         for (var i = 0; i < 4; i++) {
             var px = points[i][0];
             var py = points[i][1];
 
-            if (
-                px > 0 &&
-                py > 0 &&
-                x > px - radius &&
-                x < px + radius &&
-                y > py - radius &&
-                y < py + radius
-            ) {
-                return pointColors[i][this.thread.z];
+            if (px > 0 && py > 0 && x > px - r && x < px + r && y > py - r && y < py + r) {
+                returnValue = pointColors[i][z];
+                break;
             }
         }
 
-        return A[this.thread.y][x];
+        if (returnValue === A[y][x]) {
+            var x0 = points[0][0];
+            var y0 = points[0][1];
+            var x1 = points[1][0];
+            var y1 = points[1][1];
+            var x2 = points[2][0];
+            var y2 = points[2][1];
+            var x3 = points[3][0];
+            var y3 = points[3][1];
+
+            // Calculate if point lies within any of the 4 edges.
+            var between01 = isOnLineSegment(x, y, x0, y0, x1, y1, lt);
+            var between13 = isOnLineSegment(x, y, x1, y1, x3, y3, lt);
+            var between32 = isOnLineSegment(x, y, x3, y3, x2, y2, lt);
+            var between20 = isOnLineSegment(x, y, x2, y2, x0, y0, lt);
+
+            // Draw bounding box.
+            if (between01 === 1 || between13 === 1 || between32 === 1 || between20 === 1) {
+                if (z === 0) returnValue = 1;
+                else returnValue = 0;
+            }
+        }
+
+        // Otherwise, return original image.
+        return returnValue;
     },
     {
         output: [width, height, channels],
         outputToTexture: true,
         loopMaxIterations: 4,
+        functions: { isOnLineSegment },
     }
 );
 
@@ -581,13 +642,7 @@ function checkQrMarkerRatio(px0, px1, px2, px3, px4) {
     var d3 = Math.abs(cellSize - px3);
     var d4 = Math.abs(cellSize - px4);
 
-    if (
-        d0 < allowedVariance &&
-        d1 < allowedVariance &&
-        d2 < 3 * allowedVariance &&
-        d3 < allowedVariance &&
-        d4 < allowedVariance
-    ) {
+    if (d0 < allowedVariance && d1 < allowedVariance && d2 < 3 * allowedVariance && d3 < allowedVariance && d4 < allowedVariance) {
         return 1;
     } else {
         return 0;
@@ -600,6 +655,32 @@ function euclideanDistance(x1, y1, x2, y2) {
     var dx = Math.abs(x2 - x1);
     var dy = Math.abs(y2 - y1);
     return Math.sqrt(dx * dx + dy * dy);
+}
+
+// Checks if two points are not very close to each other.
+function displacementMoreThan(x1, y1, x2, y2, moreThan) {
+    if (Math.abs(x1 - x2) > moreThan || Math.abs(y1 - y2) > moreThan) return 1;
+    else return 0;
+}
+
+// Checks if a point lies on a line segment between two other points.
+function isOnLineSegment(x0, y0, x1, y1, x2, y2, radius) {
+    var returnValue = 0;
+
+    // Checks if any point is out of range.
+    if (x0 > 0 && y0 > 0 && x1 > 0 && y1 > 0 && x2 > 0 && y2 > 0) {
+        // Checks if the points are collinear.
+        if (Math.abs(Math.abs((x1 - x0) * (y2 - y0)) - Math.abs((x2 - x0) * (y1 - y0))) < radius) {
+            // Checks if the point's coordinates are within.
+            if ((x1 <= x0 && x0 <= x2) || (x2 <= x0 && x0 <= x1)) {
+                if ((y1 <= y0 && y0 <= y2) || (y2 <= y0 && y0 <= y1)) {
+                    returnValue = 1;
+                }
+            }
+        }
+    }
+
+    return returnValue;
 }
 
 /// ----------------------
@@ -643,16 +724,20 @@ function getKernelCreator(mode, name) {
 
 function addKernel(kernelFactory, kernelCreatorName, kernelName, onlyOnGpu = false) {
     function addKernelFor(mode, kernelCreator) {
-        if (!kernelCreator)
+        if (!kernelCreator) {
             throw Error('No kernel creator exists with the name: ' + kernelCreatorName);
+        }
 
-        if (kernels[mode][kernelName])
+        if (kernels[mode][kernelName]) {
             throw Error('A kernel already exists with the same name: ' + kernelName);
+        }
 
         kernels[mode][kernelName] = kernelFactory(mode, kernelCreator);
     }
 
-    if (!kernelName) throw Error('Invalid kernel name: ' + kernelName);
+    if (!kernelName) {
+        throw Error('Invalid kernel name: ' + kernelName);
+    }
 
     const gpuKernelCreator = getKernelCreator('gpu', kernelCreatorName);
     const cpuKernelCreator = getKernelCreator(onlyOnGpu ? 'gpu' : 'cpu', kernelCreatorName);

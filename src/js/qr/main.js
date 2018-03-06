@@ -34,7 +34,7 @@ const K = {
     QR_CALCULATE_CORNERS: 'calculateCorners',
     QR_PERSPECTIVE_WARP: 'perspectiveWarp',
     PLOT_MARKERS: 'plotMarkers',
-    PLOT_POINTS: 'plotPoints',
+    OUTLINE_QR_CODE: 'plotPoints',
     RENDER_LEFT: 'renderLeftImage',
     RENDER_LEFT_COLOR: 'renderLeftImageColor',
     RENDER_QR_CODE: 'renderQrCode',
@@ -59,7 +59,7 @@ function initialize() {
     addKernel(createCalculateCorners, KC.LEFT_IMAGE, K.QR_CALCULATE_CORNERS);
     addKernel(createPerspectiveWarp, KC.RIGHT_IMAGE, K.QR_PERSPECTIVE_WARP);
     addKernel(createPlotMarkers, KC.LEFT_IMAGE, K.PLOT_MARKERS);
-    addKernel(createPlotPoints, KC.LEFT_IMAGE, K.PLOT_POINTS);
+    addKernel(createOutlineQrCode, KC.LEFT_IMAGE, K.OUTLINE_QR_CODE);
     addKernel(createRenderGreyscale, KC.LEFT_IMAGE, K.RENDER_LEFT, true);
     addKernel(createRenderColor, KC.LEFT_IMAGE, K.RENDER_LEFT_COLOR, true);
     addKernel(createRenderQrCode, KC.RIGHT_IMAGE, K.RENDER_QR_CODE, true);
@@ -88,32 +88,42 @@ function renderLoop() {
     const thresholdedImage = getKernel(K.THRESHOLD_FILTER)(originalImage, thresholdLevel, 0);
 
     // Apply median filter to remove artifacts after thresholding.
-    const medianFilteredImage = getKernel(K.MEDIAN_FILTER)(thresholdedImage);
+    const filteredImage = getKernel(K.MEDIAN_FILTER)(thresholdedImage);
 
     // Identify markers.
-    const rowWise = getKernel(K.MARKER_DETECTION_ROW_WISE)(medianFilteredImage, 0);
-    const colWise = getKernel(K.MARKER_DETECTION_COL_WISE)(medianFilteredImage, 1);
+    const rowWise = getKernel(K.MARKER_DETECTION_ROW_WISE)(filteredImage, 0);
+    console.log('rowWise');
+    console.log(rowWise);
+    const colWise = getKernel(K.MARKER_DETECTION_COL_WISE)(filteredImage, 1);
+    console.log('colWise');
+    console.log(colWise);
     const topMarkers = getKernel(K.MARKER_DETECTION_TOP)(rowWise, colWise);
+    console.log('topMarkers');
+    console.log(topMarkers);
 
     // Calculate the corners of the QR code.
     const corners = getKernel(K.QR_CALCULATE_CORNERS)(rowWise, colWise, topMarkers);
+    console.log('corners');
+    console.log(corners);
 
-    // Plot the corners of the QR code on the image.
-    const pointsPlotted = getKernel(K.PLOT_POINTS)(medianFilteredImage, corners, plotPointColors);
+    // Outline the QR code on the original image.
+    const outlinedQrCode = getKernel(K.OUTLINE_QR_CODE)(filteredImage, corners, plotPointColors);
+
+    // Render the outlined QR code.
+    getKernel(K.RENDER_LEFT_COLOR, true)(outlinedQrCode);
 
     // const markerLocationsCombined = getKernel(K.MARKER_DETECTION_COMBINED)(rowWise, colWise);
     // const markersPlotted = getKernel(K.PLOT_MARKERS)(thresholdedImage, markerLocationsCombined);
 
-    // Copy the left image so that we can render it later.
-    // Note that this is the expensive step as we have to transfer data from GPU back to CPU and back again.
-    const leftImageCopy = getKernel(K.CONVERT_TO_ARRAY)(medianFilteredImage);
+    // // Copy the left image so that we can render it later.
+    // // Note that this is the expensive step as we have to transfer data from GPU back to CPU and back again.
+    // const leftImageCopy = getKernel(K.CONVERT_TO_ARRAY)(filteredImage);
 
-    // Perform perspective transform on the image based on the markers found.
-    const warpedQrCode = getKernel(K.QR_PERSPECTIVE_WARP)(leftImageCopy, corners, qrCodeDimension);
+    // // Perform perspective transform on the image based on the markers found.
+    // const warpedQrCode = getKernel(K.QR_PERSPECTIVE_WARP)(leftImageCopy, corners, qrCodeDimension);
 
-    // Render each of the images at each stage.
-    getKernel(K.RENDER_LEFT_COLOR, true)(pointsPlotted);
-    getKernel(K.RENDER_QR_CODE, true)(warpedQrCode);
+    // // Render the extracted QR code.
+    // getKernel(K.RENDER_QR_CODE, true)(warpedQrCode);
 
     // Fix canvas sizes.
     setCanvasSize(K.RENDER_LEFT, width, height);
