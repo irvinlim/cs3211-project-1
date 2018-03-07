@@ -192,48 +192,36 @@ const createEdgeDetectionFilter = createStandardKernel(function(A) {
 });
 
 // Kernel: Light tunnel (Apple Photo Booth effect)
-const createLightTunnelFilter = createStandardKernel(function(A, radius) {
-    // Calculate if pixel falls within circle.
-    // Don't use floor() because it's unnecessary (division by 2).
-    var midpointX = this.constants.width / 2 - 0.5 * (this.constants.width % 2);
-    var midpointY = this.constants.height / 2 - 0.5 * (this.constants.height % 2);
+const createLightTunnelFilter = createStandardKernel(
+    function(A, radius) {
+        // Calculate if pixel falls within circle.
+        // Don't use floor() because it's unnecessary (division by 2).
+        var midpointX = this.constants.width / 2 - 0.5 * (this.constants.width % 2);
+        var midpointY = this.constants.height / 2 - 0.5 * (this.constants.height % 2);
 
-    // Calculate Pythagorean distance (squared to avoid costly sqrt).
-    var radiusSquared = radius * radius;
-    var distSquared = (this.thread.x - midpointX) * (this.thread.x - midpointX) + (this.thread.y - midpointY) * (this.thread.y - midpointY);
+        // Calculate Pythagorean distance (squared to avoid costly sqrt).
+        var radiusSquared = radius * radius;
+        var distSquared =
+            (this.thread.x - midpointX) * (this.thread.x - midpointX) + (this.thread.y - midpointY) * (this.thread.y - midpointY);
 
-    // Return actual pixel if it falls within the circle.
-    if (distSquared <= radiusSquared) {
-        return A[this.thread.z][this.thread.y][this.thread.x];
-    } else {
-        // Otherwise, get the pixel at the border of the circle, using trigonometry.
-        var opp = midpointY - this.thread.y;
-        var adj = midpointX - this.thread.x;
-        var angle;
-
-        if (adj > 0) {
-            angle = Math.atan(opp / adj);
-        } else if (adj < 0) {
-            if (opp >= 0) {
-                angle = Math.atan(opp / adj) + this.constants.PI;
-            } else {
-                angle = Math.atan(opp / adj) - this.constants.PI;
-            }
+        // Return actual pixel if it falls within the circle.
+        if (distSquared <= radiusSquared) {
+            return A[this.thread.z][this.thread.y][this.thread.x];
         } else {
-            if (opp > 0) {
-                angle = this.constants.PI / 2;
-            } else {
-                angle = this.constants.PI / -2;
-            }
+            // Otherwise, get the pixel at the border of the circle, using trigonometry.
+            var opp = midpointY - this.thread.y;
+            var adj = midpointX - this.thread.x;
+            var angle = atan2(opp, adj);
+
+            var x = midpointX - Math.floor(radius * Math.cos(angle));
+            var y = midpointY - Math.floor(radius * Math.sin(angle));
+
+            // Return the new pixel.
+            return A[this.thread.z][y][x];
         }
-
-        var x = midpointX - Math.floor(radius * Math.cos(angle));
-        var y = midpointY - Math.floor(radius * Math.sin(angle));
-
-        // Return the new pixel.
-        return A[this.thread.z][y][x];
-    }
-});
+    },
+    { atan2 }
+);
 
 // Kernel: Renders a 3-D array into a 2-D graphic array via a Canvas.
 const createRenderGraphical = mode =>
@@ -247,6 +235,37 @@ const createRenderGraphical = mode =>
 /// ----------------------
 /// END KERNEL DEFINITIONS
 /// ----------------------
+/// START CUSTOM FUNCTIONS
+/// ----------------------
+
+// Polyfill for Math.atan2().
+// Formula: https://en.wikipedia.org/wiki/Atan2#Definition_and_computation
+function atan2(y, x) {
+    var angle;
+    var PI = this.constants.PI;
+
+    if (x > 0) {
+        angle = Math.atan(y / x);
+    } else if (x < 0) {
+        if (y >= 0) {
+            angle = Math.atan(y / x) + PI;
+        } else {
+            angle = Math.atan(y / x) - PI;
+        }
+    } else {
+        if (y > 0) {
+            angle = PI / 2;
+        } else {
+            angle = PI / -2;
+        }
+    }
+
+    return angle;
+}
+
+/// --------------------
+/// END CUSTOM FUNCTIONS
+/// --------------------
 
 // Create dictionary of kernels for both CPU and GPU.
 // Necessary because `.mode()` is missing in V1 gpu.js.

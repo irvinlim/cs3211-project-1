@@ -376,10 +376,10 @@ const createCalculateCorners = createStandardKernel(
             // // of the warp of the cellSize is 1.414x. By assuming that from 0 to 45°,
             // // the warp of the cellSize changes linearly, we can re-calibrate the cellSize
             // // both in the x and y directions.
-            // var thetaX = atan2(Math.abs(m1y - m2y), Math.abs(m1x - m2x), pi);
+            // var thetaX = atan2(Math.abs(m1y - m2y), Math.abs(m1x - m2x));
             // if (thetaX > pi2) thetaX = pi - thetaX;
             // var ratioX = this.constants.SQRT2 / ((pi4 - thetaX) / pi4);
-            // var thetaY = atan2(Math.abs(m1y - m3y), Math.abs(m1x - m3x), pi);
+            // var thetaY = atan2(Math.abs(m1y - m3y), Math.abs(m1x - m3x));
             // if (thetaY > pi2) thetaY = pi - thetaY;
             // var ratioY = this.constants.SQRT2 / ((pi4 - thetaY) / pi4);
 
@@ -650,8 +650,9 @@ function min(a, b, c, d) {
 
 // Polyfill for Math.atan2().
 // Formula: https://en.wikipedia.org/wiki/Atan2#Definition_and_computation
-function atan2(y, x, PI) {
+function atan2(y, x) {
     var angle;
+    var PI = this.constants.PI;
 
     if (x > 0) {
         angle = Math.atan(y / x);
