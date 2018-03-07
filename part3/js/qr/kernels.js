@@ -371,40 +371,26 @@ const createCalculateCorners = createStandardKernel(
                 returnValue = 0;
             }
 
-            // // Re-normalize the cellSize relative to the other points.
-            // // We divide the cellSize by sqrt(2) * (theta / 45°), since the upper bound
-            // // of the warp of the cellSize is 1.414x. By assuming that from 0 to 45°,
-            // // the warp of the cellSize changes linearly, we can re-calibrate the cellSize
-            // // both in the x and y directions.
-            // var thetaX = atan2(Math.abs(m1y - m2y), Math.abs(m1x - m2x));
-            // if (thetaX > pi2) thetaX = pi - thetaX;
-            // var ratioX = this.constants.SQRT2 / ((pi4 - thetaX) / pi4);
-            // var thetaY = atan2(Math.abs(m1y - m3y), Math.abs(m1x - m3x));
-            // if (thetaY > pi2) thetaY = pi - thetaY;
-            // var ratioY = this.constants.SQRT2 / ((pi4 - thetaY) / pi4);
+            // Displace all points by 3.5x cell size, away from the center of the QR code.
+            var displaceX = cellSizeRowWise * 3.5;
+            var displaceY = cellSizeColWise * 3.5;
 
-            // console.log(thetaX, ratioX, thetaY, ratioY);
-
-            // // Displace all points by 3.5x cell size, away from the center of the QR code.
-            // cellSizeRowWise = 3.5 * (cellSizeRowWise / ratioX);
-            // cellSizeColWise = 3.5 * (cellSizeColWise / ratioY);
-
-            // if (m1x < mcx) m1x -= cellSizeRowWise;
-            // else m1x += cellSizeRowWise;
-            // if (m2x < mcx) m2x -= cellSizeRowWise;
-            // else m2x += cellSizeRowWise;
-            // if (m3x < mcx) m3x -= cellSizeRowWise;
-            // else m3x += cellSizeRowWise;
-            // if (m4x < mcx) m4x -= cellSizeRowWise;
-            // else m4x += cellSizeRowWise;
-            // if (m1y < mcy) m1y -= cellSizeColWise;
-            // else m1y += cellSizeColWise;
-            // if (m2y < mcy) m2y -= cellSizeColWise;
-            // else m2y += cellSizeColWise;
-            // if (m3y < mcy) m3y -= cellSizeColWise;
-            // else m3y += cellSizeColWise;
-            // if (m4y < mcy) m4y -= cellSizeColWise;
-            // else m4y += cellSizeColWise;
+            if (m1x < mcx) m1x -= displaceX;
+            else m1x += displaceX;
+            if (m2x < mcx) m2x -= displaceX;
+            else m2x += displaceX;
+            if (m3x < mcx) m3x -= displaceX;
+            else m3x += displaceX;
+            if (m4x < mcx) m4x -= displaceX;
+            else m4x += displaceX;
+            if (m1y < mcy) m1y -= displaceY;
+            else m1y += displaceY;
+            if (m2y < mcy) m2y -= displaceY;
+            else m2y += displaceY;
+            if (m3y < mcy) m3y -= displaceY;
+            else m3y += displaceY;
+            if (m4y < mcy) m4y -= displaceY;
+            else m4y += displaceY;
 
             // Return the points.
             if (returnValue === 0) {
