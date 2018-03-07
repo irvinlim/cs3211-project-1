@@ -263,8 +263,25 @@ const createMarkerDetectionTop = createStandardKernel(
 );
 
 // Kernel: Calculate the corners of the QR code square.
+// By convention, we refer to the 4 corners of the QR code by mX, where 1 ≤ X ≤ 4.
+// Irrespective of orientation or rotation of the QR code, the markers shall be
+// referenced as such, once the rotation and orientation has been resolved:
+// m1 m2
+// m3 m4
 const createCalculateCorners = createStandardKernel(
     function(rows, cols, markers) {
+        var w = this.constants.width;
+        var h = this.constants.height;
+
+        // Minimum distance threshold between every pair of points.
+        var dMinT = 30;
+
+        // Minimum area of the quadrilateral threshold.
+        var areaMinT = 70000;
+
+        // Maximum length difference threshold between the sides of the quadrilateral.
+        var dDiffMaxT = 20;
+
         // Decode the marker positions.
         var m1x = markers[0][0];
         var m1y = markers[0][1];
@@ -279,18 +296,22 @@ const createCalculateCorners = createStandardKernel(
         if (m1x <= 0 || m1y <= 0 || m2x <= 0 || m2y <= 0 || m3x <= 0 || m3y <= 0) {
             returnValue = 0;
         } else {
-            // Decode the estimated cell sizes (stored in floating point).
-            var m1s = rows[0][1][m1y];
-            var m2s = rows[0][1][m2y];
-            var m3s = rows[0][1][m3y];
+            // Get the estimated cell sizes both row-wise and col-wise.
+            var m1rs = rows[0][1][m1y];
+            var m2rs = rows[0][1][m2y];
+            var m3rs = rows[0][1][m3y];
+            var m1cs = cols[0][1][m1x];
+            var m2cs = cols[0][1][m2x];
+            var m3cs = cols[0][1][m3x];
 
-            // Count the average cell size.
-            var cellSize = (m1s + m2s + m3s) / 3;
+            // Count the average cell size both row-wise and col-wise.
+            var cellSizeRowWise = (m1rs + m2rs + m3rs) / 3;
+            var cellSizeColWise = (m1cs + m2cs + m3cs) / 3;
 
             // Calculate distances.
-            var m1m3 = euclideanDistance(m1x, m1y, m3x, m3y);
-            var m1m2 = euclideanDistance(m1x, m1y, m2x, m2y);
-            var m2m3 = euclideanDistance(m2x, m2y, m3x, m3y);
+            var m1m3 = dist(m1x, m1y, m3x, m3y);
+            var m1m2 = dist(m1x, m1y, m2x, m2y);
+            var m2m3 = dist(m2x, m2y, m3x, m3y);
 
             // Swap markers according to the expected distance between points.
             // m1m2, m1m3 should be smaller than m2m3.
@@ -321,42 +342,69 @@ const createCalculateCorners = createStandardKernel(
             var mcx = (m2x + m3x) / 2;
             var mcy = (m2y + m3y) / 2;
 
-            // Displace all points by 3.5x cell size, away from the center of the QR code.
-            var displace = 3.5 * cellSize;
+            // Calculate the distance between each pair of points.
+            var d12 = dist(m1x, m1y, m2x, m2y);
+            var d13 = dist(m1x, m1y, m3x, m3y);
+            var d14 = dist(m1x, m1y, m4x, m4y);
+            var d23 = dist(m2x, m2y, m3x, m3y);
+            var d24 = dist(m2x, m2y, m4x, m4y);
+            var d34 = dist(m3x, m3y, m4x, m4y);
 
-            if (m1x < mcx) m1x -= displace;
-            else m1x += displace;
-            if (m2x < mcx) m2x -= displace;
-            else m2x += displace;
-            if (m3x < mcx) m3x -= displace;
-            else m3x += displace;
-            if (m4x < mcx) m4x -= displace;
-            else m4x += displace;
-            if (m1y < mcy) m1y -= displace;
-            else m1y += displace;
-            if (m2y < mcy) m2y -= displace;
-            else m2y += displace;
-            if (m3y < mcy) m3y -= displace;
-            else m3y += displace;
-            if (m4y < mcy) m4y -= displace;
-            else m4y += displace;
+            // Find the upper and lower bounds of the sides of the quad.
+            var lineLengthMax = max(d12, d24, d34, d13);
+            var lineLengthMin = min(d12, d24, d34, d13);
 
-            // Don't send any corners if any of them are out of range.
-            if (m1x < 0 || m1y < 0 || m2x < 0 || m2y < 0 || m3x < 0 || m3y < 0 || m4x < 0 || m4y < 0) {
+            // Calculate the area of the quadrilateral.
+            var area = area(m1x, m1y, m2x, m2y, m3x, m3y, m4x, m4y);
+
+            if (min(m1x, m2x, m3x, m4x) < 0 || min(m1y, m2y, m3y, m4y) < 0 || max(m1x, m2x, m3x, m4x) > w || max(m1y, m2y, m3y, m4y) > h) {
+                // Don't send any corners if any of them are out of range.
                 returnValue = 0;
-            } else {
-                if (
-                    displacementMoreThan(m1x, m1y, m2x, m2y, 5) === 0 ||
-                    displacementMoreThan(m1x, m1y, m3x, m3y, 5) === 0 ||
-                    displacementMoreThan(m1x, m1y, m4x, m4y, 5) === 0 ||
-                    displacementMoreThan(m2x, m2y, m3x, m3y, 5) === 0 ||
-                    displacementMoreThan(m2x, m2y, m4x, m4y, 5) === 0 ||
-                    displacementMoreThan(m3x, m3y, m4x, m4y, 5) === 0
-                ) {
-                    // Don't send any corners if any two of them are very close to each other.
-                    returnValue = 0;
-                }
+            } else if (d12 < dMinT || d13 < dMinT || d14 < dMinT || d23 < dMinT || d24 < dMinT || d34 < dMinT) {
+                // Don't send any corners if any two of them are very close to each other.
+                returnValue = 0;
+            } else if (area < areaMinT) {
+                // Don't send any corners if the total area is too small.
+                returnValue = 0;
+            } else if (lineLengthMax - lineLengthMin > dDiffMaxT) {
+                // Don't send any corners if the difference in lengths is too large.
+                returnValue = 0;
             }
+
+            // // Re-normalize the cellSize relative to the other points.
+            // // We divide the cellSize by sqrt(2) * (theta / 45°), since the upper bound
+            // // of the warp of the cellSize is 1.414x. By assuming that from 0 to 45°,
+            // // the warp of the cellSize changes linearly, we can re-calibrate the cellSize
+            // // both in the x and y directions.
+            // var thetaX = atan2(Math.abs(m1y - m2y), Math.abs(m1x - m2x), pi);
+            // if (thetaX > pi2) thetaX = pi - thetaX;
+            // var ratioX = this.constants.SQRT2 / ((pi4 - thetaX) / pi4);
+            // var thetaY = atan2(Math.abs(m1y - m3y), Math.abs(m1x - m3x), pi);
+            // if (thetaY > pi2) thetaY = pi - thetaY;
+            // var ratioY = this.constants.SQRT2 / ((pi4 - thetaY) / pi4);
+
+            // console.log(thetaX, ratioX, thetaY, ratioY);
+
+            // // Displace all points by 3.5x cell size, away from the center of the QR code.
+            // cellSizeRowWise = 3.5 * (cellSizeRowWise / ratioX);
+            // cellSizeColWise = 3.5 * (cellSizeColWise / ratioY);
+
+            // if (m1x < mcx) m1x -= cellSizeRowWise;
+            // else m1x += cellSizeRowWise;
+            // if (m2x < mcx) m2x -= cellSizeRowWise;
+            // else m2x += cellSizeRowWise;
+            // if (m3x < mcx) m3x -= cellSizeRowWise;
+            // else m3x += cellSizeRowWise;
+            // if (m4x < mcx) m4x -= cellSizeRowWise;
+            // else m4x += cellSizeRowWise;
+            // if (m1y < mcy) m1y -= cellSizeColWise;
+            // else m1y += cellSizeColWise;
+            // if (m2y < mcy) m2y -= cellSizeColWise;
+            // else m2y += cellSizeColWise;
+            // if (m3y < mcy) m3y -= cellSizeColWise;
+            // else m3y += cellSizeColWise;
+            // if (m4y < mcy) m4y -= cellSizeColWise;
+            // else m4y += cellSizeColWise;
 
             // Return the points.
             if (returnValue === 0) {
@@ -379,7 +427,7 @@ const createCalculateCorners = createStandardKernel(
     {
         output: [2, 4],
         outputToTexture: false,
-        functions: { euclideanDistance, displacementMoreThan },
+        functions: { dist, area, max, min, atan2 },
     }
 );
 
@@ -571,16 +619,57 @@ function checkQrMarkerRatio(px0, px1, px2, px3, px4) {
 
 // Calculates the simple Euclidean distance between two points.
 // Uses Pythagoras' theorem.
-function euclideanDistance(x1, y1, x2, y2) {
+function dist(x1, y1, x2, y2) {
     var dx = Math.abs(x2 - x1);
     var dy = Math.abs(y2 - y1);
     return Math.sqrt(dx * dx + dy * dy);
 }
 
-// Checks if two points are not very close to each other.
-function displacementMoreThan(x1, y1, x2, y2, moreThan) {
-    if (Math.abs(x1 - x2) > moreThan || Math.abs(y1 - y2) > moreThan) return 1;
-    else return 0;
+// Calculates the area of a 4-gon, given the Cartesian coordinates.
+function area(x1, y1, x2, y2, x3, y3, x4, y4) {
+    return Math.abs(x1 * y2 - x2 * y1 + x2 * y3 - x3 * y2 + x3 * y4 + x4 * y3 + x4 * y1 - x1 * y4);
+}
+
+// Polyfill for Math.max(), restricted to exactly 4 arguments.
+function max(a, b, c, d) {
+    var max = a;
+    if (b > a) max = b;
+    if (c > a) max = c;
+    if (d > a) max = d;
+    return max;
+}
+
+// Polyfill for Math.min(), restricted to exactly 4 arguments.
+function min(a, b, c, d) {
+    var min = a;
+    if (b < a) min = b;
+    if (c < a) min = c;
+    if (d < a) min = d;
+    return min;
+}
+
+// Polyfill for Math.atan2().
+// Formula: https://en.wikipedia.org/wiki/Atan2#Definition_and_computation
+function atan2(y, x, PI) {
+    var angle;
+
+    if (x > 0) {
+        angle = Math.atan(y / x);
+    } else if (x < 0) {
+        if (y >= 0) {
+            angle = Math.atan(y / x) + PI;
+        } else {
+            angle = Math.atan(y / x) - PI;
+        }
+    } else {
+        if (y > 0) {
+            angle = PI / 2;
+        } else {
+            angle = PI / -2;
+        }
+    }
+
+    return angle;
 }
 
 // Checks if a point lies on a line segment between two other points.
@@ -618,6 +707,7 @@ function createStandardKernel(kernelFunc, options) {
             squareSize: 10,
             PI: Math.PI,
             E: Math.E,
+            SQRT2: Math.SQRT2,
         };
 
         const kernelOpts = Object.assign({ constants }, options);
