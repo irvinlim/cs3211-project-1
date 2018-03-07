@@ -11,6 +11,9 @@ const channels = 3;
 // bounding box that should be plotted.
 const plotPointColors = [[1, 0, 0], [0, 1, 0], [0, 1, 1], [1, 0, 1]];
 
+// Keep any old textures for the rendered QR code to prevent flashing.
+let lastQrCodeTexture;
+
 const KC = {
     LEFT_IMAGE: 'leftImage',
     RIGHT_IMAGE: 'rightImage',
@@ -26,6 +29,7 @@ const K = {
     QR_CALCULATE_CORNERS: 'calculateCorners',
     QR_PERSPECTIVE_WARP: 'perspectiveWarp',
     OUTLINE_QR_CODE: 'plotPoints',
+    CREATE_EMPTY_QR_CODE_TEXTURE: 'createEmptyQrCodeTexture',
     RENDER_LEFT: 'renderLeftImage',
     RENDER_LEFT_COLOR: 'renderLeftImageColor',
     RENDER_RIGHT: 'renderQrCode',
@@ -49,6 +53,7 @@ function initialize() {
     addKernel(createCalculateCorners, KC.LEFT_IMAGE, K.QR_CALCULATE_CORNERS);
     addKernel(createPerspectiveWarp, KC.RIGHT_IMAGE, K.QR_PERSPECTIVE_WARP);
     addKernel(createOutlineQrCode, KC.LEFT_IMAGE, K.OUTLINE_QR_CODE);
+    addKernel(createEmptyQrCodeTexture, KC.RIGHT_IMAGE, K.CREATE_EMPTY_QR_CODE_TEXTURE);
     addKernel(createRenderGreyscale, KC.LEFT_IMAGE, K.RENDER_LEFT, true);
     addKernel(createRenderColor, KC.LEFT_IMAGE, K.RENDER_LEFT_COLOR, true);
     addKernel(createRenderQrCode, KC.RIGHT_IMAGE, K.RENDER_RIGHT, true);
@@ -56,6 +61,9 @@ function initialize() {
     // Create canvases for CPU and GPU for each of the renderGraphical kernels.
     createCanvas(K.RENDER_LEFT, '.canvas-wrapper.left', width, height);
     createCanvas(K.RENDER_RIGHT, '.canvas-wrapper.right', qrCodeLength, qrCodeLength);
+
+    // Create empty QR code texture in the cache.
+    lastQrCodeTexture = getKernel(K.CREATE_EMPTY_QR_CODE_TEXTURE)();
 }
 
 addEventListener('DOMContentLoaded', initialize);
@@ -100,7 +108,8 @@ function renderLoop() {
         const leftImageCopy = getKernel(K.CONVERT_TO_ARRAY)(filteredImage);
 
         // Perform perspective transform on the image based on the markers found.
-        const warpedQrCode = getKernel(K.QR_PERSPECTIVE_WARP)(leftImageCopy, corners, qrCodeDimension);
+        const warpedQrCode = getKernel(K.QR_PERSPECTIVE_WARP)(leftImageCopy, corners, qrCodeDimension, lastQrCodeTexture);
+        lastQrCodeTexture = warpedQrCode;
 
         // Render the extracted QR code.
         getKernel(K.RENDER_RIGHT, true)(warpedQrCode);
