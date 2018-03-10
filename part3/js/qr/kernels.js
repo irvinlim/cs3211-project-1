@@ -29,7 +29,8 @@ const createTransformLinearToXYZ = createStandardKernel(
         if (isCameraFlipped === 0) x = 4 * this.thread.x;
         else x = 4 * (this.constants.width - this.thread.x);
 
-        // Convert RGB to greyscale using luminance formula.
+        // Use HSP color model to calculate perceived lightness.
+        // @see http://alienryderflex.com/hsp.html
         var r = imageData[x + y];
         var g = imageData[x + y + 1];
         var b = imageData[x + y + 2];

@@ -109,7 +109,13 @@ const createGaussianFilter = createStandardKernel(function(A, sigma, k00, k01, k
 
 // Kernel: Thresholding filter
 const createThresholdingFilter = createStandardKernel(function(A, threshold, mode) {
-    var brightness = (A[0][this.thread.y][this.thread.x] + A[1][this.thread.y][this.thread.x] + A[2][this.thread.y][this.thread.x]) / 3;
+    var r = A[0][this.thread.y][this.thread.x];
+    var g = A[1][this.thread.y][this.thread.x];
+    var b = A[2][this.thread.y][this.thread.x];
+
+    // Use HSP color model to calculate perceived lightness.
+    // @see http://alienryderflex.com/hsp.html
+    var brightness = Math.sqrt(0.299 * r * r + 0.587 * g * g + 0.114 * b * b);
 
     // THRESH_BINARY
     if (mode === 0) {
