@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>TEST of simple GPU/CPU system</title>
+
+</head>
+
+<body>
+
+    <h1>Test02</h1>
+    <p>Splitting the tasks into pipeline functions.</p>
+
+    <script src="js/gpuv0.js?nocache"></script>
+    <script src="js/decls.js?nocache"></script>
+
+    <input type="button" value="Using CPU" onclick="return change(this);" />
+    <input type="button" value="Filtering" onclick="return changeFilter(this);" />
+
+
+    <div id="fps"></div>
+
+    <video hidden id="video" width="800" height="600"></video>
+    <canvas hidden id="videoCanvas" width="800" height="600"></canvas>
+
+    <script src="ui.js?nocache"></script>
+    <script src="kerneldefsv0.js?nocache"></script>
+
+
+
+    <script>
+
+        var canvas, video, width, height, context;
+        var copyVideo = false;
+        var canvasReady = false;
+        var arr = [];
+        var imageData;
+        var firsttimevid = true;
+
+        navigator.getUserMedia = (
+            navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.msGetUserMedia
+        );
+
+        function initialize() {
+            video = document.getElementById("video");
+            width = video.width;
+            height = video.height;
+
+            canvas = document.getElementById("videoCanvas");
+            context = canvas.getContext('2d');
+
+            video.addEventListener("playing", function () {
+                copyVideo = true;
+            }, true);
+
+            if (typeof navigator.mediaDevices.getUserMedia === 'undefined') {
+                navigator.getUserMedia({ video: true }, streamHandler, errorHandler);
+            } else {
+                navigator.mediaDevices.getUserMedia({ video: true }).then(streamHandler).catch(errorHandler);
+            }
+        }
+
+        var myKernelImg = makeImg("gpu");
+        var myCodeImg = makeImg("cpu");
+        var myKernelFilter2 = makeFilter("gpu");
+        var myCodeFilter2 = makeFilter("cpu");
+        var orig;
+        var afterload = false;
+        var animIndex = 0;
+        var canvas = myKernelImg.getCanvas();
+        var X;
+        document.getElementsByTagName('body')[0].appendChild(canvas);
+
+        var f = document.querySelector("#fps");
+
+        function pipeline01() {
+            if (copyVideo) {
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                imageData = context.getImageData(0, 0, 800, 600);
+                if (firsttimevid === true) {
+                    for (var channel = 0; channel < 4; channel++) {
+                        arr.push([]);
+                        for (var y = 0; y < 600; y++) {
+                            arr[channel].push([]);
+                        }
+                    }
+                }
+                firsttimevid = false;
+            }
+        }
+
+        function pipeline02() {
+            if (copyVideo) {
+                var pointer = 0;
+                for (var y = 0; y < 600; y++) {
+                    for (var x = 0; x < 800; x++) {
+                        arr[0][600 - y - 1][x] = imageData.data[pointer++] / 256;
+                        arr[1][600 - y - 1][x] = imageData.data[pointer++] / 256;
+                        arr[2][600 - y - 1][x] = imageData.data[pointer++] / 256;
+                        arr[3][600 - y - 1][x] = imageData.data[pointer++] / 256;
+                    }
+                }
+
+                canvasReady = true;
+            }
+        }
+
+        function pipeline03() {
+            orig = myKernelImg(arr);
+        }
+
+        function pipeline04() {
+            var C = orig;
+
+            if (filtering === 0) {
+                X = myKernelFilter2(C);
+            } else {
+                X = C;
+            }
+        }
+
+        function pipeline05() {
+            toimg(X);
+        }
+
+        function renderLoop() {
+            f.innerHTML = fps.getFPS();
+
+            // drawImage/getImageData():
+            // Draws the camera data onto a HTML5 canvas.
+            pipeline01();
+
+            // draw():
+            // Copies the canvas data into a 3-D JavaScript array.
+            pipeline02();
+
+            if (!canvasReady) {
+                console.log("video not ready yet");
+                requestAnimationFrame(renderLoop);
+                return;
+            }
+
+            // myKernelImg():
+            // Converts a normal JS array into a Float32Array for use in GPU.js.
+            pipeline03();
+
+            // myKernelFilter2():
+            // If filtering is enabled, applies an embossing kernel onto the Float32Array.
+            pipeline04();
+
+            // toimg():
+            // Renders the resultant Float32Array image data onto a HTML5 canvas.
+            pipeline05();
+
+            requestAnimationFrame(renderLoop);
+        }
+
+        window.onload = renderLoop;
+
+        function streamHandler(stream) {
+            video.src = URL.createObjectURL(stream);
+            video.play();
+        }
+
+
+        addEventListener("DOMContentLoaded", initialize);
+
+    </script>
+
+</body>
+
+</html>
