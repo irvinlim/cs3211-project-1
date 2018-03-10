@@ -18,6 +18,14 @@ function initializeUI() {
 
             if (param.value == el.value) return;
             param.value = parseFloat(el.value);
+
+            // Special case for Gaussian blur.
+            // Compute and memoize the coefficients of the Gaussian kernel.
+            if (el.dataset.filterName === 'gaussianFilter') {
+                const sigma = el.value;
+                const coeffParam = filter.params.filter(param => param.name === el.dataset.paramName)[0];
+                coeffParam.value = getGaussianCoefficients(sigma);
+            }
         });
     });
 

@@ -11,7 +11,7 @@ var state = {
         {
             name: 'gaussianFilter',
             enabled: false,
-            params: [{ name: 'sigma', value: 2 }],
+            params: [{ name: 'sigma', value: 2 }, { name: 'coefficients', value: [] }],
         },
         {
             name: 'edgeDetectionFilter',
@@ -45,3 +45,10 @@ function getParamByName(filter, name) {
 function getParamValueByName(filter, name) {
     return getParamByName(filter, name).value;
 }
+
+// Precompute the Gaussian coefficients.
+(function() {
+    const filter = getFilterByName('gaussianFilter');
+    const sigma = getParamValueByName(filter, 'sigma');
+    getParamByName(filter, 'coefficients').value = getGaussianCoefficients(sigma);
+})();
