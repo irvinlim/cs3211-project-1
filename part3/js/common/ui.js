@@ -15,6 +15,8 @@ function initializeUI() {
         el.addEventListener('mousemove', function(e) {
             const filter = state.filters.filter(filter => filter.name === el.dataset.filterName)[0];
             const param = filter.params.filter(param => param.name === el.dataset.paramName)[0];
+
+            if (param.value == el.value) return;
             param.value = parseFloat(el.value);
         });
     });
