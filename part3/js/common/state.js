@@ -11,7 +11,15 @@ var state = {
         {
             name: 'gaussianFilter',
             enabled: false,
-            params: [{ name: 'sigma', value: 2 }, { name: 'coefficients', value: [] }],
+            params: [
+                { name: 'sigma', value: 2 },
+                { name: 'k00', value: 0 },
+                { name: 'k01', value: 0 },
+                { name: 'k02', value: 0 },
+                { name: 'k11', value: 0 },
+                { name: 'k12', value: 0 },
+                { name: 'k22', value: 0 },
+            ],
         },
         {
             name: 'edgeDetectionFilter',
@@ -50,5 +58,10 @@ function getParamValueByName(filter, name) {
 (function() {
     const filter = getFilterByName('gaussianFilter');
     const sigma = getParamValueByName(filter, 'sigma');
-    getParamByName(filter, 'coefficients').value = getGaussianCoefficients(sigma);
+    getParamByName(filter, 'k00').value = gaussianFunction(0, 0, sigma);
+    getParamByName(filter, 'k01').value = gaussianFunction(0, 1, sigma);
+    getParamByName(filter, 'k02').value = gaussianFunction(0, 2, sigma);
+    getParamByName(filter, 'k11').value = gaussianFunction(1, 1, sigma);
+    getParamByName(filter, 'k12').value = gaussianFunction(1, 2, sigma);
+    getParamByName(filter, 'k22').value = gaussianFunction(2, 2, sigma);
 })();

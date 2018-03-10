@@ -56,7 +56,7 @@ const createEmbossedFilter = createStandardKernel(function(A) {
 });
 
 // Kernel: Gaussian filter (5x5 kernel)
-const createGaussianFilter = createStandardKernel(function(A, sigma, coefficients) {
+const createGaussianFilter = createStandardKernel(function(A, sigma, k00, k01, k02, k11, k12, k22) {
     if (
         this.thread.y > 1 &&
         this.thread.y < this.constants.height - 2 &&
@@ -64,14 +64,6 @@ const createGaussianFilter = createStandardKernel(function(A, sigma, coefficient
         this.thread.x > 1 &&
         this.thread.z < this.constants.channels
     ) {
-        // Get the precomputed Gaussian coefficients.
-        var k00 = coefficients[0];
-        var k01 = coefficients[1];
-        var k02 = coefficients[2];
-        var k11 = coefficients[3];
-        var k12 = coefficients[4];
-        var k22 = coefficients[5];
-
         // Calculate the sum of all terms for a 5x5 kernel.
         var gaussianSum = k00 + (k01 + k02 + k11 + k22) * 4 + k12 * 8;
 

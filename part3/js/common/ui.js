@@ -24,7 +24,12 @@ function initializeUI() {
             if (el.dataset.filterName === 'gaussianFilter') {
                 const sigma = el.value;
                 const coeffParam = filter.params.filter(param => param.name === el.dataset.paramName)[0];
-                coeffParam.value = getGaussianCoefficients(sigma);
+                getParamByName(filter, 'k00').value = gaussianFunction(0, 0, sigma);
+                getParamByName(filter, 'k01').value = gaussianFunction(0, 1, sigma);
+                getParamByName(filter, 'k02').value = gaussianFunction(0, 2, sigma);
+                getParamByName(filter, 'k11').value = gaussianFunction(1, 1, sigma);
+                getParamByName(filter, 'k12').value = gaussianFunction(1, 2, sigma);
+                getParamByName(filter, 'k22').value = gaussianFunction(2, 2, sigma);
             }
         });
     });
