@@ -138,7 +138,11 @@
             var C = orig;
 
             if (filtering === 0) {
-                X = myKernelFilter2(C);
+                if (selection === 0) {
+                    X = myCodeFilter2(C);
+                } else {
+                    X = myKernelFilter2(C);
+                }
             } else {
                 X = C;
             }
