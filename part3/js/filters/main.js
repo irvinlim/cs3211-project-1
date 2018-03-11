@@ -48,7 +48,7 @@ function renderLoop() {
     /// Execute kernel functions to process and render image for this frame.
 
     // Transform linear image data into 3-D array for proper computation.
-    data = getKernel('transformLinearToXYZ')(data, state.isCameraFlipped ? 1 : 0);
+    data = getKernelTimed('transformLinearToXYZ')(data, state.isCameraFlipped ? 1 : 0);
 
     // Execute each of the filters that are enabled in order, and pass any parameters
     // to the kernel function in the GPU.
@@ -57,7 +57,7 @@ function renderLoop() {
     enabledFilters.forEach(filter => {
         const params = typeof filter.params === 'undefined' ? [] : filter.params;
         const paramValues = params.map(param => param.value);
-        const kernelFunction = getKernel(filter.name);
+        const kernelFunction = getKernelTimed(filter.name);
 
         // Call kernel function with arguments.
         const args = [data].concat(paramValues);
@@ -65,7 +65,7 @@ function renderLoop() {
     });
 
     // Render image in the final canvas.
-    getKernel('renderGraphical')(data);
+    getKernelTimed('renderGraphical')(data);
 
     // Fix the canvas size.
     const canvas = getKernel('renderGraphical').getCanvas();
