@@ -12,7 +12,7 @@ const channels = 3;
 const plotPointColors = [[1, 0, 0], [0, 1, 0], [0, 1, 1], [1, 0, 1]];
 
 // Keep any old textures for the rendered QR code to prevent flashing.
-let lastQrCodeTexture;
+let lastQrCodeIfGpuIs = {};
 
 const KC = {
     LEFT_IMAGE: 'leftImage',
@@ -65,7 +65,8 @@ function initialize() {
     createCanvas(K.RENDER_RIGHT, '.canvas-wrapper.right', qrCodeLength, qrCodeLength);
 
     // Create empty QR code texture in the cache.
-    lastQrCodeTexture = getKernel(K.CREATE_EMPTY_QR_CODE_TEXTURE)();
+    lastQrCodeIfGpuIs[false] = getKernel(K.CREATE_EMPTY_QR_CODE_TEXTURE)();
+    lastQrCodeIfGpuIs[true] = getKernel(K.CREATE_EMPTY_QR_CODE_TEXTURE)();
 }
 
 addEventListener('DOMContentLoaded', initialize);
@@ -113,12 +114,10 @@ function renderLoop() {
         // Doing this twice shouldn't be that much more expensive (i.e. calculating the previous one should be negligible).
         const corners = getKernelTimed(K.QR_CALCULATE_CORNERS_AS_ARRAY)(rowWise, colWise, topMarkers);
 
-        // Handle edge case when lastQrCodeTexture is not a texture when it is in GPU mode.
-        if (Array.isArray(lastQrCodeTexture) && state.isGpuMode) lastQrCodeTexture = getKernel(K.CREATE_EMPTY_QR_CODE_TEXTURE)();
-
         // Perform affine transform on the image based on the markers found.
-        const transformedQrCode = getKernelTimed(K.QR_AFFINE_TRANSFORM)(leftImageCopy, corners, qrCodeDimension, lastQrCodeTexture);
-        lastQrCodeTexture = transformedQrCode;
+        const lastTexture = lastQrCodeIfGpuIs[state.isGpuMode];
+        const transformedQrCode = getKernelTimed(K.QR_AFFINE_TRANSFORM)(leftImageCopy, corners, qrCodeDimension, lastTexture);
+        lastQrCodeIfGpuIs[state.isGpuMode] = transformedQrCode;
 
         // Render the extracted QR code.
         getKernelTimed(K.RENDER_RIGHT, true)(transformedQrCode);
