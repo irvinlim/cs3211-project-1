@@ -95,8 +95,7 @@ function renderLoop() {
     const topMarkers = getKernelTimed(K.MARKER_DETECTION_TOP)(rowWise, colWise);
 
     // Calculate the corners of the QR code.
-    const calcCornerKernel = state.isOutputQrCodeEnabled ? K.QR_CALCULATE_CORNERS_AS_ARRAY : K.QR_CALCULATE_CORNERS;
-    const corners = getKernelTimed(calcCornerKernel)(rowWise, colWise, topMarkers);
+    const corners = getKernelTimed(K.QR_CALCULATE_CORNERS)(rowWise, colWise, topMarkers);
 
     // Outline the QR code on the original image.
     const outlinedQrCode = getKernelTimed(K.OUTLINE_QR_CODE)(filteredImage, corners, plotPointColors);
@@ -109,6 +108,13 @@ function renderLoop() {
         // Copy the left image so that we can render it later.
         // Note that this is the expensive step as we have to transfer data from GPU back to CPU and back again.
         const leftImageCopy = getKernelTimed(K.CONVERT_TO_ARRAY)(filteredImage);
+
+        // Recalculate corners as array instead for affine transformation.
+        // Doing this twice shouldn't be that much more expensive (i.e. calculating the previous one should be negligible).
+        const corners = getKernelTimed(K.QR_CALCULATE_CORNERS_AS_ARRAY)(rowWise, colWise, topMarkers);
+
+        // Handle edge case when lastQrCodeTexture is not a texture when it is in GPU mode.
+        if (Array.isArray(lastQrCodeTexture) && state.isGpuMode) lastQrCodeTexture = getKernel(K.CREATE_EMPTY_QR_CODE_TEXTURE)();
 
         // Perform affine transform on the image based on the markers found.
         const transformedQrCode = getKernelTimed(K.QR_AFFINE_TRANSFORM)(leftImageCopy, corners, qrCodeDimension, lastQrCodeTexture);
