@@ -67,13 +67,6 @@ function toggleStatus(el) {
     // Handle side-effects.
     if (state.isVideoStarted) {
         state.renderLoopRequestId = window.requestAnimationFrame(renderLoop);
-
-        // Show the canvas.
-        document.querySelector('.canvas-wrapper.left').style.display = null;
-        if (state.isOutputQrCodeEnabled) document.querySelector('.canvas-wrapper.right').style.display = null;
-
-        // Hide the output QR code button when started because can't switch halfway.
-        document.querySelector('.panel-block.output-qr-code').style.display = 'none';
     } else {
         window.cancelAnimationFrame(state.renderLoopRequestId);
         state.renderLoopRequestId = undefined;
