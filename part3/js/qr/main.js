@@ -20,7 +20,7 @@ const KC = {
 };
 
 const K = {
-    TRANSFORM_IMAGE_DATA: 'transformLinearToXYZ',
+    TRANSFORM_IMAGE_DATA: 'transformImageData',
     THRESHOLD_FILTER: 'thresholdFilter',
     MEDIAN_FILTER: 'medianFilter',
     MARKER_DETECTION_ROW_WISE: 'markerDetectionRowWise',
@@ -29,7 +29,7 @@ const K = {
     QR_CALCULATE_CORNERS: 'calculateCorners',
     QR_CALCULATE_CORNERS_AS_ARRAY: 'calculateCornersAsArray',
     QR_AFFINE_TRANSFORM: 'affineTransform',
-    OUTLINE_QR_CODE: 'plotPoints',
+    OUTLINE_QR_CODE: 'outlineQr',
     CREATE_EMPTY_QR_CODE_TEXTURE: 'createEmptyQrCodeTexture',
     RENDER_LEFT: 'renderLeftImage',
     RENDER_LEFT_COLOR: 'renderLeftImageColor',
