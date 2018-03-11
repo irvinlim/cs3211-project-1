@@ -418,9 +418,9 @@ const createCalculateCorners = createStandardKernel(
     }
 );
 
-// Kernel: Perform perspective warp on the image to return the QR code in a square.
-// Actually, this is more of an affine transformation which works because all edges are parallel.
-const createPerspectiveWarp = createStandardKernel(
+// Kernel: Perform affine transformation on the image to return the QR code in a square.
+// We assume that the image is not _too_ warped.
+const createAffineTransform = createStandardKernel(
     function(A, corners, dimension, oldTexture) {
         // Don't display anything if we don't have enough corners.
         for (var i = 0; i < 4; i++) if (corners[i][0] <= 0 || corners[i][1] <= 0) return oldTexture[this.thread.y][this.thread.x];

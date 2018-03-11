@@ -27,7 +27,7 @@ const K = {
     MARKER_DETECTION_COL_WISE: 'markerDetectionColWise',
     MARKER_DETECTION_TOP: 'markerDetectionTop',
     QR_CALCULATE_CORNERS: 'calculateCorners',
-    QR_PERSPECTIVE_WARP: 'perspectiveWarp',
+    QR_AFFINE_TRANSFORM: 'affineTransform',
     OUTLINE_QR_CODE: 'plotPoints',
     CREATE_EMPTY_QR_CODE_TEXTURE: 'createEmptyQrCodeTexture',
     RENDER_LEFT: 'renderLeftImage',
@@ -51,7 +51,7 @@ function initialize() {
     addKernel(createMarkerDetectionColWise, KC.LEFT_IMAGE, K.MARKER_DETECTION_COL_WISE);
     addKernel(createMarkerDetectionTop, KC.LEFT_IMAGE, K.MARKER_DETECTION_TOP);
     addKernel(createCalculateCorners, KC.LEFT_IMAGE, K.QR_CALCULATE_CORNERS);
-    addKernel(createPerspectiveWarp, KC.RIGHT_IMAGE, K.QR_PERSPECTIVE_WARP);
+    addKernel(createAffineTransform, KC.RIGHT_IMAGE, K.QR_AFFINE_TRANSFORM);
     addKernel(createOutlineQrCode, KC.LEFT_IMAGE, K.OUTLINE_QR_CODE);
     addKernel(createEmptyQrCodeTexture, KC.RIGHT_IMAGE, K.CREATE_EMPTY_QR_CODE_TEXTURE);
     addKernel(createRenderGreyscale, KC.LEFT_IMAGE, K.RENDER_LEFT, true);
@@ -107,12 +107,12 @@ function renderLoop() {
         // Note that this is the expensive step as we have to transfer data from GPU back to CPU and back again.
         const leftImageCopy = getKernel(K.CONVERT_TO_ARRAY)(filteredImage);
 
-        // Perform perspective transform on the image based on the markers found.
-        const warpedQrCode = getKernel(K.QR_PERSPECTIVE_WARP)(leftImageCopy, corners, qrCodeDimension, lastQrCodeTexture);
-        lastQrCodeTexture = warpedQrCode;
+        // Perform affine transform on the image based on the markers found.
+        const transformedQrCode = getKernel(K.QR_AFFINE_TRANSFORM)(leftImageCopy, corners, qrCodeDimension, lastQrCodeTexture);
+        lastQrCodeTexture = transformedQrCode;
 
         // Render the extracted QR code.
-        getKernel(K.RENDER_RIGHT, true)(warpedQrCode);
+        getKernel(K.RENDER_RIGHT, true)(transformedQrCode);
     }
 
     // Fix canvas sizes.
