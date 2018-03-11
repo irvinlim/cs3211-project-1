@@ -593,7 +593,7 @@ const createEmptyQrCodeTexture = createStandardKernel(
 function checkQrMarkerRatio(px0, px1, px2, px3, px4) {
     var totalWidth = px0 + px1 + px2 + px3 + px4;
     var cellSize = Math.ceil(totalWidth / 7);
-    var allowedVariance = Math.floor(2 * cellSize / 3);
+    var allowedVariance = Math.floor(cellSize / 2);
     var minWidth = 14;
 
     // Reject if total width is less than minimum width.
