@@ -77,42 +77,42 @@ function renderLoop() {
 
     // Transform linear image data into 3-D array for proper computation.
     const cameraFlipped = state.isCameraFlipped ? 1 : 0;
-    const originalImage = getKernel(K.TRANSFORM_IMAGE_DATA)(imageData, cameraFlipped);
+    const originalImage = getKernelTimed(K.TRANSFORM_IMAGE_DATA)(imageData, cameraFlipped);
 
     // Threshold the original image.
     const thresholdFilterState = getFilterByName('thresholdingFilter');
     const thresholdLevel = getParamValueByName(thresholdFilterState, 'threshold');
-    const thresholdedImage = getKernel(K.THRESHOLD_FILTER)(originalImage, thresholdLevel, 0);
+    const thresholdedImage = getKernelTimed(K.THRESHOLD_FILTER)(originalImage, thresholdLevel, 0);
 
     // Apply median filter to remove artifacts after thresholding.
-    const filteredImage = getKernel(K.MEDIAN_FILTER)(thresholdedImage);
+    const filteredImage = getKernelTimed(K.MEDIAN_FILTER)(thresholdedImage);
 
     // Identify markers.
-    const rowWise = getKernel(K.MARKER_DETECTION_ROW_WISE)(filteredImage, 0);
-    const colWise = getKernel(K.MARKER_DETECTION_COL_WISE)(filteredImage, 1);
-    const topMarkers = getKernel(K.MARKER_DETECTION_TOP)(rowWise, colWise);
+    const rowWise = getKernelTimed(K.MARKER_DETECTION_ROW_WISE)(filteredImage, 0);
+    const colWise = getKernelTimed(K.MARKER_DETECTION_COL_WISE)(filteredImage, 1);
+    const topMarkers = getKernelTimed(K.MARKER_DETECTION_TOP)(rowWise, colWise);
 
     // Calculate the corners of the QR code.
-    const corners = getKernel(K.QR_CALCULATE_CORNERS)(rowWise, colWise, topMarkers);
+    const corners = getKernelTimed(K.QR_CALCULATE_CORNERS)(rowWise, colWise, topMarkers);
 
     // Outline the QR code on the original image.
-    const outlinedQrCode = getKernel(K.OUTLINE_QR_CODE)(filteredImage, corners, plotPointColors);
+    const outlinedQrCode = getKernelTimed(K.OUTLINE_QR_CODE)(filteredImage, corners, plotPointColors);
 
     // Render the outlined QR code.
-    getKernel(K.RENDER_LEFT_COLOR, true)(outlinedQrCode);
+    getKernelTimed(K.RENDER_LEFT_COLOR, true)(outlinedQrCode);
 
     // Render the QR code in the 2nd canvas if enabled.
     if (state.isOutputQrCodeEnabled) {
         // Copy the left image so that we can render it later.
         // Note that this is the expensive step as we have to transfer data from GPU back to CPU and back again.
-        const leftImageCopy = getKernel(K.CONVERT_TO_ARRAY)(filteredImage);
+        const leftImageCopy = getKernelTimed(K.CONVERT_TO_ARRAY)(filteredImage);
 
         // Perform affine transform on the image based on the markers found.
-        const transformedQrCode = getKernel(K.QR_AFFINE_TRANSFORM)(leftImageCopy, corners, qrCodeDimension, lastQrCodeTexture);
+        const transformedQrCode = getKernelTimed(K.QR_AFFINE_TRANSFORM)(leftImageCopy, corners, qrCodeDimension, lastQrCodeTexture);
         lastQrCodeTexture = transformedQrCode;
 
         // Render the extracted QR code.
-        getKernel(K.RENDER_RIGHT, true)(transformedQrCode);
+        getKernelTimed(K.RENDER_RIGHT, true)(transformedQrCode);
     }
 
     // Fix canvas sizes.

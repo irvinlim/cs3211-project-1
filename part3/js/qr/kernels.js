@@ -414,7 +414,7 @@ const createCalculateCorners = createStandardKernel(
     {
         output: [2, 4],
         outputToTexture: false,
-        functions: { dist, area, max, min, atan2 },
+        functions: { dist, area, max, min },
     }
 );
 
