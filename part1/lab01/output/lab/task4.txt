@@ -1,0 +1,165 @@
+NUSSTU\e0003697@soctf-pdc-013:~/Downloads$ for i in {1..8}; do echo Using $i threads; for j in {1..3}; do OMP_NUM_THREADS=$i ./mm-shmem 128 | grep seconds ; done; done
+Using 1 threads
+Matrix multiplication took 0.0212 seconds
+Matrix multiplication took 0.0212 seconds
+Matrix multiplication took 0.0192 seconds
+Using 2 threads
+Matrix multiplication took 0.0092 seconds
+Matrix multiplication took 0.0079 seconds
+Matrix multiplication took 0.0095 seconds
+Using 3 threads
+Matrix multiplication took 0.0059 seconds
+Matrix multiplication took 0.0058 seconds
+Matrix multiplication took 0.0059 seconds
+Using 4 threads
+Matrix multiplication took 0.0073 seconds
+Matrix multiplication took 0.0046 seconds
+Matrix multiplication took 0.0046 seconds
+Using 5 threads
+Matrix multiplication took 0.0073 seconds
+Matrix multiplication took 0.0084 seconds
+Matrix multiplication took 0.0086 seconds
+Using 6 threads
+Matrix multiplication took 0.0067 seconds
+Matrix multiplication took 0.0070 seconds
+Matrix multiplication took 0.0059 seconds
+Using 7 threads
+Matrix multiplication took 0.0063 seconds
+Matrix multiplication took 0.0084 seconds
+Matrix multiplication took 0.0053 seconds
+Using 8 threads
+Matrix multiplication took 0.0070 seconds
+Matrix multiplication took 0.0065 seconds
+Matrix multiplication took 0.0069 seconds
+NUSSTU\e0003697@soctf-pdc-013:~/Downloads$ for i in {1..8}; do echo Using $i threads; for j in {1..3}; do OMP_NUM_THREADS=$i ./mm-shmem 256 | grep seconds ; done; done
+Using 1 threads
+Matrix multiplication took 0.1252 seconds
+Matrix multiplication took 0.1236 seconds
+Matrix multiplication took 0.1217 seconds
+Using 2 threads
+Matrix multiplication took 0.0703 seconds
+Matrix multiplication took 0.0689 seconds
+Matrix multiplication took 0.0675 seconds
+Using 3 threads
+Matrix multiplication took 0.0494 seconds
+Matrix multiplication took 0.0502 seconds
+Matrix multiplication took 0.0534 seconds
+Using 4 threads
+Matrix multiplication took 0.0407 seconds
+Matrix multiplication took 0.0378 seconds
+Matrix multiplication took 0.0409 seconds
+Using 5 threads
+Matrix multiplication took 0.0453 seconds
+Matrix multiplication took 0.0454 seconds
+Matrix multiplication took 0.0434 seconds
+Using 6 threads
+Matrix multiplication took 0.0435 seconds
+Matrix multiplication took 0.0422 seconds
+Matrix multiplication took 0.0415 seconds
+Using 7 threads
+Matrix multiplication took 0.0470 seconds
+Matrix multiplication took 0.0421 seconds
+Matrix multiplication took 0.0474 seconds
+Using 8 threads
+Matrix multiplication took 0.0428 seconds
+Matrix multiplication took 0.0437 seconds
+Matrix multiplication took 0.0443 seconds
+NUSSTU\e0003697@soctf-pdc-013:~/Downloads$ for i in {1..8}; do echo Using $i threads; for j in {1..3}; do OMP_NUM_THREADS=$i ./mm-shmem 512 | grep seconds ; done; done
+Using 1 threads
+Matrix multiplication took 1.0616 seconds
+Matrix multiplication took 1.0650 seconds
+Matrix multiplication took 1.0812 seconds
+Using 2 threads
+Matrix multiplication took 0.5493 seconds
+Matrix multiplication took 0.5530 seconds
+Matrix multiplication took 0.5488 seconds
+Using 3 threads
+Matrix multiplication took 0.4189 seconds
+Matrix multiplication took 0.4163 seconds
+Matrix multiplication took 0.4188 seconds
+Using 4 threads
+Matrix multiplication took 0.3387 seconds
+Matrix multiplication took 0.3400 seconds
+Matrix multiplication took 0.3378 seconds
+Using 5 threads
+Matrix multiplication took 0.3784 seconds
+Matrix multiplication took 0.3830 seconds
+Matrix multiplication took 0.3837 seconds
+Using 6 threads
+Matrix multiplication took 0.3653 seconds
+Matrix multiplication took 0.3665 seconds
+Matrix multiplication took 0.3625 seconds
+Using 7 threads
+Matrix multiplication took 0.3416 seconds
+Matrix multiplication took 0.3439 seconds
+Matrix multiplication took 0.3387 seconds
+Using 8 threads
+Matrix multiplication took 0.3573 seconds
+Matrix multiplication took 0.3623 seconds
+Matrix multiplication took 0.3573 seconds
+NUSSTU\e0003697@soctf-pdc-013:~/Downloads$ for i in {1..8}; do echo Using $i threads; for j in {1..3}; do OMP_NUM_THREADS=$i ./mm-shmem | grep seconds ; done; done
+Using 1 threads
+Matrix multiplication took 10.2156 seconds
+Matrix multiplication took 10.0943 seconds
+Matrix multiplication took 10.3768 seconds
+Using 2 threads
+Matrix multiplication took 5.2953 seconds
+Matrix multiplication took 5.3473 seconds
+Matrix multiplication took 5.2432 seconds
+Using 3 threads
+Matrix multiplication took 4.0036 seconds
+Matrix multiplication took 3.9648 seconds
+Matrix multiplication took 4.1439 seconds
+Using 4 threads
+Matrix multiplication took 3.2174 seconds
+Matrix multiplication took 3.2932 seconds
+Matrix multiplication took 3.3011 seconds
+Using 5 threads
+Matrix multiplication took 3.3169 seconds
+Matrix multiplication took 3.4324 seconds
+Matrix multiplication took 3.3142 seconds
+Using 6 threads
+Matrix multiplication took 3.2441 seconds
+Matrix multiplication took 3.3821 seconds
+Matrix multiplication took 3.2759 seconds
+Using 7 threads
+Matrix multiplication took 3.4065 seconds
+Matrix multiplication took 3.2681 seconds
+Matrix multiplication took 3.3079 seconds
+Using 8 threads
+Matrix multiplication took 3.2352 seconds
+Matrix multiplication took 3.2141 seconds
+Matrix multiplication took 3.2162 seconds
+NUSSTU\e0003697@soctf-pdc-013:~/Downloads$ for i in {1..8}; do echo Using $i threads; for j in {1..3}; do OMP_NUM_THREADS=$i ./mm-shmem 2048 | grep seconds ; done; done
+Using 1 threads
+Matrix multiplication took 115.2394 seconds
+Matrix multiplication took 116.0747 seconds
+Matrix multiplication took 116.0907 seconds
+Using 2 threads
+Matrix multiplication took 59.2238 seconds
+Matrix multiplication took 59.1137 seconds
+Matrix multiplication took 61.1634 seconds
+Using 3 threads
+Matrix multiplication took 43.7514 seconds
+Matrix multiplication took 43.8731 seconds
+Matrix multiplication took 44.2548 seconds
+Using 4 threads
+Matrix multiplication took 34.7358 seconds
+Matrix multiplication took 34.6261 seconds
+Matrix multiplication took 34.4941 seconds
+Using 5 threads
+Matrix multiplication took 34.8483 seconds
+Matrix multiplication took 35.4706 seconds
+Matrix multiplication took 34.8665 seconds
+Using 6 threads
+Matrix multiplication took 34.0204 seconds
+Matrix multiplication took 34.0413 seconds
+Matrix multiplication took 34.6191 seconds
+Using 7 threads
+Matrix multiplication took 33.5351 seconds
+Matrix multiplication took 34.4445 seconds
+Matrix multiplication took 34.0116 seconds
+Using 8 threads
+Matrix multiplication took 28.8867 seconds
+Matrix multiplication took 31.2859 seconds
+Matrix multiplication took 31.9502 seconds

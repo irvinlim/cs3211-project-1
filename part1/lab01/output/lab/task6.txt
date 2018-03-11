@@ -1,0 +1,18 @@
+NUSSTU\e0003697@soctf-pdc-013:~/Downloads$ ./testmem 
+Array size: 4 kB and time taken is 0.151723 secs
+Array size: 8 kB and time taken is 0.145803 secs
+Array size: 16 kB and time taken is 0.146873 secs
+Array size: 32 kB and time taken is 0.145506 secs
+Array size: 64 kB and time taken is 0.154049 secs
+Array size: 128 kB and time taken is 0.155231 secs
+Array size: 256 kB and time taken is 0.159569 secs
+Array size: 512 kB and time taken is 0.191317 secs
+Array size: 1024 kB and time taken is 0.193764 secs
+Array size: 2048 kB and time taken is 0.194445 secs
+Array size: 4096 kB and time taken is 0.250635 secs
+Array size: 8192 kB and time taken is 0.759793 secs
+Array size: 16384 kB and time taken is 0.954889 secs
+Array size: 32768 kB and time taken is 0.951851 secs
+Array size: 65536 kB and time taken is 0.962651 secs
+Array size: 131072 kB and time taken is 0.971256 secs
+

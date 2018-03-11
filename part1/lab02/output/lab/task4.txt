@@ -1,0 +1,146 @@
+NUSSTU\e0003697@soctf-pdc-013:~/Downloads$ ./fpomp 
+Adding 100000 randomly generated floating point numbers using 4 threads
+
+Local sum thread 0 is 770771.437500
+Local sum thread 1 is 765731.500000
+Local sum thread 2 is 762616.312500
+Local sum thread 3 is 766077.437500
+Final sum is 3065196.750000
+Local sum thread 1 is 765731.500000
+Local sum thread 3 is 766077.437500
+Local sum thread 2 is 762616.312500
+Local sum thread 0 is 770771.437500
+Final sum is 3065196.750000
+Local sum thread 1 is 765731.500000
+Local sum thread 3 is 766077.437500
+Local sum thread 2 is 762616.312500
+Local sum thread 0 is 770771.437500
+Final sum is 3065196.750000
+Local sum thread 1 is 765731.500000
+Local sum thread 3 is 766077.437500
+Local sum thread 2 is 762616.312500
+Local sum thread 0 is 770771.437500
+Final sum is 3065196.750000
+Local sum thread 0 is 770771.437500
+Local sum thread 1 is 765731.500000
+Local sum thread 3 is 766077.437500
+Local sum thread 2 is 762616.312500
+Final sum is 3065196.750000
+
+NUSSTU\e0003697@soctf-pdc-013:~/Downloads$ ./fpomp 
+Adding 100000 randomly generated floating point numbers using 4 threads
+
+Local sum thread 0 is 765682.500000
+Local sum thread 2 is 763605.000000
+Local sum thread 1 is 764605.375000
+Local sum thread 3 is 757103.062500
+Final sum is 3050996.000000
+Local sum thread 3 is 757103.062500
+Local sum thread 2 is 763605.000000
+Local sum thread 1 is 764605.375000
+Local sum thread 0 is 765682.500000
+Final sum is 3050996.000000
+Local sum thread 1 is 764605.375000
+Local sum thread 3 is 757103.062500
+Local sum thread 2 is 763605.000000
+Local sum thread 0 is 765682.500000
+Final sum is 3050996.000000
+Local sum thread 1 is 764605.375000
+Local sum thread 2 is 763605.000000
+Local sum thread 3 is 757103.062500
+Local sum thread 0 is 765682.500000
+Final sum is 3050996.000000
+Local sum thread 1 is 764605.375000
+Local sum thread 3 is 757103.062500
+Local sum thread 2 is 763605.000000
+Local sum thread 0 is 765682.500000
+Final sum is 3050996.000000
+
+NUSSTU\e0003697@soctf-pdc-013:~/Downloads$ ./fpomp 
+Adding 100000 randomly generated floating point numbers using 4 threads
+
+Local sum thread 0 is 769448.937500
+Local sum thread 2 is 765209.125000
+Local sum thread 1 is 769626.687500
+Local sum thread 3 is 766283.062500
+Final sum is 3070567.750000
+Local sum thread 2 is 765209.125000
+Local sum thread 3 is 766283.062500
+Local sum thread 1 is 769626.687500
+Local sum thread 0 is 769448.937500
+Final sum is 3070568.000000
+Local sum thread 2 is 765209.125000
+Local sum thread 1 is 769626.687500
+Local sum thread 3 is 766283.062500
+Local sum thread 0 is 769448.937500
+Final sum is 3070567.750000
+Local sum thread 0 is 769448.937500
+Local sum thread 3 is 766283.062500
+Local sum thread 2 is 765209.125000
+Local sum thread 1 is 769626.687500
+Final sum is 3070568.000000
+Local sum thread 0 is 769448.937500
+Local sum thread 2 is 765209.125000
+Local sum thread 3 is 766283.062500
+Local sum thread 1 is 769626.687500
+Final sum is 3070567.750000
+
+NUSSTU\e0003697@soctf-pdc-013:~/Downloads$ ./fpomp 
+Adding 100000 randomly generated floating point numbers using 4 threads
+
+Local sum thread 0 is 762516.125000
+Local sum thread 3 is 766587.750000
+Local sum thread 1 is 760579.625000
+Local sum thread 2 is 764909.187500
+Final sum is 3054592.750000
+Local sum thread 3 is 766587.750000
+Local sum thread 1 is 760579.625000
+Local sum thread 2 is 764909.187500
+Local sum thread 0 is 762516.125000
+Final sum is 3054592.500000
+Local sum thread 0 is 762516.125000
+Local sum thread 2 is 764909.187500
+Local sum thread 1 is 760579.625000
+Local sum thread 3 is 766587.750000
+Final sum is 3054592.750000
+Local sum thread 0 is 762516.125000
+Local sum thread 2 is 764909.187500
+Local sum thread 3 is 766587.750000
+Local sum thread 1 is 760579.625000
+Final sum is 3054592.750000
+Local sum thread 1 is 760579.625000
+Local sum thread 3 is 766587.750000
+Local sum thread 2 is 764909.187500
+Local sum thread 0 is 762516.125000
+Final sum is 3054592.500000
+
+NUSSTU\e0003697@soctf-pdc-013:~/Downloads$ ./fpomp 
+Adding 100000 randomly generated floating point numbers using 4 threads
+
+Local sum thread 0 is 765141.625000
+Local sum thread 3 is 770698.125000
+Local sum thread 2 is 760392.875000
+Local sum thread 1 is 763268.687500
+Final sum is 3059501.250000
+Local sum thread 3 is 770698.125000
+Local sum thread 1 is 763268.687500
+Local sum thread 2 is 760392.875000
+Local sum thread 0 is 765141.625000
+Final sum is 3059501.000000
+Local sum thread 3 is 770698.125000
+Local sum thread 1 is 763268.687500
+Local sum thread 0 is 765141.625000
+Local sum thread 2 is 760392.875000
+Final sum is 3059501.500000
+Local sum thread 0 is 765141.625000
+Local sum thread 3 is 770698.125000
+Local sum thread 1 is 763268.687500
+Local sum thread 2 is 760392.875000
+Final sum is 3059501.500000
+Local sum thread 1 is 763268.687500
+Local sum thread 2 is 760392.875000
+Local sum thread 0 is 765141.625000
+Local sum thread 3 is 770698.125000
+Final sum is 3059501.000000
+
+

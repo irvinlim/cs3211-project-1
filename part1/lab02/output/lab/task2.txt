@@ -1,0 +1,22 @@
+NUSSTU\e0003697@soctf-pdc-013:~/Downloads$ ./fpadd2 
+Adding 1 to 0.3, lots of times...
+Adding 500000 1s to 0.3 gives this result:   500000.3
+Adding 1000000 1s to 0.3 gives this result:  1000000.3
+Adding 1500000 1s to 0.3 gives this result:  1500000.2
+Adding 2000000 1s to 0.3 gives this result:  2000000.2
+Adding 2500000 1s to 0.3 gives this result:  2500000.2
+Adding 3000000 1s to 0.3 gives this result:  3000000.2
+Adding 3500000 1s to 0.3 gives this result:  3500000.2
+Adding 4000000 1s to 0.3 gives this result:  4000000.2
+Adding 4500000 1s to 0.3 gives this result:  4500000.0
+Adding 5000000 1s to 0.3 gives this result:  5000000.0
+Adding 5500000 1s to 0.3 gives this result:  5500000.0
+Adding 6000000 1s to 0.3 gives this result:  6000000.0
+Adding 6500000 1s to 0.3 gives this result:  6500000.0
+Adding 7000000 1s to 0.3 gives this result:  7000000.0
+Adding 7500000 1s to 0.3 gives this result:  7500000.0
+Adding 8000000 1s to 0.3 gives this result:  8000000.0
+Adding 8500000 1s to 0.3 gives this result:  8500000.0
+Adding 9000000 1s to 0.3 gives this result:  9000000.0
+Adding 9500000 1s to 0.3 gives this result:  9500000.0
+

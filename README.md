@@ -1,10 +1,30 @@
 # CS3211 Project 1
 
+_Submitted by Irvin Lim Wei Quan (A0139812A)._
+
 This is a submission for CS3211 Parallel and Concurrent Programming, Project 1 (_Image Processing: Implementation and Analysis_).
 
-This module was taken in AY 17/18, under A/P Hugh Anderson and Prof. John Gustafson.
+The complete project report can also be found in the root directory.
 
-## Instructions
+## Part 1
+
+Various scripts that were used for benchmarking and automating the tests on the lab machine and the Tembusu cluster can be found in the `part1` directory, in case you might find them useful.
+
+Additionally, the raw output for some of the lab tasks are also stored here for scratch work.
+
+## Part 2
+
+The `part2` directory contains the various HTML files showing the iterative testing and improvement of the program to investigate the low framerate, as well as to improve the framerate. These files are named `testXX.html`.
+
+You can do a diff on the files to find out what was changed between each step, like as follows:
+
+```sh
+diff test01.html test02.html
+```
+
+## Part 3
+
+### Setup Instructions
 
 This program runs in the browser, preferably on Google Chrome. As it requires access to the device's camera, it must be run on the `http` protocol instead of the `file` protocol.
 
@@ -13,9 +33,15 @@ The solution is to start a static HTTP server, such as Python 3's [`http.server`
 For `http.server` (Python 3):
 
 ```sh
-cd src
+# Runs a static server on localhost:8000
 python -m http.server
-# Now open localhost:8000
+```
+
+For `SimpleHTTPServer` (Python 2):
+
+```sh
+# Runs a static server on localhost:8000
+python -m SimpleHTTPServer
 ```
 
 Otherwise, for `http-server` (Node.js):
@@ -23,14 +49,20 @@ Otherwise, for `http-server` (Node.js):
 ```sh
 # Install http-server globally
 npm i -g http-server
-cd src
+
+# Runs a static server on localhost:8080
 http-server
-# Now open localhost:8080
 ```
 
-## Dependencies
+### Usage
 
-This project depends on [GPU.js](https://github.com/gpujs/gpu.js) and [Bulma](https://bulma.io/). The core of the assignment is based on GPU.js, but restricted to a specific snapshot version of the library (V0).
+There is an attached sample QR code which to be used within the application:
+
+![](qr-code.png)
+
+### Dependencies
+
+This project depends on [GPU.js](https://github.com/gpujs/gpu.js), as well as some auxiliary UI libraries [Bulma](https://bulma.io/) and [html5sortable](https://github.com/lukasoppermann/html5sortable).
 
 As this is a submission for a school assignment, all dependencies are copied into this repository directly, instead of typically installing them from NPM.
 

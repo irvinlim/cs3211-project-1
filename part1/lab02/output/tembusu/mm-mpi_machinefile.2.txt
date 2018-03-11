@@ -1,0 +1,952 @@
+Running on 8 procesors:
+
+ --- SLAVE 0: communication_time=  0.47 seconds; computation_time= 19.11 seconds
+ --- SLAVE 1: communication_time=  0.47 seconds; computation_time= 20.15 seconds
+ --- SLAVE 2: communication_time=  1.71 seconds; computation_time= 18.91 seconds
+ --- SLAVE 3: communication_time=  0.57 seconds; computation_time= 20.06 seconds
+ --- SLAVE 4: communication_time=  1.58 seconds; computation_time= 19.06 seconds
+ --- SLAVE 5: communication_time=  0.56 seconds; computation_time= 20.08 seconds
+ --- SLAVE 6: communication_time=  1.63 seconds; computation_time= 19.01 seconds
+
+real	0m21.338s
+user	0m0.032s
+sys	0m0.060s
+ --- SLAVE 0: communication_time=  0.41 seconds; computation_time= 19.24 seconds
+ --- SLAVE 1: communication_time=  0.41 seconds; computation_time= 20.18 seconds
+ --- SLAVE 2: communication_time=  1.65 seconds; computation_time= 18.95 seconds
+ --- SLAVE 3: communication_time=  0.50 seconds; computation_time= 20.11 seconds
+ --- SLAVE 4: communication_time=  1.46 seconds; computation_time= 19.15 seconds
+ --- SLAVE 5: communication_time=  0.52 seconds; computation_time= 20.09 seconds
+ --- SLAVE 6: communication_time=  0.95 seconds; computation_time= 19.67 seconds
+
+real	0m21.263s
+user	0m0.032s
+sys	0m0.061s
+ --- SLAVE 0: communication_time=  0.47 seconds; computation_time= 18.80 seconds
+ --- SLAVE 1: communication_time=  0.47 seconds; computation_time= 20.08 seconds
+ --- SLAVE 2: communication_time=  1.38 seconds; computation_time= 19.17 seconds
+ --- SLAVE 3: communication_time=  0.48 seconds; computation_time= 20.08 seconds
+ --- SLAVE 4: communication_time=  1.69 seconds; computation_time= 18.88 seconds
+ --- SLAVE 5: communication_time=  0.51 seconds; computation_time= 20.06 seconds
+ --- SLAVE 6: communication_time=  1.12 seconds; computation_time= 19.45 seconds
+
+real	0m21.234s
+user	0m0.031s
+sys	0m0.064s
+Running on 16 procesors:
+
+ --- SLAVE 2: communication_time=  2.16 seconds; computation_time=  8.79 seconds
+ --- SLAVE 0: communication_time=  2.16 seconds; computation_time=  8.82 seconds
+ --- SLAVE 6: communication_time=  2.16 seconds; computation_time=  8.86 seconds
+ --- SLAVE 4: communication_time=  2.16 seconds; computation_time=  8.87 seconds
+ --- SLAVE 8: communication_time=  2.17 seconds; computation_time=  9.00 seconds
+ --- SLAVE 10: communication_time=  2.16 seconds; computation_time=  9.05 seconds
+ --- SLAVE 9: communication_time=  2.17 seconds; computation_time=  9.08 seconds
+ --- SLAVE 11: communication_time=  2.17 seconds; computation_time=  9.09 seconds
+ --- SLAVE 3: communication_time=  2.18 seconds; computation_time=  9.09 seconds
+ --- SLAVE 5: communication_time=  2.17 seconds; computation_time=  9.11 seconds
+ --- SLAVE 7: communication_time=  2.16 seconds; computation_time=  9.12 seconds
+ --- SLAVE 1: communication_time=  2.16 seconds; computation_time=  9.23 seconds
+ --- SLAVE 12: communication_time=  2.25 seconds; computation_time=  9.16 seconds
+ --- SLAVE 13: communication_time=  3.61 seconds; computation_time=  7.80 seconds
+ --- SLAVE 14: communication_time=  2.41 seconds; computation_time=  9.01 seconds
+
+real	0m12.096s
+user	0m0.032s
+sys	0m0.071s
+ --- SLAVE 0: communication_time=  2.16 seconds; computation_time=  8.81 seconds
+ --- SLAVE 2: communication_time=  2.16 seconds; computation_time=  8.82 seconds
+ --- SLAVE 6: communication_time=  2.16 seconds; computation_time=  8.85 seconds
+ --- SLAVE 4: communication_time=  2.16 seconds; computation_time=  8.92 seconds
+ --- SLAVE 10: communication_time=  2.16 seconds; computation_time=  8.95 seconds
+ --- SLAVE 8: communication_time=  2.16 seconds; computation_time=  8.98 seconds
+ --- SLAVE 5: communication_time=  2.16 seconds; computation_time=  9.10 seconds
+ --- SLAVE 7: communication_time=  2.17 seconds; computation_time=  9.14 seconds
+ --- SLAVE 11: communication_time=  2.17 seconds; computation_time=  9.14 seconds
+ --- SLAVE 9: communication_time=  2.18 seconds; computation_time=  9.14 seconds
+ --- SLAVE 3: communication_time=  2.17 seconds; computation_time=  9.16 seconds
+ --- SLAVE 1: communication_time=  2.16 seconds; computation_time=  9.18 seconds
+ --- SLAVE 12: communication_time=  2.21 seconds; computation_time=  9.16 seconds
+ --- SLAVE 13: communication_time=  3.66 seconds; computation_time=  7.70 seconds
+ --- SLAVE 14: communication_time=  2.15 seconds; computation_time=  9.30 seconds
+
+real	0m12.126s
+user	0m0.032s
+sys	0m0.063s
+ --- SLAVE 6: communication_time=  2.15 seconds; computation_time=  8.77 seconds
+ --- SLAVE 2: communication_time=  2.15 seconds; computation_time=  8.85 seconds
+ --- SLAVE 0: communication_time=  2.15 seconds; computation_time=  8.88 seconds
+ --- SLAVE 4: communication_time=  2.16 seconds; computation_time=  8.88 seconds
+ --- SLAVE 10: communication_time=  2.15 seconds; computation_time=  8.96 seconds
+ --- SLAVE 5: communication_time=  2.16 seconds; computation_time=  9.02 seconds
+ --- SLAVE 8: communication_time=  2.15 seconds; computation_time=  9.05 seconds
+ --- SLAVE 3: communication_time=  2.16 seconds; computation_time=  9.15 seconds
+ --- SLAVE 11: communication_time=  2.16 seconds; computation_time=  9.18 seconds
+ --- SLAVE 7: communication_time=  2.16 seconds; computation_time=  9.17 seconds
+ --- SLAVE 9: communication_time=  2.15 seconds; computation_time=  9.20 seconds
+ --- SLAVE 1: communication_time=  2.15 seconds; computation_time=  9.21 seconds
+ --- SLAVE 12: communication_time=  2.29 seconds; computation_time=  9.10 seconds
+ --- SLAVE 13: communication_time=  3.45 seconds; computation_time=  7.94 seconds
+ --- SLAVE 14: communication_time=  2.46 seconds; computation_time=  8.93 seconds
+
+real	0m12.076s
+user	0m0.034s
+sys	0m0.062s
+Running on 24 procesors:
+
+ --- SLAVE 2: communication_time=  2.12 seconds; computation_time=  5.71 seconds
+ --- SLAVE 4: communication_time=  2.13 seconds; computation_time=  5.77 seconds
+ --- SLAVE 6: communication_time=  2.13 seconds; computation_time=  5.82 seconds
+ --- SLAVE 0: communication_time=  2.13 seconds; computation_time=  5.83 seconds
+ --- SLAVE 9: communication_time=  2.13 seconds; computation_time=  5.91 seconds
+ --- SLAVE 11: communication_time=  2.14 seconds; computation_time=  5.91 seconds
+ --- SLAVE 1: communication_time=  2.13 seconds; computation_time=  5.92 seconds
+ --- SLAVE 5: communication_time=  2.12 seconds; computation_time=  5.94 seconds
+ --- SLAVE 3: communication_time=  2.13 seconds; computation_time=  5.97 seconds
+ --- SLAVE 7: communication_time=  2.13 seconds; computation_time=  5.99 seconds
+ --- SLAVE 10: communication_time=  2.13 seconds; computation_time=  5.99 seconds
+ --- SLAVE 8: communication_time=  2.13 seconds; computation_time=  6.08 seconds
+ --- SLAVE 12: communication_time=  2.12 seconds; computation_time=  6.11 seconds
+ --- SLAVE 13: communication_time=  2.26 seconds; computation_time=  5.97 seconds
+ --- SLAVE 14: communication_time=  2.23 seconds; computation_time=  6.01 seconds
+ --- SLAVE 15: communication_time=  2.28 seconds; computation_time=  5.96 seconds
+ --- SLAVE 16: communication_time=  2.12 seconds; computation_time=  6.13 seconds
+ --- SLAVE 17: communication_time=  2.27 seconds; computation_time=  5.98 seconds
+ --- SLAVE 18: communication_time=  2.21 seconds; computation_time=  6.04 seconds
+ --- SLAVE 19: communication_time=  2.19 seconds; computation_time=  6.06 seconds
+ --- SLAVE 20: communication_time=  2.21 seconds; computation_time=  6.04 seconds
+ --- SLAVE 21: communication_time=  2.25 seconds; computation_time=  6.01 seconds
+ --- SLAVE 22: communication_time=  2.26 seconds; computation_time=  6.00 seconds
+
+real	0m8.941s
+user	0m0.032s
+sys	0m0.071s
+ --- SLAVE 4: communication_time=  2.09 seconds; computation_time=  5.75 seconds
+ --- SLAVE 0: communication_time=  2.09 seconds; computation_time=  5.77 seconds
+ --- SLAVE 6: communication_time=  2.10 seconds; computation_time=  5.82 seconds
+ --- SLAVE 2: communication_time=  2.09 seconds; computation_time=  5.83 seconds
+ --- SLAVE 10: communication_time=  2.09 seconds; computation_time=  5.85 seconds
+ --- SLAVE 9: communication_time=  2.10 seconds; computation_time=  5.87 seconds
+ --- SLAVE 5: communication_time=  2.09 seconds; computation_time=  5.93 seconds
+ --- SLAVE 11: communication_time=  2.10 seconds; computation_time=  5.96 seconds
+ --- SLAVE 1: communication_time=  2.10 seconds; computation_time=  5.96 seconds
+ --- SLAVE 7: communication_time=  2.09 seconds; computation_time=  5.98 seconds
+ --- SLAVE 3: communication_time=  2.09 seconds; computation_time=  6.00 seconds
+ --- SLAVE 8: communication_time=  2.09 seconds; computation_time=  6.30 seconds
+ --- SLAVE 12: communication_time=  2.41 seconds; computation_time=  5.99 seconds
+ --- SLAVE 13: communication_time=  2.32 seconds; computation_time=  6.07 seconds
+ --- SLAVE 14: communication_time=  2.38 seconds; computation_time=  6.02 seconds
+ --- SLAVE 15: communication_time=  2.33 seconds; computation_time=  6.08 seconds
+ --- SLAVE 16: communication_time=  2.26 seconds; computation_time=  6.15 seconds
+ --- SLAVE 17: communication_time=  2.39 seconds; computation_time=  6.02 seconds
+ --- SLAVE 18: communication_time=  2.31 seconds; computation_time=  6.10 seconds
+ --- SLAVE 19: communication_time=  2.25 seconds; computation_time=  6.16 seconds
+ --- SLAVE 20: communication_time=  2.41 seconds; computation_time=  6.00 seconds
+ --- SLAVE 21: communication_time=  2.31 seconds; computation_time=  6.10 seconds
+ --- SLAVE 22: communication_time=  2.36 seconds; computation_time=  6.05 seconds
+
+real	0m9.093s
+user	0m0.030s
+sys	0m0.063s
+ --- SLAVE 4: communication_time=  2.09 seconds; computation_time=  5.76 seconds
+ --- SLAVE 2: communication_time=  2.09 seconds; computation_time=  5.77 seconds
+ --- SLAVE 6: communication_time=  2.09 seconds; computation_time=  5.79 seconds
+ --- SLAVE 0: communication_time=  2.09 seconds; computation_time=  5.82 seconds
+ --- SLAVE 9: communication_time=  2.09 seconds; computation_time=  5.88 seconds
+ --- SLAVE 3: communication_time=  2.09 seconds; computation_time=  5.93 seconds
+ --- SLAVE 7: communication_time=  2.10 seconds; computation_time=  5.96 seconds
+ --- SLAVE 8: communication_time=  2.09 seconds; computation_time=  5.97 seconds
+ --- SLAVE 10: communication_time=  2.09 seconds; computation_time=  5.97 seconds
+ --- SLAVE 11: communication_time=  2.10 seconds; computation_time=  5.98 seconds
+ --- SLAVE 5: communication_time=  2.09 seconds; computation_time=  6.00 seconds
+ --- SLAVE 1: communication_time=  2.09 seconds; computation_time=  6.00 seconds
+ --- SLAVE 12: communication_time=  2.11 seconds; computation_time=  5.99 seconds
+ --- SLAVE 13: communication_time=  2.08 seconds; computation_time=  6.04 seconds
+ --- SLAVE 14: communication_time=  2.12 seconds; computation_time=  6.01 seconds
+ --- SLAVE 15: communication_time=  2.08 seconds; computation_time=  6.12 seconds
+ --- SLAVE 16: communication_time=  2.22 seconds; computation_time=  5.98 seconds
+ --- SLAVE 17: communication_time=  2.21 seconds; computation_time=  6.00 seconds
+ --- SLAVE 18: communication_time=  2.23 seconds; computation_time=  5.98 seconds
+ --- SLAVE 19: communication_time=  2.19 seconds; computation_time=  6.02 seconds
+ --- SLAVE 20: communication_time=  2.09 seconds; computation_time=  6.12 seconds
+ --- SLAVE 21: communication_time=  2.08 seconds; computation_time=  6.22 seconds
+ --- SLAVE 22: communication_time=  2.35 seconds; computation_time=  5.96 seconds
+
+real	0m8.990s
+user	0m0.027s
+sys	0m0.070s
+Running on 32 procesors:
+
+ --- SLAVE 6: communication_time=  2.70 seconds; computation_time=  5.38 seconds
+ --- SLAVE 3: communication_time=  2.70 seconds; computation_time=  5.42 seconds
+ --- SLAVE 15: communication_time=  2.69 seconds; computation_time=  5.43 seconds
+ --- SLAVE 4: communication_time=  2.69 seconds; computation_time=  5.53 seconds
+ --- SLAVE 12: communication_time=  2.70 seconds; computation_time=  5.53 seconds
+ --- SLAVE 9: communication_time=  2.70 seconds; computation_time=  5.58 seconds
+ --- SLAVE 2: communication_time=  2.70 seconds; computation_time=  5.63 seconds
+ --- SLAVE 11: communication_time=  2.70 seconds; computation_time=  5.64 seconds
+ --- SLAVE 7: communication_time=  2.70 seconds; computation_time=  5.71 seconds
+ --- SLAVE 1: communication_time=  2.70 seconds; computation_time=  5.71 seconds
+ --- SLAVE 8: communication_time=  2.70 seconds; computation_time=  5.80 seconds
+ --- SLAVE 5: communication_time=  2.69 seconds; computation_time=  6.01 seconds
+ --- SLAVE 14: communication_time=  2.70 seconds; computation_time=  6.04 seconds
+ --- SLAVE 13: communication_time=  2.70 seconds; computation_time=  6.15 seconds
+ --- SLAVE 10: communication_time=  2.70 seconds; computation_time=  6.34 seconds
+ --- SLAVE 0: communication_time=  2.70 seconds; computation_time=  6.38 seconds
+ --- SLAVE 16: communication_time=  4.10 seconds; computation_time=  5.00 seconds
+ --- SLAVE 17: communication_time=  4.03 seconds; computation_time=  5.07 seconds
+ --- SLAVE 18: communication_time=  3.35 seconds; computation_time=  5.75 seconds
+ --- SLAVE 19: communication_time=  3.57 seconds; computation_time=  5.54 seconds
+ --- SLAVE 20: communication_time=  3.83 seconds; computation_time=  5.28 seconds
+ --- SLAVE 21: communication_time=  3.78 seconds; computation_time=  5.33 seconds
+ --- SLAVE 22: communication_time=  2.69 seconds; computation_time=  6.86 seconds
+ --- SLAVE 23: communication_time=  4.13 seconds; computation_time=  5.42 seconds
+ --- SLAVE 24: communication_time=  3.33 seconds; computation_time=  6.23 seconds
+ --- SLAVE 25: communication_time=  3.68 seconds; computation_time=  5.87 seconds
+ --- SLAVE 26: communication_time=  4.03 seconds; computation_time=  5.53 seconds
+ --- SLAVE 27: communication_time=  3.32 seconds; computation_time=  6.24 seconds
+ --- SLAVE 28: communication_time=  2.94 seconds; computation_time=  6.63 seconds
+ --- SLAVE 29: communication_time=  2.85 seconds; computation_time=  6.72 seconds
+ --- SLAVE 30: communication_time=  2.99 seconds; computation_time=  6.58 seconds
+
+real	0m10.284s
+user	0m0.043s
+sys	0m0.064s
+ --- SLAVE 13: communication_time=  2.70 seconds; computation_time=  5.21 seconds
+ --- SLAVE 15: communication_time=  2.71 seconds; computation_time=  5.36 seconds
+ --- SLAVE 1: communication_time=  2.71 seconds; computation_time=  5.44 seconds
+ --- SLAVE 14: communication_time=  2.71 seconds; computation_time=  5.56 seconds
+ --- SLAVE 11: communication_time=  2.70 seconds; computation_time=  5.64 seconds
+ --- SLAVE 0: communication_time=  2.71 seconds; computation_time=  5.69 seconds
+ --- SLAVE 9: communication_time=  2.71 seconds; computation_time=  5.70 seconds
+ --- SLAVE 6: communication_time=  2.71 seconds; computation_time=  5.75 seconds
+ --- SLAVE 8: communication_time=  2.71 seconds; computation_time=  5.77 seconds
+ --- SLAVE 4: communication_time=  2.71 seconds; computation_time=  5.83 seconds
+ --- SLAVE 5: communication_time=  2.70 seconds; computation_time=  5.85 seconds
+ --- SLAVE 3: communication_time=  2.71 seconds; computation_time=  6.07 seconds
+ --- SLAVE 12: communication_time=  2.71 seconds; computation_time=  6.14 seconds
+ --- SLAVE 2: communication_time=  2.71 seconds; computation_time=  6.14 seconds
+ --- SLAVE 10: communication_time=  2.70 seconds; computation_time=  6.33 seconds
+ --- SLAVE 7: communication_time=  2.71 seconds; computation_time=  6.69 seconds
+ --- SLAVE 16: communication_time=  4.03 seconds; computation_time=  5.38 seconds
+ --- SLAVE 17: communication_time=  3.78 seconds; computation_time=  5.63 seconds
+ --- SLAVE 18: communication_time=  3.41 seconds; computation_time=  6.00 seconds
+ --- SLAVE 19: communication_time=  2.91 seconds; computation_time=  6.50 seconds
+ --- SLAVE 20: communication_time=  4.46 seconds; computation_time=  4.95 seconds
+ --- SLAVE 21: communication_time=  2.72 seconds; computation_time=  6.69 seconds
+ --- SLAVE 22: communication_time=  3.89 seconds; computation_time=  5.53 seconds
+ --- SLAVE 23: communication_time=  3.20 seconds; computation_time=  6.21 seconds
+ --- SLAVE 24: communication_time=  2.78 seconds; computation_time=  6.64 seconds
+ --- SLAVE 25: communication_time=  3.86 seconds; computation_time=  5.55 seconds
+ --- SLAVE 26: communication_time=  3.85 seconds; computation_time=  5.57 seconds
+ --- SLAVE 27: communication_time=  3.83 seconds; computation_time=  5.59 seconds
+ --- SLAVE 28: communication_time=  3.38 seconds; computation_time=  6.04 seconds
+ --- SLAVE 29: communication_time=  4.09 seconds; computation_time=  5.34 seconds
+ --- SLAVE 30: communication_time=  3.96 seconds; computation_time=  5.47 seconds
+
+real	0m10.154s
+user	0m0.026s
+sys	0m0.068s
+ --- SLAVE 5: communication_time=  2.68 seconds; computation_time=  4.99 seconds
+ --- SLAVE 8: communication_time=  2.67 seconds; computation_time=  5.10 seconds
+ --- SLAVE 3: communication_time=  2.67 seconds; computation_time=  5.21 seconds
+ --- SLAVE 10: communication_time=  2.68 seconds; computation_time=  5.23 seconds
+ --- SLAVE 11: communication_time=  2.68 seconds; computation_time=  5.35 seconds
+ --- SLAVE 7: communication_time=  2.67 seconds; computation_time=  5.53 seconds
+ --- SLAVE 15: communication_time=  2.67 seconds; computation_time=  5.67 seconds
+ --- SLAVE 4: communication_time=  2.67 seconds; computation_time=  5.69 seconds
+ --- SLAVE 6: communication_time=  2.68 seconds; computation_time=  5.82 seconds
+ --- SLAVE 0: communication_time=  2.67 seconds; computation_time=  5.88 seconds
+ --- SLAVE 13: communication_time=  2.67 seconds; computation_time=  5.88 seconds
+ --- SLAVE 1: communication_time=  2.68 seconds; computation_time=  5.92 seconds
+ --- SLAVE 2: communication_time=  2.67 seconds; computation_time=  6.20 seconds
+ --- SLAVE 14: communication_time=  2.68 seconds; computation_time=  6.20 seconds
+ --- SLAVE 12: communication_time=  2.67 seconds; computation_time=  6.23 seconds
+ --- SLAVE 9: communication_time=  2.68 seconds; computation_time=  6.26 seconds
+ --- SLAVE 16: communication_time=  3.45 seconds; computation_time=  5.50 seconds
+ --- SLAVE 17: communication_time=  3.56 seconds; computation_time=  5.39 seconds
+ --- SLAVE 18: communication_time=  3.75 seconds; computation_time=  5.21 seconds
+ --- SLAVE 19: communication_time=  3.66 seconds; computation_time=  5.30 seconds
+ --- SLAVE 20: communication_time=  2.67 seconds; computation_time=  6.36 seconds
+ --- SLAVE 21: communication_time=  3.28 seconds; computation_time=  5.75 seconds
+ --- SLAVE 22: communication_time=  3.13 seconds; computation_time=  5.90 seconds
+ --- SLAVE 23: communication_time=  2.67 seconds; computation_time=  6.64 seconds
+ --- SLAVE 24: communication_time=  3.54 seconds; computation_time=  5.77 seconds
+ --- SLAVE 25: communication_time=  3.33 seconds; computation_time=  5.98 seconds
+ --- SLAVE 26: communication_time=  3.73 seconds; computation_time=  5.58 seconds
+ --- SLAVE 27: communication_time=  2.69 seconds; computation_time=  6.62 seconds
+ --- SLAVE 28: communication_time=  3.78 seconds; computation_time=  5.54 seconds
+ --- SLAVE 29: communication_time=  3.08 seconds; computation_time=  6.24 seconds
+ --- SLAVE 30: communication_time=  2.99 seconds; computation_time=  6.33 seconds
+
+real	0m10.022s
+user	0m0.033s
+sys	0m0.064s
+Running on 40 procesors:
+
+ --- SLAVE 12: communication_time=  3.26 seconds; computation_time=  4.32 seconds
+ --- SLAVE 5: communication_time=  3.26 seconds; computation_time=  4.69 seconds
+ --- SLAVE 13: communication_time=  3.25 seconds; computation_time=  4.84 seconds
+ --- SLAVE 8: communication_time=  3.26 seconds; computation_time=  4.95 seconds
+ --- SLAVE 17: communication_time=  3.27 seconds; computation_time=  5.14 seconds
+ --- SLAVE 18: communication_time=  3.27 seconds; computation_time=  5.19 seconds
+ --- SLAVE 2: communication_time=  3.26 seconds; computation_time=  5.23 seconds
+ --- SLAVE 6: communication_time=  3.27 seconds; computation_time=  5.36 seconds
+ --- SLAVE 4: communication_time=  3.27 seconds; computation_time=  5.53 seconds
+ --- SLAVE 11: communication_time=  3.25 seconds; computation_time=  5.60 seconds
+ --- SLAVE 10: communication_time=  3.25 seconds; computation_time=  5.68 seconds
+ --- SLAVE 9: communication_time=  3.25 seconds; computation_time=  5.76 seconds
+ --- SLAVE 0: communication_time=  3.27 seconds; computation_time=  5.81 seconds
+ --- SLAVE 19: communication_time=  3.26 seconds; computation_time=  5.92 seconds
+ --- SLAVE 16: communication_time=  3.27 seconds; computation_time=  5.93 seconds
+ --- SLAVE 15: communication_time=  3.26 seconds; computation_time=  5.96 seconds
+ --- SLAVE 14: communication_time=  3.27 seconds; computation_time=  6.00 seconds
+ --- SLAVE 1: communication_time=  3.27 seconds; computation_time=  6.01 seconds
+ --- SLAVE 3: communication_time=  3.27 seconds; computation_time=  6.12 seconds
+ --- SLAVE 7: communication_time=  3.27 seconds; computation_time=  6.24 seconds
+ --- SLAVE 20: communication_time=  4.31 seconds; computation_time=  5.21 seconds
+ --- SLAVE 21: communication_time=  3.69 seconds; computation_time=  5.83 seconds
+ --- SLAVE 22: communication_time=  3.94 seconds; computation_time=  5.59 seconds
+ --- SLAVE 23: communication_time=  3.25 seconds; computation_time=  6.33 seconds
+ --- SLAVE 24: communication_time=  3.65 seconds; computation_time=  5.93 seconds
+ --- SLAVE 25: communication_time=  3.77 seconds; computation_time=  5.82 seconds
+ --- SLAVE 26: communication_time=  4.49 seconds; computation_time=  5.09 seconds
+ --- SLAVE 27: communication_time=  4.20 seconds; computation_time=  5.38 seconds
+ --- SLAVE 28: communication_time=  4.08 seconds; computation_time=  5.50 seconds
+ --- SLAVE 29: communication_time=  3.29 seconds; computation_time=  6.29 seconds
+ --- SLAVE 30: communication_time=  3.30 seconds; computation_time=  6.29 seconds
+ --- SLAVE 31: communication_time=  4.35 seconds; computation_time=  5.24 seconds
+ --- SLAVE 32: communication_time=  3.81 seconds; computation_time=  5.78 seconds
+ --- SLAVE 33: communication_time=  3.25 seconds; computation_time=  6.54 seconds
+ --- SLAVE 34: communication_time=  4.28 seconds; computation_time=  5.51 seconds
+ --- SLAVE 35: communication_time=  3.64 seconds; computation_time=  6.16 seconds
+ --- SLAVE 36: communication_time=  4.35 seconds; computation_time=  5.44 seconds
+ --- SLAVE 37: communication_time=  3.32 seconds; computation_time=  6.47 seconds
+ --- SLAVE 38: communication_time=  4.27 seconds; computation_time=  5.53 seconds
+
+real	0m10.543s
+user	0m0.032s
+sys	0m0.067s
+ --- SLAVE 9: communication_time=  3.28 seconds; computation_time=  4.47 seconds
+ --- SLAVE 18: communication_time=  3.27 seconds; computation_time=  4.78 seconds
+ --- SLAVE 12: communication_time=  3.28 seconds; computation_time=  4.81 seconds
+ --- SLAVE 8: communication_time=  3.28 seconds; computation_time=  4.88 seconds
+ --- SLAVE 17: communication_time=  3.27 seconds; computation_time=  5.02 seconds
+ --- SLAVE 11: communication_time=  3.28 seconds; computation_time=  5.12 seconds
+ --- SLAVE 16: communication_time=  3.28 seconds; computation_time=  5.38 seconds
+ --- SLAVE 19: communication_time=  3.27 seconds; computation_time=  5.40 seconds
+ --- SLAVE 6: communication_time=  3.27 seconds; computation_time=  5.64 seconds
+ --- SLAVE 4: communication_time=  3.27 seconds; computation_time=  5.69 seconds
+ --- SLAVE 2: communication_time=  3.27 seconds; computation_time=  5.74 seconds
+ --- SLAVE 3: communication_time=  3.27 seconds; computation_time=  5.75 seconds
+ --- SLAVE 5: communication_time=  3.27 seconds; computation_time=  5.80 seconds
+ --- SLAVE 10: communication_time=  3.27 seconds; computation_time=  5.81 seconds
+ --- SLAVE 0: communication_time=  3.28 seconds; computation_time=  5.86 seconds
+ --- SLAVE 15: communication_time=  3.27 seconds; computation_time=  5.93 seconds
+ --- SLAVE 1: communication_time=  3.28 seconds; computation_time=  5.98 seconds
+ --- SLAVE 13: communication_time=  3.27 seconds; computation_time=  6.08 seconds
+ --- SLAVE 7: communication_time=  3.27 seconds; computation_time=  6.13 seconds
+ --- SLAVE 14: communication_time=  3.28 seconds; computation_time=  6.13 seconds
+ --- SLAVE 20: communication_time=  3.94 seconds; computation_time=  5.48 seconds
+ --- SLAVE 21: communication_time=  3.55 seconds; computation_time=  5.87 seconds
+ --- SLAVE 22: communication_time=  3.35 seconds; computation_time=  6.07 seconds
+ --- SLAVE 23: communication_time=  3.98 seconds; computation_time=  5.44 seconds
+ --- SLAVE 24: communication_time=  4.61 seconds; computation_time=  4.82 seconds
+ --- SLAVE 25: communication_time=  3.27 seconds; computation_time=  6.22 seconds
+ --- SLAVE 26: communication_time=  3.27 seconds; computation_time=  6.25 seconds
+ --- SLAVE 27: communication_time=  3.61 seconds; computation_time=  5.92 seconds
+ --- SLAVE 28: communication_time=  3.31 seconds; computation_time=  6.21 seconds
+ --- SLAVE 29: communication_time=  3.27 seconds; computation_time=  6.29 seconds
+ --- SLAVE 30: communication_time=  3.86 seconds; computation_time=  5.71 seconds
+ --- SLAVE 31: communication_time=  3.27 seconds; computation_time=  6.50 seconds
+ --- SLAVE 32: communication_time=  4.87 seconds; computation_time=  4.89 seconds
+ --- SLAVE 33: communication_time=  4.63 seconds; computation_time=  5.14 seconds
+ --- SLAVE 34: communication_time=  3.57 seconds; computation_time=  6.20 seconds
+ --- SLAVE 35: communication_time=  4.67 seconds; computation_time=  5.10 seconds
+ --- SLAVE 36: communication_time=  4.87 seconds; computation_time=  4.90 seconds
+ --- SLAVE 37: communication_time=  4.02 seconds; computation_time=  5.75 seconds
+ --- SLAVE 38: communication_time=  4.08 seconds; computation_time=  5.70 seconds
+
+real	0m10.511s
+user	0m0.027s
+sys	0m0.070s
+ --- SLAVE 7: communication_time=  3.27 seconds; computation_time=  5.01 seconds
+ --- SLAVE 5: communication_time=  3.27 seconds; computation_time=  5.27 seconds
+ --- SLAVE 11: communication_time=  3.27 seconds; computation_time=  5.31 seconds
+ --- SLAVE 1: communication_time=  3.27 seconds; computation_time=  5.38 seconds
+ --- SLAVE 13: communication_time=  3.27 seconds; computation_time=  5.41 seconds
+ --- SLAVE 12: communication_time=  3.27 seconds; computation_time=  5.43 seconds
+ --- SLAVE 8: communication_time=  3.28 seconds; computation_time=  5.46 seconds
+ --- SLAVE 14: communication_time=  3.27 seconds; computation_time=  5.48 seconds
+ --- SLAVE 3: communication_time=  3.28 seconds; computation_time=  5.49 seconds
+ --- SLAVE 6: communication_time=  3.27 seconds; computation_time=  5.51 seconds
+ --- SLAVE 16: communication_time=  3.27 seconds; computation_time=  5.51 seconds
+ --- SLAVE 2: communication_time=  3.27 seconds; computation_time=  5.71 seconds
+ --- SLAVE 17: communication_time=  3.27 seconds; computation_time=  5.72 seconds
+ --- SLAVE 19: communication_time=  3.27 seconds; computation_time=  5.73 seconds
+ --- SLAVE 0: communication_time=  3.27 seconds; computation_time=  5.83 seconds
+ --- SLAVE 4: communication_time=  3.28 seconds; computation_time=  5.83 seconds
+ --- SLAVE 10: communication_time=  3.27 seconds; computation_time=  5.85 seconds
+ --- SLAVE 15: communication_time=  3.27 seconds; computation_time=  6.00 seconds
+ --- SLAVE 18: communication_time=  3.28 seconds; computation_time=  6.00 seconds
+ --- SLAVE 9: communication_time=  3.28 seconds; computation_time=  6.05 seconds
+ --- SLAVE 20: communication_time=  4.50 seconds; computation_time=  4.84 seconds
+ --- SLAVE 21: communication_time=  3.27 seconds; computation_time=  6.14 seconds
+ --- SLAVE 22: communication_time=  3.50 seconds; computation_time=  5.91 seconds
+ --- SLAVE 23: communication_time=  4.21 seconds; computation_time=  5.20 seconds
+ --- SLAVE 24: communication_time=  3.27 seconds; computation_time=  6.33 seconds
+ --- SLAVE 25: communication_time=  3.27 seconds; computation_time=  6.40 seconds
+ --- SLAVE 26: communication_time=  4.21 seconds; computation_time=  5.45 seconds
+ --- SLAVE 27: communication_time=  3.71 seconds; computation_time=  5.96 seconds
+ --- SLAVE 28: communication_time=  3.87 seconds; computation_time=  5.80 seconds
+ --- SLAVE 29: communication_time=  4.09 seconds; computation_time=  5.58 seconds
+ --- SLAVE 30: communication_time=  4.12 seconds; computation_time=  5.55 seconds
+ --- SLAVE 31: communication_time=  4.84 seconds; computation_time=  4.83 seconds
+ --- SLAVE 32: communication_time=  3.59 seconds; computation_time=  6.08 seconds
+ --- SLAVE 33: communication_time=  3.88 seconds; computation_time=  5.79 seconds
+ --- SLAVE 34: communication_time=  3.67 seconds; computation_time=  6.00 seconds
+ --- SLAVE 35: communication_time=  4.18 seconds; computation_time=  5.51 seconds
+ --- SLAVE 36: communication_time=  4.36 seconds; computation_time=  5.32 seconds
+ --- SLAVE 37: communication_time=  3.51 seconds; computation_time=  6.18 seconds
+ --- SLAVE 38: communication_time=  3.55 seconds; computation_time=  6.14 seconds
+
+real	0m10.426s
+user	0m0.035s
+sys	0m0.062s
+Running on 48 procesors:
+
+ --- SLAVE 16: communication_time=  3.84 seconds; computation_time=  5.65 seconds
+ --- SLAVE 17: communication_time=  3.84 seconds; computation_time=  5.66 seconds
+ --- SLAVE 13: communication_time=  3.85 seconds; computation_time=  5.66 seconds
+ --- SLAVE 2: communication_time=  3.85 seconds; computation_time=  5.67 seconds
+ --- SLAVE 12: communication_time=  3.84 seconds; computation_time=  5.67 seconds
+ --- SLAVE 23: communication_time=  3.85 seconds; computation_time=  5.66 seconds
+ --- SLAVE 0: communication_time=  3.85 seconds; computation_time=  5.66 seconds
+ --- SLAVE 9: communication_time=  3.85 seconds; computation_time=  5.66 seconds
+ --- SLAVE 21: communication_time=  3.86 seconds; computation_time=  5.66 seconds
+ --- SLAVE 8: communication_time=  3.84 seconds; computation_time=  5.68 seconds
+ --- SLAVE 1: communication_time=  3.85 seconds; computation_time=  5.67 seconds
+ --- SLAVE 14: communication_time=  3.85 seconds; computation_time=  5.68 seconds
+ --- SLAVE 10: communication_time=  3.85 seconds; computation_time=  5.69 seconds
+ --- SLAVE 22: communication_time=  3.86 seconds; computation_time=  5.68 seconds
+ --- SLAVE 18: communication_time=  3.84 seconds; computation_time=  5.70 seconds
+ --- SLAVE 11: communication_time=  3.85 seconds; computation_time=  5.69 seconds
+ --- SLAVE 20: communication_time=  3.85 seconds; computation_time=  5.69 seconds
+ --- SLAVE 19: communication_time=  3.86 seconds; computation_time=  5.68 seconds
+ --- SLAVE 7: communication_time=  3.85 seconds; computation_time=  5.72 seconds
+ --- SLAVE 3: communication_time=  3.85 seconds; computation_time=  5.72 seconds
+ --- SLAVE 6: communication_time=  3.84 seconds; computation_time=  5.73 seconds
+ --- SLAVE 15: communication_time=  3.84 seconds; computation_time=  5.73 seconds
+ --- SLAVE 5: communication_time=  3.84 seconds; computation_time=  5.74 seconds
+ --- SLAVE 4: communication_time=  3.85 seconds; computation_time=  5.74 seconds
+ --- SLAVE 24: communication_time=  4.67 seconds; computation_time=  4.93 seconds
+ --- SLAVE 25: communication_time=  3.83 seconds; computation_time=  5.79 seconds
+ --- SLAVE 26: communication_time=  3.83 seconds; computation_time=  5.80 seconds
+ --- SLAVE 27: communication_time=  3.90 seconds; computation_time=  5.73 seconds
+ --- SLAVE 28: communication_time=  3.90 seconds; computation_time=  5.74 seconds
+ --- SLAVE 29: communication_time=  3.95 seconds; computation_time=  5.69 seconds
+ --- SLAVE 30: communication_time=  3.91 seconds; computation_time=  5.73 seconds
+ --- SLAVE 31: communication_time=  3.96 seconds; computation_time=  5.68 seconds
+ --- SLAVE 32: communication_time=  3.94 seconds; computation_time=  5.70 seconds
+ --- SLAVE 33: communication_time=  3.83 seconds; computation_time=  5.81 seconds
+ --- SLAVE 34: communication_time=  3.84 seconds; computation_time=  5.80 seconds
+ --- SLAVE 35: communication_time=  3.84 seconds; computation_time=  5.81 seconds
+ --- SLAVE 36: communication_time=  3.90 seconds; computation_time=  5.76 seconds
+ --- SLAVE 37: communication_time=  3.88 seconds; computation_time=  5.77 seconds
+ --- SLAVE 38: communication_time=  3.83 seconds; computation_time=  5.83 seconds
+ --- SLAVE 39: communication_time=  3.84 seconds; computation_time=  5.82 seconds
+ --- SLAVE 40: communication_time=  3.97 seconds; computation_time=  5.70 seconds
+ --- SLAVE 41: communication_time=  3.86 seconds; computation_time=  5.80 seconds
+ --- SLAVE 42: communication_time=  3.83 seconds; computation_time=  5.84 seconds
+ --- SLAVE 43: communication_time=  3.93 seconds; computation_time=  5.75 seconds
+ --- SLAVE 44: communication_time=  3.94 seconds; computation_time=  5.74 seconds
+ --- SLAVE 45: communication_time=  3.89 seconds; computation_time=  5.78 seconds
+ --- SLAVE 46: communication_time=  3.84 seconds; computation_time=  5.84 seconds
+
+real	0m10.469s
+user	0m0.028s
+sys	0m0.071s
+ --- SLAVE 21: communication_time=  3.83 seconds; computation_time=  5.62 seconds
+ --- SLAVE 0: communication_time=  3.85 seconds; computation_time=  5.65 seconds
+ --- SLAVE 10: communication_time=  3.83 seconds; computation_time=  5.66 seconds
+ --- SLAVE 5: communication_time=  3.83 seconds; computation_time=  5.66 seconds
+ --- SLAVE 16: communication_time=  3.83 seconds; computation_time=  5.67 seconds
+ --- SLAVE 11: communication_time=  3.83 seconds; computation_time=  5.68 seconds
+ --- SLAVE 1: communication_time=  3.84 seconds; computation_time=  5.67 seconds
+ --- SLAVE 13: communication_time=  3.83 seconds; computation_time=  5.70 seconds
+ --- SLAVE 15: communication_time=  3.84 seconds; computation_time=  5.69 seconds
+ --- SLAVE 23: communication_time=  3.85 seconds; computation_time=  5.68 seconds
+ --- SLAVE 2: communication_time=  3.84 seconds; computation_time=  5.70 seconds
+ --- SLAVE 3: communication_time=  3.84 seconds; computation_time=  5.70 seconds
+ --- SLAVE 19: communication_time=  3.85 seconds; computation_time=  5.69 seconds
+ --- SLAVE 4: communication_time=  3.84 seconds; computation_time=  5.70 seconds
+ --- SLAVE 14: communication_time=  3.83 seconds; computation_time=  5.71 seconds
+ --- SLAVE 22: communication_time=  3.86 seconds; computation_time=  5.69 seconds
+ --- SLAVE 17: communication_time=  3.85 seconds; computation_time=  5.70 seconds
+ --- SLAVE 7: communication_time=  3.85 seconds; computation_time=  5.70 seconds
+ --- SLAVE 18: communication_time=  3.84 seconds; computation_time=  5.71 seconds
+ --- SLAVE 8: communication_time=  3.84 seconds; computation_time=  5.72 seconds
+ --- SLAVE 9: communication_time=  3.86 seconds; computation_time=  5.70 seconds
+ --- SLAVE 20: communication_time=  3.85 seconds; computation_time=  5.71 seconds
+ --- SLAVE 6: communication_time=  3.84 seconds; computation_time=  5.72 seconds
+ --- SLAVE 12: communication_time=  3.84 seconds; computation_time=  5.82 seconds
+ --- SLAVE 24: communication_time=  3.82 seconds; computation_time=  5.86 seconds
+ --- SLAVE 25: communication_time=  3.86 seconds; computation_time=  5.82 seconds
+ --- SLAVE 26: communication_time=  4.01 seconds; computation_time=  5.68 seconds
+ --- SLAVE 27: communication_time=  3.86 seconds; computation_time=  5.82 seconds
+ --- SLAVE 28: communication_time=  3.87 seconds; computation_time=  5.82 seconds
+ --- SLAVE 29: communication_time=  3.86 seconds; computation_time=  5.83 seconds
+ --- SLAVE 30: communication_time=  3.93 seconds; computation_time=  5.76 seconds
+ --- SLAVE 31: communication_time=  3.97 seconds; computation_time=  5.72 seconds
+ --- SLAVE 32: communication_time=  3.98 seconds; computation_time=  5.71 seconds
+ --- SLAVE 33: communication_time=  3.96 seconds; computation_time=  5.73 seconds
+ --- SLAVE 34: communication_time=  3.93 seconds; computation_time=  5.77 seconds
+ --- SLAVE 35: communication_time=  3.88 seconds; computation_time=  5.82 seconds
+ --- SLAVE 36: communication_time=  3.88 seconds; computation_time=  5.81 seconds
+ --- SLAVE 37: communication_time=  4.66 seconds; computation_time=  5.03 seconds
+ --- SLAVE 38: communication_time=  3.85 seconds; computation_time=  5.85 seconds
+ --- SLAVE 39: communication_time=  3.86 seconds; computation_time=  5.83 seconds
+ --- SLAVE 40: communication_time=  4.05 seconds; computation_time=  5.65 seconds
+ --- SLAVE 41: communication_time=  3.87 seconds; computation_time=  5.83 seconds
+ --- SLAVE 42: communication_time=  3.94 seconds; computation_time=  5.77 seconds
+ --- SLAVE 43: communication_time=  3.89 seconds; computation_time=  5.81 seconds
+ --- SLAVE 44: communication_time=  3.84 seconds; computation_time=  5.86 seconds
+ --- SLAVE 45: communication_time=  3.97 seconds; computation_time=  5.74 seconds
+ --- SLAVE 46: communication_time=  3.98 seconds; computation_time=  5.72 seconds
+
+real	0m10.476s
+user	0m0.029s
+sys	0m0.070s
+ --- SLAVE 1: communication_time=  3.84 seconds; computation_time=  5.64 seconds
+ --- SLAVE 0: communication_time=  3.85 seconds; computation_time=  5.65 seconds
+ --- SLAVE 11: communication_time=  3.86 seconds; computation_time=  5.65 seconds
+ --- SLAVE 8: communication_time=  3.85 seconds; computation_time=  5.67 seconds
+ --- SLAVE 15: communication_time=  3.83 seconds; computation_time=  5.70 seconds
+ --- SLAVE 10: communication_time=  3.84 seconds; computation_time=  5.69 seconds
+ --- SLAVE 16: communication_time=  3.86 seconds; computation_time=  5.68 seconds
+ --- SLAVE 17: communication_time=  3.84 seconds; computation_time=  5.70 seconds
+ --- SLAVE 5: communication_time=  3.84 seconds; computation_time=  5.71 seconds
+ --- SLAVE 22: communication_time=  3.86 seconds; computation_time=  5.69 seconds
+ --- SLAVE 20: communication_time=  3.86 seconds; computation_time=  5.69 seconds
+ --- SLAVE 23: communication_time=  3.85 seconds; computation_time=  5.71 seconds
+ --- SLAVE 6: communication_time=  3.84 seconds; computation_time=  5.72 seconds
+ --- SLAVE 7: communication_time=  3.85 seconds; computation_time=  5.71 seconds
+ --- SLAVE 3: communication_time=  3.86 seconds; computation_time=  5.71 seconds
+ --- SLAVE 21: communication_time=  3.84 seconds; computation_time=  5.73 seconds
+ --- SLAVE 13: communication_time=  3.84 seconds; computation_time=  5.73 seconds
+ --- SLAVE 4: communication_time=  3.85 seconds; computation_time=  5.72 seconds
+ --- SLAVE 2: communication_time=  3.84 seconds; computation_time=  5.74 seconds
+ --- SLAVE 19: communication_time=  3.85 seconds; computation_time=  5.73 seconds
+ --- SLAVE 18: communication_time=  3.84 seconds; computation_time=  5.74 seconds
+ --- SLAVE 9: communication_time=  3.86 seconds; computation_time=  5.73 seconds
+ --- SLAVE 14: communication_time=  3.86 seconds; computation_time=  5.73 seconds
+ --- SLAVE 12: communication_time=  3.84 seconds; computation_time=  5.75 seconds
+ --- SLAVE 24: communication_time=  3.86 seconds; computation_time=  5.75 seconds
+ --- SLAVE 25: communication_time=  3.88 seconds; computation_time=  5.73 seconds
+ --- SLAVE 26: communication_time=  3.83 seconds; computation_time=  5.80 seconds
+ --- SLAVE 27: communication_time=  3.90 seconds; computation_time=  5.73 seconds
+ --- SLAVE 28: communication_time=  3.83 seconds; computation_time=  5.82 seconds
+ --- SLAVE 29: communication_time=  3.90 seconds; computation_time=  5.74 seconds
+ --- SLAVE 30: communication_time=  3.84 seconds; computation_time=  5.80 seconds
+ --- SLAVE 31: communication_time=  3.84 seconds; computation_time=  5.81 seconds
+ --- SLAVE 32: communication_time=  3.83 seconds; computation_time=  5.83 seconds
+ --- SLAVE 33: communication_time=  3.92 seconds; computation_time=  5.74 seconds
+ --- SLAVE 34: communication_time=  3.84 seconds; computation_time=  5.82 seconds
+ --- SLAVE 35: communication_time=  3.96 seconds; computation_time=  5.70 seconds
+ --- SLAVE 36: communication_time=  3.93 seconds; computation_time=  5.74 seconds
+ --- SLAVE 37: communication_time=  3.95 seconds; computation_time=  5.72 seconds
+ --- SLAVE 38: communication_time=  4.72 seconds; computation_time=  4.95 seconds
+ --- SLAVE 39: communication_time=  3.89 seconds; computation_time=  5.78 seconds
+ --- SLAVE 40: communication_time=  3.92 seconds; computation_time=  5.75 seconds
+ --- SLAVE 41: communication_time=  3.92 seconds; computation_time=  5.75 seconds
+ --- SLAVE 42: communication_time=  3.98 seconds; computation_time=  5.69 seconds
+ --- SLAVE 43: communication_time=  3.96 seconds; computation_time=  5.71 seconds
+ --- SLAVE 44: communication_time=  3.90 seconds; computation_time=  5.77 seconds
+ --- SLAVE 45: communication_time=  3.90 seconds; computation_time=  5.78 seconds
+ --- SLAVE 46: communication_time=  3.86 seconds; computation_time=  5.81 seconds
+
+real	0m10.429s
+user	0m0.032s
+sys	0m0.065s
+Running on 56 procesors:
+
+ --- SLAVE 10: communication_time=  4.45 seconds; computation_time=  5.14 seconds
+ --- SLAVE 7: communication_time=  4.43 seconds; computation_time=  5.17 seconds
+ --- SLAVE 22: communication_time=  4.43 seconds; computation_time=  5.42 seconds
+ --- SLAVE 26: communication_time=  4.43 seconds; computation_time=  5.43 seconds
+ --- SLAVE 3: communication_time=  4.43 seconds; computation_time=  5.46 seconds
+ --- SLAVE 9: communication_time=  4.44 seconds; computation_time=  5.47 seconds
+ --- SLAVE 5: communication_time=  4.43 seconds; computation_time=  5.53 seconds
+ --- SLAVE 21: communication_time=  4.44 seconds; computation_time=  5.54 seconds
+ --- SLAVE 13: communication_time=  4.46 seconds; computation_time=  5.54 seconds
+ --- SLAVE 16: communication_time=  4.43 seconds; computation_time=  5.57 seconds
+ --- SLAVE 2: communication_time=  4.43 seconds; computation_time=  5.57 seconds
+ --- SLAVE 18: communication_time=  4.43 seconds; computation_time=  5.58 seconds
+ --- SLAVE 4: communication_time=  4.44 seconds; computation_time=  5.58 seconds
+ --- SLAVE 15: communication_time=  4.43 seconds; computation_time=  5.59 seconds
+ --- SLAVE 17: communication_time=  4.43 seconds; computation_time=  5.65 seconds
+ --- SLAVE 1: communication_time=  4.43 seconds; computation_time=  5.65 seconds
+ --- SLAVE 14: communication_time=  4.46 seconds; computation_time=  5.64 seconds
+ --- SLAVE 24: communication_time=  4.43 seconds; computation_time=  5.67 seconds
+ --- SLAVE 20: communication_time=  4.43 seconds; computation_time=  5.70 seconds
+ --- SLAVE 8: communication_time=  4.43 seconds; computation_time=  5.72 seconds
+ --- SLAVE 19: communication_time=  4.43 seconds; computation_time=  5.72 seconds
+ --- SLAVE 6: communication_time=  4.43 seconds; computation_time=  5.73 seconds
+ --- SLAVE 25: communication_time=  4.44 seconds; computation_time=  5.74 seconds
+ --- SLAVE 11: communication_time=  4.44 seconds; computation_time=  5.78 seconds
+ --- SLAVE 27: communication_time=  4.43 seconds; computation_time=  5.81 seconds
+ --- SLAVE 0: communication_time=  4.43 seconds; computation_time=  5.89 seconds
+ --- SLAVE 12: communication_time=  4.44 seconds; computation_time=  5.89 seconds
+ --- SLAVE 23: communication_time=  4.43 seconds; computation_time=  5.97 seconds
+ --- SLAVE 28: communication_time=  4.43 seconds; computation_time=  6.19 seconds
+ --- SLAVE 29: communication_time=  4.78 seconds; computation_time=  5.85 seconds
+ --- SLAVE 30: communication_time=  4.48 seconds; computation_time=  6.15 seconds
+ --- SLAVE 31: communication_time=  4.42 seconds; computation_time=  6.40 seconds
+ --- SLAVE 32: communication_time=  5.12 seconds; computation_time=  5.71 seconds
+ --- SLAVE 33: communication_time=  4.43 seconds; computation_time=  6.59 seconds
+ --- SLAVE 34: communication_time=  5.88 seconds; computation_time=  5.15 seconds
+ --- SLAVE 35: communication_time=  5.30 seconds; computation_time=  5.73 seconds
+ --- SLAVE 36: communication_time=  6.04 seconds; computation_time=  4.98 seconds
+ --- SLAVE 37: communication_time=  5.63 seconds; computation_time=  5.40 seconds
+ --- SLAVE 38: communication_time=  5.07 seconds; computation_time=  5.96 seconds
+ --- SLAVE 39: communication_time=  5.11 seconds; computation_time=  5.92 seconds
+ --- SLAVE 40: communication_time=  6.04 seconds; computation_time=  4.99 seconds
+ --- SLAVE 41: communication_time=  5.02 seconds; computation_time=  6.01 seconds
+ --- SLAVE 42: communication_time=  5.34 seconds; computation_time=  5.69 seconds
+ --- SLAVE 43: communication_time=  6.04 seconds; computation_time=  4.99 seconds
+ --- SLAVE 44: communication_time=  5.40 seconds; computation_time=  5.63 seconds
+ --- SLAVE 45: communication_time=  5.09 seconds; computation_time=  5.95 seconds
+ --- SLAVE 46: communication_time=  4.89 seconds; computation_time=  6.14 seconds
+ --- SLAVE 47: communication_time=  4.85 seconds; computation_time=  6.19 seconds
+ --- SLAVE 48: communication_time=  4.62 seconds; computation_time=  6.41 seconds
+ --- SLAVE 49: communication_time=  4.51 seconds; computation_time=  6.53 seconds
+ --- SLAVE 50: communication_time=  5.56 seconds; computation_time=  5.48 seconds
+ --- SLAVE 51: communication_time=  6.05 seconds; computation_time=  4.99 seconds
+ --- SLAVE 52: communication_time=  5.93 seconds; computation_time=  5.11 seconds
+ --- SLAVE 53: communication_time=  5.67 seconds; computation_time=  5.37 seconds
+ --- SLAVE 54: communication_time=  4.73 seconds; computation_time=  6.31 seconds
+
+real	0m11.847s
+user	0m0.037s
+sys	0m0.066s
+ --- SLAVE 7: communication_time=  4.43 seconds; computation_time=  4.89 seconds
+ --- SLAVE 2: communication_time=  4.43 seconds; computation_time=  4.89 seconds
+ --- SLAVE 11: communication_time=  4.43 seconds; computation_time=  4.92 seconds
+ --- SLAVE 6: communication_time=  4.44 seconds; computation_time=  4.91 seconds
+ --- SLAVE 22: communication_time=  4.44 seconds; computation_time=  4.99 seconds
+ --- SLAVE 10: communication_time=  4.44 seconds; computation_time=  5.07 seconds
+ --- SLAVE 19: communication_time=  4.43 seconds; computation_time=  5.25 seconds
+ --- SLAVE 24: communication_time=  4.43 seconds; computation_time=  5.37 seconds
+ --- SLAVE 21: communication_time=  4.43 seconds; computation_time=  5.37 seconds
+ --- SLAVE 5: communication_time=  4.43 seconds; computation_time=  5.38 seconds
+ --- SLAVE 4: communication_time=  4.43 seconds; computation_time=  5.46 seconds
+ --- SLAVE 1: communication_time=  4.43 seconds; computation_time=  5.48 seconds
+ --- SLAVE 20: communication_time=  4.45 seconds; computation_time=  5.50 seconds
+ --- SLAVE 9: communication_time=  4.44 seconds; computation_time=  5.52 seconds
+ --- SLAVE 25: communication_time=  4.42 seconds; computation_time=  5.56 seconds
+ --- SLAVE 17: communication_time=  4.43 seconds; computation_time=  5.62 seconds
+ --- SLAVE 15: communication_time=  4.44 seconds; computation_time=  5.68 seconds
+ --- SLAVE 13: communication_time=  4.44 seconds; computation_time=  5.73 seconds
+ --- SLAVE 12: communication_time=  4.44 seconds; computation_time=  5.73 seconds
+ --- SLAVE 14: communication_time=  4.44 seconds; computation_time=  5.81 seconds
+ --- SLAVE 26: communication_time=  4.42 seconds; computation_time=  5.83 seconds
+ --- SLAVE 18: communication_time=  4.45 seconds; computation_time=  5.82 seconds
+ --- SLAVE 23: communication_time=  4.44 seconds; computation_time=  5.87 seconds
+ --- SLAVE 16: communication_time=  4.43 seconds; computation_time=  5.90 seconds
+ --- SLAVE 8: communication_time=  4.43 seconds; computation_time=  5.91 seconds
+ --- SLAVE 0: communication_time=  4.44 seconds; computation_time=  5.96 seconds
+ --- SLAVE 3: communication_time=  4.43 seconds; computation_time=  6.00 seconds
+ --- SLAVE 27: communication_time=  4.43 seconds; computation_time=  6.03 seconds
+ --- SLAVE 28: communication_time=  5.03 seconds; computation_time=  5.43 seconds
+ --- SLAVE 29: communication_time=  5.43 seconds; computation_time=  5.04 seconds
+ --- SLAVE 30: communication_time=  4.65 seconds; computation_time=  5.82 seconds
+ --- SLAVE 31: communication_time=  5.63 seconds; computation_time=  4.84 seconds
+ --- SLAVE 32: communication_time=  5.14 seconds; computation_time=  5.33 seconds
+ --- SLAVE 33: communication_time=  4.68 seconds; computation_time=  5.79 seconds
+ --- SLAVE 34: communication_time=  4.82 seconds; computation_time=  5.65 seconds
+ --- SLAVE 35: communication_time=  4.42 seconds; computation_time=  6.22 seconds
+ --- SLAVE 36: communication_time=  4.77 seconds; computation_time=  5.87 seconds
+ --- SLAVE 37: communication_time=  5.71 seconds; computation_time=  4.93 seconds
+ --- SLAVE 38: communication_time=  5.16 seconds; computation_time=  5.49 seconds
+ --- SLAVE 39: communication_time=  4.60 seconds; computation_time=  6.05 seconds
+ --- SLAVE 40: communication_time=  4.49 seconds; computation_time=  6.16 seconds
+ --- SLAVE 41: communication_time=  4.44 seconds; computation_time=  6.23 seconds
+ --- SLAVE 42: communication_time=  4.87 seconds; computation_time=  5.80 seconds
+ --- SLAVE 43: communication_time=  4.71 seconds; computation_time=  5.96 seconds
+ --- SLAVE 44: communication_time=  4.44 seconds; computation_time=  6.34 seconds
+ --- SLAVE 45: communication_time=  4.95 seconds; computation_time=  5.83 seconds
+ --- SLAVE 46: communication_time=  5.10 seconds; computation_time=  5.68 seconds
+ --- SLAVE 47: communication_time=  4.90 seconds; computation_time=  5.88 seconds
+ --- SLAVE 48: communication_time=  5.44 seconds; computation_time=  5.35 seconds
+ --- SLAVE 49: communication_time=  4.85 seconds; computation_time=  5.94 seconds
+ --- SLAVE 50: communication_time=  4.73 seconds; computation_time=  6.06 seconds
+ --- SLAVE 51: communication_time=  5.37 seconds; computation_time=  5.42 seconds
+ --- SLAVE 52: communication_time=  5.26 seconds; computation_time=  5.53 seconds
+ --- SLAVE 53: communication_time=  4.98 seconds; computation_time=  5.81 seconds
+ --- SLAVE 54: communication_time=  4.75 seconds; computation_time=  6.04 seconds
+
+real	0m11.627s
+user	0m0.041s
+sys	0m0.059s
+ --- SLAVE 15: communication_time=  4.59 seconds; computation_time=  5.08 seconds
+ --- SLAVE 8: communication_time=  4.57 seconds; computation_time=  5.18 seconds
+ --- SLAVE 11: communication_time=  4.57 seconds; computation_time=  5.26 seconds
+ --- SLAVE 5: communication_time=  4.59 seconds; computation_time=  5.39 seconds
+ --- SLAVE 3: communication_time=  4.59 seconds; computation_time=  5.49 seconds
+ --- SLAVE 17: communication_time=  4.56 seconds; computation_time=  5.52 seconds
+ --- SLAVE 7: communication_time=  4.57 seconds; computation_time=  5.52 seconds
+ --- SLAVE 22: communication_time=  4.58 seconds; computation_time=  5.53 seconds
+ --- SLAVE 12: communication_time=  4.57 seconds; computation_time=  5.55 seconds
+ --- SLAVE 13: communication_time=  4.58 seconds; computation_time=  5.57 seconds
+ --- SLAVE 20: communication_time=  4.56 seconds; computation_time=  5.60 seconds
+ --- SLAVE 25: communication_time=  4.58 seconds; computation_time=  5.59 seconds
+ --- SLAVE 27: communication_time=  4.57 seconds; computation_time=  5.61 seconds
+ --- SLAVE 9: communication_time=  4.59 seconds; computation_time=  5.59 seconds
+ --- SLAVE 6: communication_time=  4.58 seconds; computation_time=  5.61 seconds
+ --- SLAVE 14: communication_time=  4.57 seconds; computation_time=  5.62 seconds
+ --- SLAVE 21: communication_time=  4.57 seconds; computation_time=  5.70 seconds
+ --- SLAVE 2: communication_time=  4.57 seconds; computation_time=  5.72 seconds
+ --- SLAVE 10: communication_time=  4.58 seconds; computation_time=  5.72 seconds
+ --- SLAVE 26: communication_time=  4.58 seconds; computation_time=  5.73 seconds
+ --- SLAVE 19: communication_time=  4.58 seconds; computation_time=  5.74 seconds
+ --- SLAVE 1: communication_time=  4.58 seconds; computation_time=  5.77 seconds
+ --- SLAVE 4: communication_time=  4.58 seconds; computation_time=  5.77 seconds
+ --- SLAVE 24: communication_time=  4.57 seconds; computation_time=  5.79 seconds
+ --- SLAVE 0: communication_time=  4.57 seconds; computation_time=  5.79 seconds
+ --- SLAVE 23: communication_time=  4.58 seconds; computation_time=  5.79 seconds
+ --- SLAVE 18: communication_time=  4.58 seconds; computation_time=  5.81 seconds
+ --- SLAVE 16: communication_time=  4.57 seconds; computation_time=  5.90 seconds
+ --- SLAVE 28: communication_time=  4.55 seconds; computation_time=  6.43 seconds
+ --- SLAVE 29: communication_time=  5.15 seconds; computation_time=  5.83 seconds
+ --- SLAVE 30: communication_time=  4.68 seconds; computation_time=  6.30 seconds
+ --- SLAVE 31: communication_time=  5.00 seconds; computation_time=  5.98 seconds
+ --- SLAVE 32: communication_time=  5.16 seconds; computation_time=  5.82 seconds
+ --- SLAVE 33: communication_time=  5.76 seconds; computation_time=  5.23 seconds
+ --- SLAVE 34: communication_time=  4.85 seconds; computation_time=  6.14 seconds
+ --- SLAVE 35: communication_time=  5.12 seconds; computation_time=  5.86 seconds
+ --- SLAVE 36: communication_time=  5.26 seconds; computation_time=  5.73 seconds
+ --- SLAVE 37: communication_time=  5.55 seconds; computation_time=  5.44 seconds
+ --- SLAVE 38: communication_time=  5.21 seconds; computation_time=  5.78 seconds
+ --- SLAVE 39: communication_time=  5.19 seconds; computation_time=  5.80 seconds
+ --- SLAVE 40: communication_time=  5.47 seconds; computation_time=  5.52 seconds
+ --- SLAVE 41: communication_time=  5.08 seconds; computation_time=  5.91 seconds
+ --- SLAVE 42: communication_time=  5.13 seconds; computation_time=  5.86 seconds
+ --- SLAVE 43: communication_time=  4.87 seconds; computation_time=  6.12 seconds
+ --- SLAVE 44: communication_time=  5.35 seconds; computation_time=  5.65 seconds
+ --- SLAVE 45: communication_time=  5.43 seconds; computation_time=  5.57 seconds
+ --- SLAVE 46: communication_time=  4.82 seconds; computation_time=  6.18 seconds
+ --- SLAVE 47: communication_time=  5.26 seconds; computation_time=  5.74 seconds
+ --- SLAVE 48: communication_time=  5.27 seconds; computation_time=  5.73 seconds
+ --- SLAVE 49: communication_time=  5.46 seconds; computation_time=  5.54 seconds
+ --- SLAVE 50: communication_time=  5.55 seconds; computation_time=  5.46 seconds
+ --- SLAVE 51: communication_time=  5.81 seconds; computation_time=  5.19 seconds
+ --- SLAVE 52: communication_time=  5.78 seconds; computation_time=  5.23 seconds
+ --- SLAVE 53: communication_time=  5.01 seconds; computation_time=  6.00 seconds
+ --- SLAVE 54: communication_time=  5.70 seconds; computation_time=  5.31 seconds
+
+real	0m11.803s
+user	0m0.039s
+sys	0m0.061s
+Running on 64 procesors:
+
+ --- SLAVE 13: communication_time=  5.35 seconds; computation_time=  4.79 seconds
+ --- SLAVE 3: communication_time=  5.35 seconds; computation_time=  4.96 seconds
+ --- SLAVE 4: communication_time=  5.33 seconds; computation_time=  5.07 seconds
+ --- SLAVE 11: communication_time=  5.32 seconds; computation_time=  5.12 seconds
+ --- SLAVE 22: communication_time=  5.34 seconds; computation_time=  5.12 seconds
+ --- SLAVE 6: communication_time=  5.32 seconds; computation_time=  5.16 seconds
+ --- SLAVE 29: communication_time=  5.34 seconds; computation_time=  5.20 seconds
+ --- SLAVE 18: communication_time=  5.33 seconds; computation_time=  5.24 seconds
+ --- SLAVE 9: communication_time=  5.32 seconds; computation_time=  5.36 seconds
+ --- SLAVE 21: communication_time=  5.32 seconds; computation_time=  5.37 seconds
+ --- SLAVE 24: communication_time=  5.34 seconds; computation_time=  5.35 seconds
+ --- SLAVE 30: communication_time=  5.32 seconds; computation_time=  5.41 seconds
+ --- SLAVE 31: communication_time=  5.35 seconds; computation_time=  5.39 seconds
+ --- SLAVE 28: communication_time=  5.34 seconds; computation_time=  5.41 seconds
+ --- SLAVE 17: communication_time=  5.32 seconds; computation_time=  5.46 seconds
+ --- SLAVE 19: communication_time=  5.34 seconds; computation_time=  5.49 seconds
+ --- SLAVE 16: communication_time=  5.34 seconds; computation_time=  5.52 seconds
+ --- SLAVE 26: communication_time=  5.35 seconds; computation_time=  5.54 seconds
+ --- SLAVE 25: communication_time=  5.35 seconds; computation_time=  5.56 seconds
+ --- SLAVE 15: communication_time=  5.35 seconds; computation_time=  5.62 seconds
+ --- SLAVE 20: communication_time=  5.34 seconds; computation_time=  5.64 seconds
+ --- SLAVE 10: communication_time=  5.33 seconds; computation_time=  5.67 seconds
+ --- SLAVE 8: communication_time=  5.34 seconds; computation_time=  5.69 seconds
+ --- SLAVE 5: communication_time=  5.32 seconds; computation_time=  5.73 seconds
+ --- SLAVE 14: communication_time=  5.33 seconds; computation_time=  5.75 seconds
+ --- SLAVE 0: communication_time=  5.32 seconds; computation_time=  5.78 seconds
+ --- SLAVE 1: communication_time=  5.35 seconds; computation_time=  5.77 seconds
+ --- SLAVE 12: communication_time=  5.32 seconds; computation_time=  5.85 seconds
+ --- SLAVE 27: communication_time=  5.33 seconds; computation_time=  5.86 seconds
+ --- SLAVE 23: communication_time=  5.33 seconds; computation_time=  5.87 seconds
+ --- SLAVE 2: communication_time=  5.34 seconds; computation_time=  5.91 seconds
+ --- SLAVE 7: communication_time=  5.35 seconds; computation_time=  5.92 seconds
+ --- SLAVE 32: communication_time=  5.32 seconds; computation_time=  6.38 seconds
+ --- SLAVE 33: communication_time=  5.62 seconds; computation_time=  6.08 seconds
+ --- SLAVE 34: communication_time=  5.73 seconds; computation_time=  5.97 seconds
+ --- SLAVE 35: communication_time=  5.30 seconds; computation_time=  6.50 seconds
+ --- SLAVE 36: communication_time=  6.04 seconds; computation_time=  5.77 seconds
+ --- SLAVE 37: communication_time=  5.66 seconds; computation_time=  6.15 seconds
+ --- SLAVE 38: communication_time=  6.42 seconds; computation_time=  5.40 seconds
+ --- SLAVE 39: communication_time=  5.40 seconds; computation_time=  6.41 seconds
+ --- SLAVE 40: communication_time=  5.32 seconds; computation_time=  6.50 seconds
+ --- SLAVE 41: communication_time=  6.78 seconds; computation_time=  5.04 seconds
+ --- SLAVE 42: communication_time=  5.33 seconds; computation_time=  6.52 seconds
+ --- SLAVE 43: communication_time=  5.45 seconds; computation_time=  6.40 seconds
+ --- SLAVE 44: communication_time=  5.96 seconds; computation_time=  5.89 seconds
+ --- SLAVE 45: communication_time=  5.45 seconds; computation_time=  6.41 seconds
+ --- SLAVE 46: communication_time=  6.68 seconds; computation_time=  5.17 seconds
+ --- SLAVE 47: communication_time=  5.72 seconds; computation_time=  6.13 seconds
+ --- SLAVE 48: communication_time=  6.50 seconds; computation_time=  5.36 seconds
+ --- SLAVE 49: communication_time=  6.36 seconds; computation_time=  5.50 seconds
+ --- SLAVE 50: communication_time=  6.94 seconds; computation_time=  4.92 seconds
+ --- SLAVE 51: communication_time=  6.25 seconds; computation_time=  5.61 seconds
+ --- SLAVE 52: communication_time=  6.52 seconds; computation_time=  5.34 seconds
+ --- SLAVE 53: communication_time=  6.12 seconds; computation_time=  5.73 seconds
+ --- SLAVE 54: communication_time=  6.06 seconds; computation_time=  5.80 seconds
+ --- SLAVE 55: communication_time=  6.66 seconds; computation_time=  5.20 seconds
+ --- SLAVE 56: communication_time=  6.54 seconds; computation_time=  5.33 seconds
+ --- SLAVE 57: communication_time=  6.34 seconds; computation_time=  5.53 seconds
+ --- SLAVE 58: communication_time=  6.90 seconds; computation_time=  4.97 seconds
+ --- SLAVE 59: communication_time=  6.70 seconds; computation_time=  5.16 seconds
+ --- SLAVE 60: communication_time=  7.15 seconds; computation_time=  4.72 seconds
+ --- SLAVE 61: communication_time=  5.74 seconds; computation_time=  6.13 seconds
+ --- SLAVE 62: communication_time=  6.22 seconds; computation_time=  5.65 seconds
+
+real	0m12.730s
+user	0m0.033s
+sys	0m0.068s
+ --- SLAVE 0: communication_time=  5.09 seconds; computation_time=  5.05 seconds
+ --- SLAVE 15: communication_time=  5.10 seconds; computation_time=  5.11 seconds
+ --- SLAVE 17: communication_time=  5.10 seconds; computation_time=  5.13 seconds
+ --- SLAVE 12: communication_time=  5.09 seconds; computation_time=  5.16 seconds
+ --- SLAVE 26: communication_time=  5.09 seconds; computation_time=  5.20 seconds
+ --- SLAVE 21: communication_time=  5.09 seconds; computation_time=  5.22 seconds
+ --- SLAVE 22: communication_time=  5.09 seconds; computation_time=  5.29 seconds
+ --- SLAVE 2: communication_time=  5.09 seconds; computation_time=  5.29 seconds
+ --- SLAVE 11: communication_time=  5.09 seconds; computation_time=  5.30 seconds
+ --- SLAVE 29: communication_time=  5.10 seconds; computation_time=  5.31 seconds
+ --- SLAVE 8: communication_time=  5.10 seconds; computation_time=  5.34 seconds
+ --- SLAVE 9: communication_time=  5.10 seconds; computation_time=  5.35 seconds
+ --- SLAVE 16: communication_time=  5.10 seconds; computation_time=  5.36 seconds
+ --- SLAVE 25: communication_time=  5.13 seconds; computation_time=  5.38 seconds
+ --- SLAVE 7: communication_time=  5.09 seconds; computation_time=  5.44 seconds
+ --- SLAVE 6: communication_time=  5.10 seconds; computation_time=  5.51 seconds
+ --- SLAVE 23: communication_time=  5.10 seconds; computation_time=  5.54 seconds
+ --- SLAVE 13: communication_time=  5.07 seconds; computation_time=  5.63 seconds
+ --- SLAVE 4: communication_time=  5.10 seconds; computation_time=  5.60 seconds
+ --- SLAVE 30: communication_time=  5.11 seconds; computation_time=  5.60 seconds
+ --- SLAVE 5: communication_time=  5.09 seconds; computation_time=  5.64 seconds
+ --- SLAVE 3: communication_time=  5.10 seconds; computation_time=  5.65 seconds
+ --- SLAVE 27: communication_time=  5.10 seconds; computation_time=  5.66 seconds
+ --- SLAVE 1: communication_time=  5.09 seconds; computation_time=  5.68 seconds
+ --- SLAVE 24: communication_time=  5.09 seconds; computation_time=  5.68 seconds
+ --- SLAVE 28: communication_time=  5.09 seconds; computation_time=  5.69 seconds
+ --- SLAVE 18: communication_time=  5.10 seconds; computation_time=  5.69 seconds
+ --- SLAVE 31: communication_time=  5.09 seconds; computation_time=  5.75 seconds
+ --- SLAVE 20: communication_time=  5.11 seconds; computation_time=  5.75 seconds
+ --- SLAVE 19: communication_time=  5.09 seconds; computation_time=  5.77 seconds
+ --- SLAVE 14: communication_time=  5.09 seconds; computation_time=  5.86 seconds
+ --- SLAVE 10: communication_time=  5.12 seconds; computation_time=  5.88 seconds
+ --- SLAVE 32: communication_time=  5.09 seconds; computation_time=  6.45 seconds
+ --- SLAVE 33: communication_time=  6.56 seconds; computation_time=  4.99 seconds
+ --- SLAVE 34: communication_time=  7.12 seconds; computation_time=  4.43 seconds
+ --- SLAVE 35: communication_time=  6.25 seconds; computation_time=  5.30 seconds
+ --- SLAVE 36: communication_time=  5.24 seconds; computation_time=  6.31 seconds
+ --- SLAVE 37: communication_time=  6.10 seconds; computation_time=  5.45 seconds
+ --- SLAVE 39: communication_time=  5.53 seconds; computation_time=  6.03 seconds
+ --- SLAVE 38: communication_time=  7.13 seconds; computation_time=  4.42 seconds
+ --- SLAVE 40: communication_time=  6.78 seconds; computation_time=  4.78 seconds
+ --- SLAVE 41: communication_time=  6.41 seconds; computation_time=  5.15 seconds
+ --- SLAVE 42: communication_time=  5.10 seconds; computation_time=  6.73 seconds
+ --- SLAVE 43: communication_time=  5.71 seconds; computation_time=  6.13 seconds
+ --- SLAVE 44: communication_time=  5.17 seconds; computation_time=  6.67 seconds
+ --- SLAVE 45: communication_time=  6.90 seconds; computation_time=  4.94 seconds
+ --- SLAVE 46: communication_time=  6.67 seconds; computation_time=  5.17 seconds
+ --- SLAVE 47: communication_time=  5.49 seconds; computation_time=  6.35 seconds
+ --- SLAVE 48: communication_time=  5.53 seconds; computation_time=  6.31 seconds
+ --- SLAVE 49: communication_time=  5.74 seconds; computation_time=  6.11 seconds
+ --- SLAVE 50: communication_time=  6.55 seconds; computation_time=  5.29 seconds
+ --- SLAVE 51: communication_time=  5.49 seconds; computation_time=  6.35 seconds
+ --- SLAVE 52: communication_time=  6.70 seconds; computation_time=  5.14 seconds
+ --- SLAVE 53: communication_time=  6.06 seconds; computation_time=  5.79 seconds
+ --- SLAVE 54: communication_time=  6.34 seconds; computation_time=  5.51 seconds
+ --- SLAVE 55: communication_time=  6.87 seconds; computation_time=  4.98 seconds
+ --- SLAVE 56: communication_time=  6.28 seconds; computation_time=  5.58 seconds
+ --- SLAVE 57: communication_time=  6.69 seconds; computation_time=  5.16 seconds
+ --- SLAVE 58: communication_time=  5.19 seconds; computation_time=  6.66 seconds
+ --- SLAVE 59: communication_time=  5.50 seconds; computation_time=  6.36 seconds
+ --- SLAVE 60: communication_time=  5.28 seconds; computation_time=  6.58 seconds
+ --- SLAVE 61: communication_time=  7.02 seconds; computation_time=  4.84 seconds
+ --- SLAVE 62: communication_time=  5.48 seconds; computation_time=  6.38 seconds
+
+real	0m12.744s
+user	0m0.033s
+sys	0m0.066s
+ --- SLAVE 10: communication_time=  5.02 seconds; computation_time=  4.61 seconds
+ --- SLAVE 18: communication_time=  5.01 seconds; computation_time=  4.62 seconds
+ --- SLAVE 13: communication_time=  5.00 seconds; computation_time=  4.73 seconds
+ --- SLAVE 26: communication_time=  5.00 seconds; computation_time=  4.77 seconds
+ --- SLAVE 21: communication_time=  5.00 seconds; computation_time=  4.80 seconds
+ --- SLAVE 8: communication_time=  5.00 seconds; computation_time=  5.03 seconds
+ --- SLAVE 19: communication_time=  5.01 seconds; computation_time=  5.07 seconds
+ --- SLAVE 12: communication_time=  5.01 seconds; computation_time=  5.15 seconds
+ --- SLAVE 15: communication_time=  5.00 seconds; computation_time=  5.20 seconds
+ --- SLAVE 20: communication_time=  5.01 seconds; computation_time=  5.19 seconds
+ --- SLAVE 28: communication_time=  5.00 seconds; computation_time=  5.25 seconds
+ --- SLAVE 6: communication_time=  5.01 seconds; computation_time=  5.36 seconds
+ --- SLAVE 1: communication_time=  5.00 seconds; computation_time=  5.39 seconds
+ --- SLAVE 16: communication_time=  5.00 seconds; computation_time=  5.42 seconds
+ --- SLAVE 30: communication_time=  5.01 seconds; computation_time=  5.49 seconds
+ --- SLAVE 31: communication_time=  5.00 seconds; computation_time=  5.55 seconds
+ --- SLAVE 2: communication_time=  5.01 seconds; computation_time=  5.56 seconds
+ --- SLAVE 0: communication_time=  5.00 seconds; computation_time=  5.60 seconds
+ --- SLAVE 9: communication_time=  5.00 seconds; computation_time=  5.61 seconds
+ --- SLAVE 17: communication_time=  5.00 seconds; computation_time=  5.61 seconds
+ --- SLAVE 27: communication_time=  5.00 seconds; computation_time=  5.63 seconds
+ --- SLAVE 5: communication_time=  5.01 seconds; computation_time=  5.62 seconds
+ --- SLAVE 4: communication_time=  5.01 seconds; computation_time=  5.68 seconds
+ --- SLAVE 29: communication_time=  5.00 seconds; computation_time=  5.78 seconds
+ --- SLAVE 3: communication_time=  5.00 seconds; computation_time=  5.82 seconds
+ --- SLAVE 23: communication_time=  5.00 seconds; computation_time=  5.83 seconds
+ --- SLAVE 24: communication_time=  5.01 seconds; computation_time=  5.85 seconds
+ --- SLAVE 11: communication_time=  5.00 seconds; computation_time=  5.87 seconds
+ --- SLAVE 7: communication_time=  5.01 seconds; computation_time=  5.86 seconds
+ --- SLAVE 14: communication_time=  5.00 seconds; computation_time=  5.92 seconds
+ --- SLAVE 22: communication_time=  5.01 seconds; computation_time=  5.91 seconds
+ --- SLAVE 25: communication_time=  5.01 seconds; computation_time=  6.10 seconds
+ --- SLAVE 32: communication_time=  4.99 seconds; computation_time=  6.45 seconds
+ --- SLAVE 33: communication_time=  5.46 seconds; computation_time=  5.98 seconds
+ --- SLAVE 34: communication_time=  5.66 seconds; computation_time=  5.78 seconds
+ --- SLAVE 35: communication_time=  6.58 seconds; computation_time=  4.86 seconds
+ --- SLAVE 36: communication_time=  5.05 seconds; computation_time=  6.40 seconds
+ --- SLAVE 37: communication_time=  6.29 seconds; computation_time=  5.15 seconds
+ --- SLAVE 38: communication_time=  6.27 seconds; computation_time=  5.18 seconds
+ --- SLAVE 39: communication_time=  6.57 seconds; computation_time=  4.88 seconds
+ --- SLAVE 40: communication_time=  5.14 seconds; computation_time=  6.31 seconds
+ --- SLAVE 41: communication_time=  5.51 seconds; computation_time=  5.94 seconds
+ --- SLAVE 42: communication_time=  5.76 seconds; computation_time=  5.69 seconds
+ --- SLAVE 43: communication_time=  5.38 seconds; computation_time=  6.07 seconds
+ --- SLAVE 44: communication_time=  5.01 seconds; computation_time=  6.57 seconds
+ --- SLAVE 45: communication_time=  6.91 seconds; computation_time=  4.67 seconds
+ --- SLAVE 46: communication_time=  6.29 seconds; computation_time=  5.29 seconds
+ --- SLAVE 47: communication_time=  6.16 seconds; computation_time=  5.42 seconds
+ --- SLAVE 48: communication_time=  6.06 seconds; computation_time=  5.52 seconds
+ --- SLAVE 49: communication_time=  5.62 seconds; computation_time=  5.96 seconds
+ --- SLAVE 50: communication_time=  5.75 seconds; computation_time=  5.83 seconds
+ --- SLAVE 51: communication_time=  5.56 seconds; computation_time=  6.02 seconds
+ --- SLAVE 52: communication_time=  5.85 seconds; computation_time=  5.73 seconds
+ --- SLAVE 53: communication_time=  6.11 seconds; computation_time=  5.48 seconds
+ --- SLAVE 54: communication_time=  5.26 seconds; computation_time=  6.32 seconds
+ --- SLAVE 55: communication_time=  5.55 seconds; computation_time=  6.03 seconds
+ --- SLAVE 56: communication_time=  5.27 seconds; computation_time=  6.32 seconds
+ --- SLAVE 57: communication_time=  5.47 seconds; computation_time=  6.12 seconds
+ --- SLAVE 58: communication_time=  5.63 seconds; computation_time=  5.96 seconds
+ --- SLAVE 59: communication_time=  5.71 seconds; computation_time=  5.88 seconds
+ --- SLAVE 60: communication_time=  6.39 seconds; computation_time=  5.21 seconds
+ --- SLAVE 61: communication_time=  5.97 seconds; computation_time=  5.63 seconds
+ --- SLAVE 62: communication_time=  6.36 seconds; computation_time=  5.23 seconds
+
+real	0m12.501s
+user	0m0.027s
+sys	0m0.075s
