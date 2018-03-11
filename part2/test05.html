@@ -165,7 +165,11 @@
         }
 
         function pipeline03() {
-            orig = myKernelImg(arr);
+            if (selection === 0) {
+                orig = myCodeImg(arr);
+            } else {
+                orig = myKernelImg(arr);
+            }
         }
 
         function pipeline04() {
