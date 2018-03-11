@@ -269,154 +269,161 @@ const createMarkerDetectionTop = createStandardKernel(
 // referenced as such, once the rotation and orientation has been resolved:
 // m1 m2
 // m3 m4
-const createCalculateCorners = createStandardKernel(
-    function(rows, cols, markers) {
-        var w = this.constants.width;
-        var h = this.constants.height;
+function calculateCornersKernel(rows, cols, markers) {
+    var w = this.constants.width;
+    var h = this.constants.height;
 
-        // Minimum distance threshold between every pair of points.
-        var dMinT = 30;
+    // Minimum distance threshold between every pair of points.
+    var dMinT = 30;
 
-        // Minimum area of the quadrilateral threshold.
-        var areaMinT = 70000;
+    // Minimum area of the quadrilateral threshold.
+    var areaMinT = 70000;
 
-        // Maximum length difference threshold between the sides of the quadrilateral.
-        var dDiffMaxT = 20;
+    // Maximum length difference threshold between the sides of the quadrilateral.
+    var dDiffMaxT = 20;
 
-        // Decode the marker positions.
-        var m1x = markers[0][0];
-        var m1y = markers[0][1];
-        var m2x = markers[1][0];
-        var m2y = markers[1][1];
-        var m3x = markers[2][0];
-        var m3y = markers[2][1];
+    // Decode the marker positions.
+    var m1x = markers[0][0];
+    var m1y = markers[0][1];
+    var m2x = markers[1][0];
+    var m2y = markers[1][1];
+    var m3x = markers[2][0];
+    var m3y = markers[2][1];
 
-        var returnValue = -1;
+    var returnValue = -1;
 
-        // Just return 0 if we don't have enough markers.
-        if (m1x <= 0 || m1y <= 0 || m2x <= 0 || m2y <= 0 || m3x <= 0 || m3y <= 0) {
-            returnValue = 0;
-        } else {
-            // Get the estimated cell sizes both row-wise and col-wise.
-            var m1rs = rows[0][1][m1y];
-            var m2rs = rows[0][1][m2y];
-            var m3rs = rows[0][1][m3y];
-            var m1cs = cols[0][1][m1x];
-            var m2cs = cols[0][1][m2x];
-            var m3cs = cols[0][1][m3x];
+    // Just return 0 if we don't have enough markers.
+    if (m1x <= 0 || m1y <= 0 || m2x <= 0 || m2y <= 0 || m3x <= 0 || m3y <= 0) {
+        returnValue = 0;
+    } else {
+        // Get the estimated cell sizes both row-wise and col-wise.
+        var m1rs = rows[0][1][m1y];
+        var m2rs = rows[0][1][m2y];
+        var m3rs = rows[0][1][m3y];
+        var m1cs = cols[0][1][m1x];
+        var m2cs = cols[0][1][m2x];
+        var m3cs = cols[0][1][m3x];
 
-            // Count the average cell size both row-wise and col-wise.
-            var cellSizeRowWise = (m1rs + m2rs + m3rs) / 3;
-            var cellSizeColWise = (m1cs + m2cs + m3cs) / 3;
+        // Count the average cell size both row-wise and col-wise.
+        var cellSizeRowWise = (m1rs + m2rs + m3rs) / 3;
+        var cellSizeColWise = (m1cs + m2cs + m3cs) / 3;
 
-            // Calculate distances.
-            var m1m3 = dist(m1x, m1y, m3x, m3y);
-            var m1m2 = dist(m1x, m1y, m2x, m2y);
-            var m2m3 = dist(m2x, m2y, m3x, m3y);
+        // Calculate distances.
+        var m1m3 = dist(m1x, m1y, m3x, m3y);
+        var m1m2 = dist(m1x, m1y, m2x, m2y);
+        var m2m3 = dist(m2x, m2y, m3x, m3y);
 
-            // Swap markers according to the expected distance between points.
-            // m1m2, m1m3 should be smaller than m2m3.
-            var temp;
-            if (m1m2 > m2m3 && m1m2 > m1m3) {
-                // Swap m1 and m3.
-                temp = m1x;
-                m1x = m3x;
-                m3x = temp;
-                temp = m1y;
-                m1y = m3y;
-                m3y = temp;
-            } else if (m1m3 > m1m2 && m1m3 > m2m3) {
-                // Swap m1 and m2.
-                temp = m1x;
-                m1x = m2x;
-                m2x = temp;
-                temp = m1y;
-                m1y = m2y;
-                m2y = temp;
-            }
-
-            // Estimate the position of the 4th point.
-            var m4x = m3x + (m2x - m1x);
-            var m4y = m2y + (m3y - m1y);
-
-            // Calculate the center point of the QR code, which is the middle of the m2m3 line segment.
-            var mcx = (m2x + m3x) / 2;
-            var mcy = (m2y + m3y) / 2;
-
-            // Calculate the distance between each pair of points.
-            var d12 = dist(m1x, m1y, m2x, m2y);
-            var d13 = dist(m1x, m1y, m3x, m3y);
-            var d14 = dist(m1x, m1y, m4x, m4y);
-            var d23 = dist(m2x, m2y, m3x, m3y);
-            var d24 = dist(m2x, m2y, m4x, m4y);
-            var d34 = dist(m3x, m3y, m4x, m4y);
-
-            // Find the upper and lower bounds of the sides of the quad.
-            var lineLengthMax = max(d12, d24, d34, d13);
-            var lineLengthMin = min(d12, d24, d34, d13);
-
-            // Calculate the area of the quadrilateral.
-            var area = area(m1x, m1y, m2x, m2y, m3x, m3y, m4x, m4y);
-
-            if (min(m1x, m2x, m3x, m4x) < 0 || min(m1y, m2y, m3y, m4y) < 0 || max(m1x, m2x, m3x, m4x) > w || max(m1y, m2y, m3y, m4y) > h) {
-                // Don't send any corners if any of them are out of range.
-                returnValue = 0;
-            } else if (d12 < dMinT || d13 < dMinT || d14 < dMinT || d23 < dMinT || d24 < dMinT || d34 < dMinT) {
-                // Don't send any corners if any two of them are very close to each other.
-                returnValue = 0;
-            } else if (area < areaMinT) {
-                // Don't send any corners if the total area is too small.
-                returnValue = 0;
-            } else if (lineLengthMax - lineLengthMin > dDiffMaxT) {
-                // Don't send any corners if the difference in lengths is too large.
-                returnValue = 0;
-            }
-
-            // Displace all points by 3.5x cell size, away from the center of the QR code.
-            var displaceX = cellSizeRowWise * 3.5;
-            var displaceY = cellSizeColWise * 3.5;
-
-            if (m1x < mcx) m1x -= displaceX;
-            else m1x += displaceX;
-            if (m2x < mcx) m2x -= displaceX;
-            else m2x += displaceX;
-            if (m3x < mcx) m3x -= displaceX;
-            else m3x += displaceX;
-            if (m4x < mcx) m4x -= displaceX;
-            else m4x += displaceX;
-            if (m1y < mcy) m1y -= displaceY;
-            else m1y += displaceY;
-            if (m2y < mcy) m2y -= displaceY;
-            else m2y += displaceY;
-            if (m3y < mcy) m3y -= displaceY;
-            else m3y += displaceY;
-            if (m4y < mcy) m4y -= displaceY;
-            else m4y += displaceY;
-
-            // Return the points.
-            if (returnValue === 0) {
-                return 0;
-            } else if (this.thread.y === 0) {
-                if (this.thread.x === 0) return m1x;
-                else return m1y;
-            } else if (this.thread.y === 1) {
-                if (this.thread.x === 0) return m2x;
-                else return m2y;
-            } else if (this.thread.y === 2) {
-                if (this.thread.x === 0) return m3x;
-                else return m3y;
-            } else {
-                if (this.thread.x === 0) return m4x;
-                else return m4y;
-            }
+        // Swap markers according to the expected distance between points.
+        // m1m2, m1m3 should be smaller than m2m3.
+        var temp;
+        if (m1m2 > m2m3 && m1m2 > m1m3) {
+            // Swap m1 and m3.
+            temp = m1x;
+            m1x = m3x;
+            m3x = temp;
+            temp = m1y;
+            m1y = m3y;
+            m3y = temp;
+        } else if (m1m3 > m1m2 && m1m3 > m2m3) {
+            // Swap m1 and m2.
+            temp = m1x;
+            m1x = m2x;
+            m2x = temp;
+            temp = m1y;
+            m1y = m2y;
+            m2y = temp;
         }
-    },
-    {
-        output: [2, 4],
-        outputToTexture: false,
-        functions: { dist, area, max, min },
+
+        // Estimate the position of the 4th point.
+        var m4x = m3x + (m2x - m1x);
+        var m4y = m2y + (m3y - m1y);
+
+        // Calculate the center point of the QR code, which is the middle of the m2m3 line segment.
+        var mcx = (m2x + m3x) / 2;
+        var mcy = (m2y + m3y) / 2;
+
+        // Calculate the distance between each pair of points.
+        var d12 = dist(m1x, m1y, m2x, m2y);
+        var d13 = dist(m1x, m1y, m3x, m3y);
+        var d14 = dist(m1x, m1y, m4x, m4y);
+        var d23 = dist(m2x, m2y, m3x, m3y);
+        var d24 = dist(m2x, m2y, m4x, m4y);
+        var d34 = dist(m3x, m3y, m4x, m4y);
+
+        // Find the upper and lower bounds of the sides of the quad.
+        var lineLengthMax = max(d12, d24, d34, d13);
+        var lineLengthMin = min(d12, d24, d34, d13);
+
+        // Calculate the area of the quadrilateral.
+        var area = area(m1x, m1y, m2x, m2y, m3x, m3y, m4x, m4y);
+
+        if (min(m1x, m2x, m3x, m4x) < 0 || min(m1y, m2y, m3y, m4y) < 0 || max(m1x, m2x, m3x, m4x) > w || max(m1y, m2y, m3y, m4y) > h) {
+            // Don't send any corners if any of them are out of range.
+            returnValue = 0;
+        } else if (d12 < dMinT || d13 < dMinT || d14 < dMinT || d23 < dMinT || d24 < dMinT || d34 < dMinT) {
+            // Don't send any corners if any two of them are very close to each other.
+            returnValue = 0;
+        } else if (area < areaMinT) {
+            // Don't send any corners if the total area is too small.
+            returnValue = 0;
+        } else if (lineLengthMax - lineLengthMin > dDiffMaxT) {
+            // Don't send any corners if the difference in lengths is too large.
+            returnValue = 0;
+        }
+
+        // Displace all points by 3.5x cell size, away from the center of the QR code.
+        var displaceX = cellSizeRowWise * 3.5;
+        var displaceY = cellSizeColWise * 3.5;
+
+        if (m1x < mcx) m1x -= displaceX;
+        else m1x += displaceX;
+        if (m2x < mcx) m2x -= displaceX;
+        else m2x += displaceX;
+        if (m3x < mcx) m3x -= displaceX;
+        else m3x += displaceX;
+        if (m4x < mcx) m4x -= displaceX;
+        else m4x += displaceX;
+        if (m1y < mcy) m1y -= displaceY;
+        else m1y += displaceY;
+        if (m2y < mcy) m2y -= displaceY;
+        else m2y += displaceY;
+        if (m3y < mcy) m3y -= displaceY;
+        else m3y += displaceY;
+        if (m4y < mcy) m4y -= displaceY;
+        else m4y += displaceY;
+
+        // Return the points.
+        if (returnValue === 0) {
+            return 0;
+        } else if (this.thread.y === 0) {
+            if (this.thread.x === 0) return m1x;
+            else return m1y;
+        } else if (this.thread.y === 1) {
+            if (this.thread.x === 0) return m2x;
+            else return m2y;
+        } else if (this.thread.y === 2) {
+            if (this.thread.x === 0) return m3x;
+            else return m3y;
+        } else {
+            if (this.thread.x === 0) return m4x;
+            else return m4y;
+        }
     }
-);
+}
+
+const createCalculateCorners = createStandardKernel(calculateCornersKernel, {
+    output: [2, 4],
+    outputToTexture: true,
+    functions: { dist, area, max, min },
+});
+
+// Output as array, not texture.
+// Used when passing the array between GPU to CPU.
+const createCalculateCornersAsArray = createStandardKernel(calculateCornersKernel, {
+    output: [2, 4],
+    outputToTexture: false,
+    functions: { dist, area, max, min },
+});
 
 // Kernel: Perform affine transformation on the image to return the QR code in a square.
 // We assume that the image is not _too_ warped.

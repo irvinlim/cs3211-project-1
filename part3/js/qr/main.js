@@ -27,6 +27,7 @@ const K = {
     MARKER_DETECTION_COL_WISE: 'markerDetectionColWise',
     MARKER_DETECTION_TOP: 'markerDetectionTop',
     QR_CALCULATE_CORNERS: 'calculateCorners',
+    QR_CALCULATE_CORNERS_AS_ARRAY: 'calculateCornersAsArray',
     QR_AFFINE_TRANSFORM: 'affineTransform',
     OUTLINE_QR_CODE: 'plotPoints',
     CREATE_EMPTY_QR_CODE_TEXTURE: 'createEmptyQrCodeTexture',
@@ -51,6 +52,7 @@ function initialize() {
     addKernel(createMarkerDetectionColWise, KC.LEFT_IMAGE, K.MARKER_DETECTION_COL_WISE);
     addKernel(createMarkerDetectionTop, KC.LEFT_IMAGE, K.MARKER_DETECTION_TOP);
     addKernel(createCalculateCorners, KC.LEFT_IMAGE, K.QR_CALCULATE_CORNERS);
+    addKernel(createCalculateCornersAsArray, KC.LEFT_IMAGE, K.QR_CALCULATE_CORNERS_AS_ARRAY);
     addKernel(createAffineTransform, KC.RIGHT_IMAGE, K.QR_AFFINE_TRANSFORM);
     addKernel(createOutlineQrCode, KC.LEFT_IMAGE, K.OUTLINE_QR_CODE);
     addKernel(createEmptyQrCodeTexture, KC.RIGHT_IMAGE, K.CREATE_EMPTY_QR_CODE_TEXTURE);
@@ -93,7 +95,8 @@ function renderLoop() {
     const topMarkers = getKernelTimed(K.MARKER_DETECTION_TOP)(rowWise, colWise);
 
     // Calculate the corners of the QR code.
-    const corners = getKernelTimed(K.QR_CALCULATE_CORNERS)(rowWise, colWise, topMarkers);
+    const calcCornerKernel = state.isOutputQrCodeEnabled ? K.QR_CALCULATE_CORNERS_AS_ARRAY : K.QR_CALCULATE_CORNERS;
+    const corners = getKernelTimed(calcCornerKernel)(rowWise, colWise, topMarkers);
 
     // Outline the QR code on the original image.
     const outlinedQrCode = getKernelTimed(K.OUTLINE_QR_CODE)(filteredImage, corners, plotPointColors);
