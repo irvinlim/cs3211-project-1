@@ -8,7 +8,7 @@ The complete project report can also be found in the root directory.
 
 ## Demo
 
-A demo of the implementation for Part 3, video filters and QR code detection with [GPU.js](https://github.com/gpujs/gpu.js), is available at [https://irvinlim.github.io/cs3211-project-1](https://irvinlim.github.io/cs3211-project-1).
+A demo of the implementation for Part 3, video filters and QR code detection with [GPU.js](https://github.com/gpujs/gpu.js), is available at [https://irvinlim.github.io/cs3211-project-1/part3/filters.html](https://irvinlim.github.io/cs3211-project-1/part3/filters.html).
 
 Some screenshots:
 
