@@ -6,6 +6,16 @@ This is a submission for CS3211 Parallel and Concurrent Programming, Project 1 (
 
 The complete project report can also be found in the root directory.
 
+## Demo
+
+A demo of the implementation for Part 3, video filters and QR code detection with [GPU.js](https://github.com/gpujs/gpu.js), is available at [https://irvinlim.github.io/cs3211-project-1](https://irvinlim.github.io/cs3211-project-1).
+
+Some screenshots:
+
+![Demo of video filters](docs/img/filters-demo.png)
+
+![Demo of QR code detection](docs/img/qr-demo.png)
+
 ## Part 1
 
 Various scripts that were used for benchmarking and automating the tests on the lab machine and the Tembusu cluster can be found in the `part1` directory, in case you might find them useful.
